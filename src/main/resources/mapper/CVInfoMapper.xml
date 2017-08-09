@@ -4,5 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace 这个xml的里面所有的操作，都是要对这个 Mapper 接口进行定义 -->
 <mapper namespace="com.wisezone.mapper.CVInfoMapper">
-
+	<insert id="insert" parameterType="CVInfo" useGeneratedKeys="true" keyProperty="tId">
+		
+	</insert>
 </mapper>
