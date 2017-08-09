@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 这个xml的里面所有的操作，都是要对这个 Mapper 接口进行定义 -->
+<mapper namespace="com.wisezone.mapper.UserInfoMapper">
+ 
+
+	<resultMap id="BaseResultMap" type="UserInfo">
+		<id column="userId" jdbcType="INTEGER" property="userId" />
+		<result column="loginName" jdbcType="VARCHAR" property="loginName" />
+		<result column="loginPwd" jdbcType="VARCHAR" property="loginPwd" />
+		<result column="state" jdbcType="INTEGER" property="state" />
+		<result column="regTime" jdbcType="DATE" property="regTime" />
+		<result column="endTime" jdbcType="DATE" property="endTime" />
+		 
+	</resultMap>
+	 
+     <!-- 新增 
+     useGeneratedKeys='true'	获取插入数据时产生的主键，并将值保存到keyProperty属性定义的属性中
+     keyProperty 是java对象的属性名
+     -->
+     <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="tId">
+		insert into user_info (t_id, login_name, login_pwd,create_time, last_login_time, state,role)
+		values (
+			#{tId,jdbcType=INTEGER}, 
+			#{loginName,jdbcType=VARCHAR},
+			#{loginPwd,jdbcType=VARCHAR},
+			#{createTime,jdbcType=DATE},
+			#{lastLoginTime,jdbcType=DATE},
+			#{state,jdbcType=INTEGER}, 
+			#{role,jdbcType=INTEGER}
+		)
+  </insert>
+
+    <!--更新-->
+    <update id="update" parameterType="UserInfo">
+	    update user_info
+	    set login_name = #{loginName,jdbcType=VARCHAR},
+	      login_pwd = #{loginPwd,jdbcType=VARCHAR},
+	      state = #{state,jdbcType=INTEGER},
+	      role = #{role,jdbcType=INTEGER}
+	    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  
+  <!--登陆-->
+  <resultMap type="UserInfo" id="doLogin">
+  	<id column="t_id" jdbcType="INTEGER" property="tId" />
+	<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+	<result column="last_login_time" jdbcType="DATE" property="lastLoginTime" />
+	<result column="state" jdbcType="INTEGER" property="state" />
+	<result column="role" jdbcType="INTEGER" property="role" />
+  </resultMap>
+  <select id="userLogin" parameterType="UserInfo" resultMap="doLogin">
+  	select * from user_info
+  </select>
+ 
+  <!--分页查询-->
+   <select id="searchPaging"  resultMap="BaseResultMap">
+      select *
+      from user_info 
+      <if test="param != null">
+	      <where>          
+	          <!-- 遍历map集合  index相当于是键,  item相当于是值 -->
+	           <foreach collection="param" index="key" item="value" open="(" separator="and"  close=")">
+	                  ${key} = #{value} 
+	           </foreach>      
+	      </where> 
+      </if>
+      <!-- 分页 -->
+      limit #{offset}, #{limit}
+ </select>
+      
+      <!-- 分页查询 -->
+   <select id="searchPagingCount"  resultType="int">
+      select count(*)
+      from user_info 
+      <if test="param != null">
+	      <where>          
+	          <!-- 遍历map集合  index相当于是键,  item相当于是值 -->
+	           <foreach collection="param" index="key" item="value" open="(" separator="and"  close=")">
+	                  ${key} = #{value}    
+	           </foreach>      
+	      </where> 
+      </if>
+     
+ </select>  
+  
+  
+</mapper>  

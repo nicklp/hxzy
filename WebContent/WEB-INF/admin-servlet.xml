@@ -1,0 +1,146 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- 1、扫描包 -->		
+	<context:component-scan base-package="com.wisezone.controller.admin"></context:component-scan>
+    
+    <mvc:resources location="/assets" mapping="/assets/**"  />
+
+
+
+	<!-- 2、完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+	<!-- 3、做MVC注解 配置 ( json中用的) -->
+	<mvc:annotation-driven>
+		<!-- 处理responseBody 里面日期类型 -->
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html; charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+
+			<bean
+				class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"></bean>
+
+			<!-- json格式转换 -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+								<!-- <constructor-arg type="java.lang.String" value="yyyy-MM-dd" /> -->
+							</bean>
+						</property>
+					</bean>
+				</property>
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html; charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+	<!--4、文件上传解析 配置  -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	 
+		<property name="maxUploadSize" value="209715200"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="resolveLazily" value="true"></property>
+	</bean>
+ 
+	<!-- 5、首先解析 freemarker ，公共设定，解析器 -->
+
+	<!-- ===================================================== -->
+	<!-- ViewResolver For FreeMarkerConfigurer -->
+	<!-- ===================================================== -->
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<!-- 设定freemarker 模板 文件路径 -->
+		<property name="templateLoaderPath">
+			<value>/admin/ftl/</value>
+		</property>
+		
+	 
+        
+		<property name="freemarkerSettings"><!-- 设置FreeMarker环境属性 -->
+			<props>
+				<prop key="template_update_delay">5</prop><!--刷新模板的周期，单位为秒 -->
+				<prop key="default_encoding">UTF-8</prop><!--模板的编码格式 -->
+				<prop key="locale">UTF-8</prop><!-- 本地化设置 -->
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">0.####</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="whitespace_stripping">true</prop>
+				<prop key="tag_syntax">auto_detect</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="classic_compatible">true</prop><!-- 此属性可以防止模板解析空值时的错误 -->
+			</props>
+		</property>
+	</bean>
+
+	<!-- ===================================================== -->
+	<!-- ViewResolver For FreeMarker -->
+	<!-- ===================================================== -->
+	<bean id="freemarkerResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		 
+		<property name="order" value="0"></property>
+		<property name="suffix" value=".ftl" />    <!-- 设置FreeMarker后缀 -->
+         <property name="requestContextAttribute" value="request"/> 
+         
+		<!-- 此处需要声明为utf-8编码，否则即使页面是utf-8编码，中文还是不能正常显示 -->
+		<property name="contentType" value="text/html;charset=utf-8" />
+
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.freemarker.FreeMarkerView
+			</value>
+		</property> 
+
+	</bean>
+
+
+
+	<!-- 6、做JSP视图解析器   -->
+	<bean 
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:viewClass="org.springframework.web.servlet.view.JstlView" 
+		p:prefix="/WEB-INF/pages/"
+		p:suffix=".jsp" p:order="1" />
+
+ 
+
+
+
+	<!-- 7、自定义拦截器(aop面向切面编程)，没有权限，没有登录的，要如何处理 <mvc:interceptors> <mvc:interceptor> 
+		<mvc:mapping path="/admin/**"/> <mvc:exclude-mapping path="/admin/checklogin.action"/> 
+		<mvc:exclude-mapping path="/admin/code.action"/> <bean class="com.wisezone.controller.admin.AdminLoginInterceptor"></bean> 
+		</mvc:interceptor> </mvc:interceptors> -->
+
+</beans>
