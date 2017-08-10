@@ -12,12 +12,12 @@ import com.wisezone.service.UserInfoService;
 public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 		UserInfoService {
 
-	private UserInfoMapper userInfoMapper;
+	private UserInfoMapper mapper;
 
 	@Resource(name = "userInfoMapper")
 	public void setUserInfoMapper(UserInfoMapper userInfoMapper) {
-		this.userInfoMapper = userInfoMapper;
-		super.setCommonMapper(userInfoMapper);
+		this.mapper = userInfoMapper;
+		super.setCommonMapper(this.mapper);
 	}
  
 
