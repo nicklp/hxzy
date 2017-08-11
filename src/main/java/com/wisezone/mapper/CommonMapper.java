@@ -27,6 +27,12 @@ public interface CommonMapper<T> {
 	 */
 	public int update(T obj);
 	 
+	/**
+	 * 根据ID获取数据
+	 * @param id
+	 * @return
+	 */
+	public T findById(@Param("tId")int id);
 	
 	 /**
 	  * 分页查询的数据

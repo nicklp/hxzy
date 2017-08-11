@@ -1,5 +1,8 @@
 package com.wisezone.service.impl;
 
+
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -19,4 +22,15 @@ public class CVOtherInfoServiceImpl extends CommonServiceImpl<CVOtherInfo> imple
 		super.setCommonMapper(this.mapper);
 	}
 
+	@Override
+	public List<CVOtherInfo> queryByType(int tType) {
+		return this.mapper.queryByType(tType);
+	}
+
+	@Override
+	public boolean deleteById(int tId) {
+		return this.mapper.deleteById(tId);
+	}
+
+	
 }

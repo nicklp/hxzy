@@ -24,6 +24,9 @@ response.setDateHeader("Expires",0);
 <link
 	href="assets/Font-Awesome-3.2.0/css/font-awesome.css"
 	rel="stylesheet">
+<link
+	href="assets/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
 <!-- <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" /> -->
 
 
@@ -46,18 +49,6 @@ response.setDateHeader("Expires",0);
 	outline: none;
 }
 
-#voiceBtn {
-	width: 20px;
-	color: transparent;
-	background-color: transparent;
-	transform: scale(2.0, 2.0);
-	-webkit-transform: scale(2.0, 2.0);
-	-moz-transform: scale(2.0, 2.0);
-	border: transparent;
-	cursor: pointer;
-	box-shadow: none;
-	-webkit-box-shadow: none;
-}
 
 div[data-role="editor-toolbar"] {
 	-webkit-user-select: none;
@@ -69,6 +60,15 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
 	cursor: pointer;
 }
+/*
+	nick styles
+*/
+.hxzy_nav_active{
+	outline:0;
+	background: #575757 !important;
+	color: #F36A5A !important;
+}
+
 </style>
 <title>新增面试信息</title>
 </head>
@@ -334,7 +334,7 @@ div[data-role="editor-toolbar"] {
                         <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> <h4 class="hxzynav">工作管理</h4><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#">简历录入</a>
+                                <a class="hxzy_nav_active" href="#">简历录入</a>
                             </li>
                         </ul>
                     </li>
@@ -372,14 +372,156 @@ div[data-role="editor-toolbar"] {
                                         <div class="form-group">
                                             <label for="cvname" class="col-sm-2 control-label">姓名</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="cvname" placeholder="请输入姓名">
+                                                <input type="text" class="form-control" id="cvname" name="cvname" placeholder="请输入姓名">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="phone" class="col-sm-2 control-label">电话</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="phone" placeholder="请输入电话">
+                                                <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入电话">
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">性别</label>
+                                            <div class="col-sm-8">
+                                                 <div class="radio3 radio-check radio-success radio-inline">
+		                                            <input type="radio" id="radio4" name="sex" value="男" checked="checked">
+		                                            <label for="radio4">
+		                                              	男
+		                                            </label>
+		                                          </div>
+		                                          <div class="radio3 radio-check radio-success radio-inline">
+		                                            <input type="radio" id="radio5" name="sex" value="女">
+		                                            <label for="radio5">
+		                                           		 女
+		                                            </label>
+		                                          </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="education" class="col-sm-2 control-label">毕业院校</label>
+                                            <div class="col-sm-8">
+                                            	<div class="row" style="padding-left:15px">
+                                            		<div class="col-sm-2">
+		                                                <input type="text" class="form-control" id="school" name="school" placeholder="请输入毕业院校">
+                                            		</div>
+                                            		<div class="col-sm-8">
+		                                            	<select id="school_select" class="selectbox" style="width:200px;">
+		                                            		<option>请选择</option>
+		                                            	</select>
+                                            		</div>
+                                            	</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        	<label class="col-sm-2 control-label">学历</label>
+                                        	<div class="col-sm-8">
+                                        		<select id="education" name="education" class="selectbox" style="width:200px;">
+		                                          <option value="-1" selected="selected">请选择</option>
+		                                          <option value="1">研究生</option>
+		                                          <option value="2">本科</option>
+		                                          <option value="3">大专</option>
+		                                          <option value="4">高中</option>
+		                                          <option value="5">中专</option>
+		                                          <option value="9">未知</option>
+		                                        </select>
+                                        	</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="major" class="col-sm-2 control-label">所读专业</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="major" name="major" placeholder="请输入">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="job" class="col-sm-2 control-label">应聘岗位</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" id="job" name="job" placeholder="请输入">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="msgFrom" class="col-sm-2 control-label">信息来源</label>
+                                            <div class="col-sm-8">
+                                            	<div class="row" style="padding-left:15px">
+                                            		<div class="col-sm-2">
+		                                                <input type="text" class="form-control" id="msgFrom" name="msgFrom" placeholder="请输入">
+                                            		</div>
+                                            		<div class="col-sm-8">
+		                                            	<select id="msgFrom_select" class="selectbox" style="width:200px;">
+		                                            		<option>请选择</option>
+		                                            	</select>
+                                            		</div>
+                                            	</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tdType" class="col-sm-2 control-label">投递分类</label>
+                                            <div class="col-sm-8">
+                                            	<div class="row" style="padding-left:15px">
+                                            		<div class="col-sm-2">
+		                                                <input type="text" class="form-control" id="tdType" name="tdType" placeholder="请输入">
+                                            		</div>
+                                            		<div class="col-sm-8">
+		                                            	<select id="tdType_select" class="selectbox" style="width:200px;">
+		                                            		<option>请选择</option>
+		                                            		<option value="1">网上搜索</option>
+					                                        <option value="2">电话咨询</option>
+					                                        <option value="3">口碑</option>
+					                                        <option value="4">主动投递</option>
+					                                        <option value="9">其他</option>
+		                                            	</select>
+                                            		</div>
+                                            	</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        	<label for="createDate" class="col-sm-2 control-label">录入时间</label>
+                                        	<div class="col-sm-8">
+                                        		<input type="text" class="form-control" style="width: 20%" id="createDate" name="createDate" readonly>
+                                        	</div>
+                                        </div>
+                                        <div class="form-group">
+                                        	<label for="intention" class="col-sm-2 control-label">意向度分析</label>
+                                        	<div class="col-sm-8">
+                                        		<input type="text" class="form-control" id="intention" name="intention" placeholder="请输入">
+                                        	</div>
+                                        </div>
+                                        <div class="form-group" style="">
+                                        	<label class="col-sm-2 control-label">姓名验证</label>
+                                        	<div class="col-sm-8">
+                                        		<div class="panel panel-default">
+							                        <div class="panel-body">
+							                            <div class="table-responsive">
+							                                <table class="table table-hover">
+						                                        <tr>
+						                                            <td>李勇</td>
+						                                            <td>12345678912</td>
+						                                            <td>四川托普信息技术职业学院</td>
+						                                            <td>计算机游戏开发</td>
+						                                            <td>hrm联英人才网</td>
+						                                            <td>2013-8-1</td>
+						                                        </tr>
+						                                        <tr>
+						                                            <td>2</td>
+						                                            <td>Jacob</td>
+						                                            <td>Thornton</td>
+						                                            <td>@fat</td>
+						                                            <td>@fat</td>
+						                                            <td>@fat</td>
+						                                        </tr>
+						                                        <tr>
+						                                            <td>3</td>
+						                                            <td>Larry</td>
+						                                            <td>the Bird</td>
+						                                            <td>@twitter</td>
+						                                            <td>@twitter</td>
+						                                            <td>@twitter</td>
+						                                        </tr>
+							                                </table>
+							                            </div>
+							                        </div>
+							                    </div>
+                                        	</div>
                                         </div>
                                         <!-- <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
@@ -398,7 +540,8 @@ div[data-role="editor-toolbar"] {
                                         </div> -->
                                         <!-- 简历信息 -->
                                         <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-8">
+                                        	<label class="col-sm-2 control-label">简历</label>
+                                            <div class="col-sm-8">
                                                 <div class="btn-toolbar" data-role="editor-toolbar"
 													data-target="#editor">
 													<div class="btn-group">
@@ -468,11 +611,16 @@ div[data-role="editor-toolbar"] {
 															class="icon-undo"></i></a> <a class="btn" data-edit="redo"
 															title="取消撤销 (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
 													</div>
-													<input type="text" data-edit="inserttext" id="voiceBtn"
-														x-webkit-speech="">
+													
 												</div>
 										
 												<div id="editor"></div>
+												<input type="hidden" name="details" id="details" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-success">提交</button>
                                             </div>
                                         </div>
                                     </form>
@@ -493,6 +641,7 @@ div[data-role="editor-toolbar"] {
 <!-- <script
 	src="assets/bootstrap/js/bootstrap.min.js"></script> -->
 <script src="assets/bootstrap-wysiwyg-master/bootstrap-wysiwyg.js"></script>
+<script src="assets/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
 <!-- Custom Js -->
 <!-- <script src="assets/js/custom-scripts.js"></script>  -->
 <script>
@@ -532,14 +681,9 @@ div[data-role="editor-toolbar"] {
 						});
 				if ("onwebkitspeechchange" in document.createElement("input")) {
 					var editorOffset = $('#editor').offset();
-					$('#voiceBtn').css('position', 'absolute').offset(
-							{
-								top : editorOffset.top,
-								left : editorOffset.left
-										+ $('#editor').innerWidth() - 35
-							});
+					
 				} else {
-					$('#voiceBtn').hide();
+					
 				}
 			}
 			;
@@ -564,6 +708,17 @@ div[data-role="editor-toolbar"] {
 			window.prettyPrint && prettyPrint();
 			$('#editor').html("test");
 		});
+	</script>
+	<script>
+		//初始化dateTimepicker
+		$('#createDate').datetimepicker({
+		  //language: 'zh-CN',//显示中文
+		  format: 'yyyy-mm-dd',//显示格式
+		  minView: "month",//设置只显示到月份
+		  initialDate: new Date(),//初始化当前日期
+		  autoclose: true,//选中自动关闭
+		  todayBtn: true//显示今日按钮
+		 })
 	</script>
 </body>
 </html>

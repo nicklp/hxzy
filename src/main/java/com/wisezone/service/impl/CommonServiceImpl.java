@@ -32,8 +32,7 @@ public abstract class CommonServiceImpl<T> implements CommonService<T> {
 
 	@Override
 	public T findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.commonMapper.findById(id);
 	}
 
 	@Override

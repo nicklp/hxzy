@@ -6,7 +6,30 @@
 <mapper namespace="com.wisezone.mapper.CVOtherInfoMapper">
  
 
-     
-  
-  
+    <select id="queryByType" resultMap="cvOtherInfo" parameterType="java.lang.Integer">
+    	select t_name from cv_other_info where t_type = #{tType}
+    </select>
+  		
+  	<resultMap type="CVOtherInfo" id="cvOtherInfo">
+  		<result column="t_id" jdbcType="INTEGER" property="tId"/>
+  		<result column="t_name" jdbcType="VARCHAR" property="tName"/>
+  		<result column="t_type" jdbcType="VARCHAR" property="tType"/>
+  	</resultMap>
+  	
+  	<select id="queryAllInfo" resultMap="cvOtherInfo">
+  		select * from cv_other_info
+  	</select>
+  	
+  	<insert id="insert" parameterType="CVOtherInfo" useGeneratedKeys="true" keyProperty="tId">
+  		insert into cv_other_info (t_id,t_name,t_type)
+  		values(
+  			#{tId,jdbcType=INTEGER},
+  			#{tName,jdbcType=VARCHAR},
+  			#{tType,jdbcType=VARCHAR}
+  		)
+  	</insert>
+  	
+  	<delete id="deleteById" parameterType="java.lang.Integer">
+  		delete from cv_other_info where t_id = #{tId}
+  	</delete>
 </mapper>  
