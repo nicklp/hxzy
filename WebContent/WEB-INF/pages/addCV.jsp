@@ -636,6 +636,14 @@ div[data-role="editor-toolbar"] {
          <!-- /. PAGE WRAPPER  -->
         </div>
 
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style="background:rgba(255,255,255,0);color:#fff;">
+				<i class="fa fa-cog fa-spin fa-4x"></i>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 <%@include file="commonScripts.jsp" %>
 <script src="assets/bootstrap-wysiwyg-master/external/jquery.hotkeys.js"></script>
 <!-- <script
