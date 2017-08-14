@@ -7,7 +7,7 @@
  
 
     <select id="queryByType" resultMap="cvOtherInfo" parameterType="java.lang.Integer">
-    	select t_name from cv_other_info where t_type = #{tType}
+    	select * from cv_other_info where t_type = #{tType}
     </select>
   		
   	<resultMap type="CVOtherInfo" id="cvOtherInfo">

@@ -8,6 +8,12 @@ public class CVOtherInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static final int SCHOOL_TYPE = 1;
+	public static final int MSG_FROM = 2;
+	public static final int TD_TYPE = 3;
+	public static final int OTHER_TYPE = 9;
+	
 
 	/*
 	 * `t_id` int(5) NOT NULL AUTO_INCREMENT,
