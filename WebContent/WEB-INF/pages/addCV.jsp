@@ -126,10 +126,11 @@ div[data-role="editor-toolbar"] {
 													<select id="school_select" class="selectbox"
 														style="width: 200px;">
 														<option>请选择</option>
-														<%-- <c:forEach items="${requestScope.school} " var="item" varStatus="status">
-															<option value="${item.tname}">${item.tname}</option>
-														</c:forEach> --%>
-														<option><c:out value="${school.tName }"></c:out></option>
+														<c:forEach var="t" items="${school}" >
+														     <option value="${t.tName }">${t.tName }</option>
+														 
+														</c:forEach>
+													 
 														
 													</select>
 												</div>
@@ -177,9 +178,9 @@ div[data-role="editor-toolbar"] {
 													<select id="msgFrom_select" class="selectbox"
 														style="width: 200px;">
 														<option>请选择</option>
-														<%-- <c:forEach items="${requestScope.msg_from} " var="item">
-															<option value="${item.tName }">${item.tName }</option>
-														</c:forEach> --%>
+														<c:forEach items="${requestScope.msg_from}" var="item">
+															<option value="${item.tName}">${item.tName}</option>
+														</c:forEach>
 													</select>
 												</div>
 											</div>

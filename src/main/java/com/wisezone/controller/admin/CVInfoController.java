@@ -26,11 +26,10 @@ public class CVInfoController {
 	
 	@RequestMapping(value="/addCV")
 	public String addCVInfo(Model model) {
-		//List<CVOtherInfo> school_list = otherService.queryByType(CVOtherInfo.SCHOOL_TYPE);
-		//List<CVOtherInfo> msg_from_list = otherService.queryByType(CVOtherInfo.MSG_FROM);
-		//model.addAttribute("school", school_list);
-		//model.addAttribute("msg_from", msg_from_list);
-		model.addAttribute("school", new CVOtherInfo(1, "西南大学", "1"));
+		List<CVOtherInfo> school_list = otherService.queryByType(CVOtherInfo.SCHOOL_TYPE);
+		List<CVOtherInfo> msg_from_list = otherService.queryByType(CVOtherInfo.MSG_FROM);
+		model.addAttribute("school", school_list);
+		model.addAttribute("msg_from", msg_from_list);
 		return "addCV";
 	}
 }
