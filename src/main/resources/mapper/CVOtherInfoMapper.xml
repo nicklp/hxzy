@@ -10,7 +10,7 @@
     	select t_id,t_name,t_type from cv_other_info where t_type = #{tType}
     </select>
   		
-  	<resultMap type="CVOtherInfo" id="cvOtherInfo">
+  	<resultMap type="com.wisezone.entity.CVOtherInfo" id="cvOtherInfo">
   		<result column="t_id" jdbcType="INTEGER" property="tId"/>
   		<result column="t_name" jdbcType="VARCHAR" property="tName"/>
   		<result column="t_type" jdbcType="VARCHAR" property="tType"/>
@@ -20,7 +20,7 @@
   		select t_id,t_name,t_type from cv_other_info
   	</select>
   	
-  	<insert id="insert" parameterType="CVOtherInfo" useGeneratedKeys="true" keyProperty="tId">
+  	<insert id="insert" parameterType="com.wisezone.entity.CVOtherInfo" useGeneratedKeys="true" keyProperty="tId">
   		insert into cv_other_info (t_id,t_name,t_type)
   		values(
   			#{tId,jdbcType=INTEGER},

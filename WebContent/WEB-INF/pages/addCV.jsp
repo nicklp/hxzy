@@ -26,7 +26,9 @@
 	href="assets/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css"
 	rel="stylesheet">
 <!-- <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" /> -->
-
+<link
+	href="assets/bootstrapvalidator/bootstrapValidator.min.css"
+	rel="stylesheet">
 
 <style>
 #editor {
@@ -86,18 +88,18 @@ div[data-role="editor-toolbar"] {
 								</div>
 							</div>
 							<div class="panel-body">
-								<form class="form-horizontal" method="post" id="cvForm">
+								<form class="form-horizontal required-validate" method="post" id="cvForm" action="#">
 									<div class="form-group">
 										<label for="cvname" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" id="cvname"
+											<input type="text" class="form-control" id="cvname" wisezone="notEmpty"
 												name="cvname" placeholder="请输入姓名">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="phone" class="col-sm-2 control-label">电话</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" id="phone"
+											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric"
 												name="phone" placeholder="请输入电话">
 										</div>
 									</div>
@@ -125,7 +127,6 @@ div[data-role="editor-toolbar"] {
 												<div class="col-sm-8">
 													<select id="school_select" class="selectbox"
 														style="width: 200px;">
-														<option>请选择</option>
 														<c:forEach var="t" items="${school}" >
 														     <option value="${t.tName }">${t.tName }</option>
 														 
@@ -142,12 +143,11 @@ div[data-role="editor-toolbar"] {
 										<div class="col-sm-8">
 											<select id="education" name="education" class="selectbox"
 												style="width: 200px;">
-												<option value="-1" selected="selected">请选择</option>
-												<option value="1">研究生</option>
-												<option value="2">本科</option>
+												<option value="1">高中</option>
+												<option value="2">中专</option>
 												<option value="3">大专</option>
-												<option value="4">高中</option>
-												<option value="5">中专</option>
+												<option value="4">本科</option>
+												<option value="5">研究生</option>
 												<option value="9">未知</option>
 											</select>
 										</div>
@@ -171,13 +171,12 @@ div[data-role="editor-toolbar"] {
 										<div class="col-sm-8">
 											<div class="row" style="padding-left: 15px">
 												<div class="col-sm-2">
-													<input type="text" class="form-control" id="msgFrom"
+													<input type="text" class="form-control" id="msgFrom" wisezone="notEmpty"
 														name="msgFrom" placeholder="请输入">
 												</div>
 												<div class="col-sm-8">
 													<select id="msgFrom_select" class="selectbox"
 														style="width: 200px;">
-														<option>请选择</option>
 														<c:forEach items="${requestScope.msg_from}" var="item">
 															<option value="${item.tName}">${item.tName}</option>
 														</c:forEach>
@@ -191,13 +190,12 @@ div[data-role="editor-toolbar"] {
 										<div class="col-sm-8">
 											<div class="row" style="padding-left: 15px">
 												<div class="col-sm-2">
-													<input type="text" class="form-control" id="tdType"
+													<input type="text" class="form-control" id="tdType" wisezone="notEmpty"
 														name="tdType" placeholder="请输入">
 												</div>
 												<div class="col-sm-8">
 													<select id="tdType_select" class="selectbox"
 														style="width: 200px;">
-														<option>请选择</option>
 														<option value="1">网上搜索</option>
 														<option value="2">电话咨询</option>
 														<option value="3">口碑</option>
@@ -211,7 +209,7 @@ div[data-role="editor-toolbar"] {
 									<div class="form-group">
 										<label for="createDate" class="col-sm-2 control-label">录入时间</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" style="width: 20%"
+											<input type="text" class="form-control" style="width: 20%" wisezone="notEmpty"
 												id="createDate" name="createDate" readonly>
 										</div>
 									</div>
@@ -469,6 +467,30 @@ div[data-role="editor-toolbar"] {
 			autoclose : true,//选中自动关闭
 			todayBtn : true //显示今日按钮
 		})
+	</script>
+	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.min.js"></script>
+	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/customervalidater.js"></script>
+	<script>
+		$(function(){
+			/* 加载时间选择插件 */  
+			$('#createDate').datetimepicker().on('changeDate', function(ev){
+				 $('#cvForm').data('bootstrapValidator')  
+		                .updateStatus('createDate', 'NOT_VALIDATED',null)  
+		                .validateField('createDate');  
+			});
+		          
+			$("#cvForm").submit(function(ev){
+				 ev.preventDefault();
+			});
+			
+			$(".btn-success").click(function(){
+				var flag = validate($("#cvForm"));
+				if(flag){
+					var str = $("#cvForm").serialize();
+					console.log(str);
+				}
+			}); 
+		});
 	</script>
 </body>
 </html>

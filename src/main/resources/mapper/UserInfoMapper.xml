@@ -6,7 +6,7 @@
 <mapper namespace="com.wisezone.mapper.UserInfoMapper">
  
 
-	<resultMap id="BaseResultMap" type="UserInfo">
+	<resultMap id="BaseResultMap" type="com.wisezone.entity.UserInfo">
 		<id column="userId" jdbcType="INTEGER" property="userId" />
 		<result column="loginName" jdbcType="VARCHAR" property="loginName" />
 		<result column="loginPwd" jdbcType="VARCHAR" property="loginPwd" />
@@ -20,7 +20,7 @@
      useGeneratedKeys='true'	获取插入数据时产生的主键，并将值保存到keyProperty属性定义的属性中
      keyProperty 是java对象的属性名
      -->
-     <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="tId">
+     <insert id="insert" parameterType="com.wisezone.entity.UserInfo" useGeneratedKeys="true" keyProperty="tId">
 		insert into user_info (t_id, login_name, login_pwd,create_time, last_login_time, state,role)
 		values (
 			#{tId,jdbcType=INTEGER}, 
@@ -35,7 +35,7 @@
 
     <!--更新-->
     <!--  -->
-    <update id="update" parameterType="UserInfo">
+    <update id="update" parameterType="com.wisezone.entity.UserInfo">
     	
 	    update user_info
 	    set login_name = #{loginName,jdbcType=VARCHAR},
@@ -46,14 +46,14 @@
   </update>
   
   <!--登陆-->
-  <resultMap type="UserInfo" id="doLogin">
+  <resultMap type="com.wisezone.entity.UserInfo" id="doLogin">
   	<id column="t_id" jdbcType="INTEGER" property="tId" />
 	<result column="login_name" jdbcType="VARCHAR" property="loginName" />
 	<result column="last_login_time" jdbcType="DATE" property="lastLoginTime" />
 	<result column="state" jdbcType="INTEGER" property="state" />
 	<result column="role" jdbcType="INTEGER" property="role" />
   </resultMap>
-  <select id="userLogin" parameterType="UserInfo" resultMap="doLogin">
+  <select id="userLogin" parameterType="com.wisezone.entity.UserInfo" resultMap="doLogin">
   	select * from user_info
   </select>
  

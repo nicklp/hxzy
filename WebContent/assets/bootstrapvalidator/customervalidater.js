@@ -8,7 +8,10 @@ function validate(form) {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
-        }, fields: {}
+        }, 
+        fields: {
+        	
+        }
     };
    
     //    (数组,  方法(下标，对象){});
@@ -24,13 +27,13 @@ function validate(form) {
         	
         	//非空验证
             if ($(item).attr("wisezone").indexOf("notEmpty") != -1) {
-            	validators.notEmpty = { message: $(item).parent().prev().html()+"不能为空" };
+            	validators.notEmpty = { message: $(item).parents(".form-group").find("label").html()+"不能为空" };
             	 
             }
              
             //数字
             if ($(item).attr("wisezone").indexOf("numeric") != -1) {
-            	validators.numeric = { message: $(item).parent().prev().html()+"必须是数字" };
+            	validators.numeric = { message: $(item).parents(".form-group").find("label").html()+"必须是数字" };
             }
  
             /*  长度
@@ -44,27 +47,25 @@ function validate(form) {
                 var str = $(item).attr("wisezone");
                 //2,10
                 var val = str.substring(str.indexOf("(", str.indexOf("stringLength")) + 1, str.indexOf(")", str.indexOf("stringLength")));
-
                 var stringLen = {};
                 stringLen["min"] = val.split(",")[0];
                 stringLen["max"] = val.split(",")[1];
 
-                stringLen.message = $(item).parent().prev().html() + "长度必须为" + val.split(",")[0] + "到" + val.split(",")[1] + "之间";
+                stringLen.message = $(item).parents(".form-group").find("label").html() + "长度必须为" + val.split(",")[0] + "到" + val.split(",")[1] + "之间";
 
                 validators.stringLength = stringLen;
             }
-
             
             if ($(item).attr("wisezone").indexOf("size") != -1) {
                 var str = $(item).attr("wisezone");
                 //2,10
                 var val = str.substring(str.indexOf("(", str.indexOf("size")) + 1, str.indexOf(")", str.indexOf("size")));
 
-               
+               /*
                 stringLen["min"] = val;
-                stringLen["max"] = val;
+                stringLen["max"] = val;*/
 
-                stringLen.message = $(item).parent().prev().html() + "长度必须为" + val+"位";
+                stringLen.message = $(item).parents(".form-group").find("label").html() + "长度必须为" + val+"位";
 
                 validators.stringLength = stringLen;
             }
@@ -79,7 +80,7 @@ function validate(form) {
             if ($(item).attr("wisezone").indexOf("nameregexp") != -1) {
                 var reg = {};
                 reg.regexp = /^[a-zA-Z0-9_\.]+$/;
-                reg.message = $(item).parent().prev().html()+"必须为数字或者下划线，不能为特殊字符";
+                reg.message = $(item).parents(".form-group").find("label").html()+"必须为数字或者下划线，不能为特殊字符";
                 
                 validators.regexp = reg;
             }
@@ -207,8 +208,9 @@ function validate(form) {
             obj.validators = validators;
             validateObj.fields[$(item).attr("name")] = obj;
         }
-    })
-    form.bootstrapValidator(validateObj);
+    });
+   form.bootstrapValidator(validateObj);
+   return form.data('bootstrapValidator').isValid();
 }
 
  
