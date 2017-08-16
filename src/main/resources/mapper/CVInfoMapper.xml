@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace 这个xml的里面所有的操作，都是要对这个 Mapper 接口进行定义 -->
 <mapper namespace="com.wisezone.mapper.CVInfoMapper">
-	<!-- <insert id="insert" parameterType="com.wisezone.entity.CVInfo" useGeneratedKeys="true" keyProperty="tId">
+	 <insert id="insert" parameterType="com.wisezone.entity.CVInfo" useGeneratedKeys="true" keyProperty="tId">
 		insert into t_cvinfo(
 			stu_name,phone,sex,school,education,major,job,msg_from,td_type,intention,cv_details,create_date
 		) 
@@ -22,5 +22,31 @@
 			{#details,jdbcType=VARCHAR},
 			{#createDate,jdbcType=DATE}
 		)
-	</insert> -->
+	</insert> 
+	
+	<resultMap type="com.wisezone.entity.CVInfo" id="cvInfo">
+		<result column="stu_name" jdbcType="VARCHAR" property="stuName"/>
+		<result column="phone" jdbcType="VARCHAR" property="phone"/>
+		<result column="sex" jdbcType="VARCHAR" property="sex"/>
+		<result column="school" jdbcType="VARCHAR" property="school"/>
+		<result column="education" jdbcType="VARCHAR" property="education"/>
+		<result column="major" jdbcType="VARCHAR" property="major"/>
+		<result column="job" jdbcType="VARCHAR" property="job"/>
+		<result column="msg_from" jdbcType="VARCHAR" property="msgFrom"/>
+		<result column="td_type" jdbcType="VARCHAR" property="tdType"/>
+		<result column="intention" jdbcType="VARCHAR" property="intention"/>
+		<result column="cv_details" jdbcType="VARCHAR" property="details"/>
+		<result column="create_date" jdbcType="DATE" property="createDate"/>
+	</resultMap>
+	<select id="queryNameAndPhone" parameterType="map" resultMap="cvInfo">
+		select * from cv_info 
+		<where>
+		    <if test="cvname=null and cvname!=''">
+		      stu_name=#{cvname}
+		    </if>
+		    <if test="phone!=null and phone!=''">
+		      AND phone = #{phone}
+		    </if>
+	  </where>
+	</select>
 </mapper>

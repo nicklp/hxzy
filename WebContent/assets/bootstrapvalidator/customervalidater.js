@@ -56,18 +56,12 @@ function validate(form) {
                 validators.stringLength = stringLen;
             }
             
-            if ($(item).attr("wisezone").indexOf("size") != -1) {
+            if ($(item).attr("wisezone").indexOf("phone") != -1) {
                 var str = $(item).attr("wisezone");
-                //2,10
-                var val = str.substring(str.indexOf("(", str.indexOf("size")) + 1, str.indexOf(")", str.indexOf("size")));
-
-               /*
-                stringLen["min"] = val;
-                stringLen["max"] = val;*/
-
-                stringLen.message = $(item).parents(".form-group").find("label").html() + "长度必须为" + val+"位";
-
-                validators.stringLength = stringLen;
+                var phone = {};
+                phone.country = "CN";
+                phone.message = "请输入有效的手机号码";
+                validators.phone = phone;
             }
 
              

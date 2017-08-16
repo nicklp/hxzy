@@ -60,6 +60,11 @@ div[data-role="editor-toolbar"] {
 	cursor: pointer;
 }
 
+.validate_name_phone{
+	width:30px;
+	padding-right:2px;
+	color:red;
+}
 </style>
 <title>新增面试信息</title>
 </head>
@@ -91,16 +96,24 @@ div[data-role="editor-toolbar"] {
 								<form class="form-horizontal required-validate" method="post" id="cvForm" action="#">
 									<div class="form-group">
 										<label for="cvname" class="col-sm-2 control-label">姓名</label>
-										<div class="col-sm-8">
+										<div class="col-sm-3">
 											<input type="text" class="form-control" id="cvname" wisezone="notEmpty"
 												name="cvname" placeholder="请输入姓名">
+										</div>
+										<div class="col-sm-1" style="display:none;">
+											<i class="fa icon-exclamation-sign validate_name_phone"></i>
+											<label class="control-label">有相同姓名</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="phone" class="col-sm-2 control-label">电话</label>
-										<div class="col-sm-8">
-											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric"
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone"
 												name="phone" placeholder="请输入电话">
+										</div>
+										<div class="col-sm-1" style="display:none;">
+											<i class="fa icon-exclamation-sign validate_name_phone"></i>
+											<label class="control-label">有重复号码</label>
 										</div>
 									</div>
 									<div class="form-group">
@@ -127,6 +140,7 @@ div[data-role="editor-toolbar"] {
 												<div class="col-sm-8">
 													<select id="school_select" class="selectbox"
 														style="width: 200px;">
+														<option value="-1">请选择</option>
 														<c:forEach var="t" items="${school}" >
 														     <option value="${t.tName }">${t.tName }</option>
 														 
@@ -177,6 +191,7 @@ div[data-role="editor-toolbar"] {
 												<div class="col-sm-8">
 													<select id="msgFrom_select" class="selectbox"
 														style="width: 200px;">
+														<option value="-1">请选择</option>
 														<c:forEach items="${requestScope.msg_from}" var="item">
 															<option value="${item.tName}">${item.tName}</option>
 														</c:forEach>
@@ -196,6 +211,7 @@ div[data-role="editor-toolbar"] {
 												<div class="col-sm-8">
 													<select id="tdType_select" class="selectbox"
 														style="width: 200px;">
+														<option value="-1">请选择</option>
 														<option value="1">网上搜索</option>
 														<option value="2">电话咨询</option>
 														<option value="3">口碑</option>
@@ -486,11 +502,51 @@ div[data-role="editor-toolbar"] {
 			$(".btn-success").click(function(){
 				var flag = validate($("#cvForm"));
 				if(flag){
+					$("#details").val($('#editor').html());
 					var str = $("#cvForm").serialize();
-					console.log(str);
+					
+					console.log($("#cvForm").serializeJson());
 				}
 			}); 
+			
+			$("#school_select,#msgFrom_select,#tdType_select").change(function(){
+				$(this).parents(".form-group").find("input").val($(this).find("option:selected").text());
+				var fieldName = $(this).parents(".form-group").find("input").attr("name");
+				if(fieldName != 'school'){
+					if($('#cvForm').data('bootstrapValidator')){
+						$('#cvForm').data('bootstrapValidator')  
+		                .updateStatus(fieldName, 'NOT_VALIDATED',null)  
+		                .validateField(fieldName);
+					} 
+				}
+			});
+			$("#cvname,#phone").blur(function(){
+				var cvName = $("#cvname").val();
+				var phone = $("#phone").val();
+				if(cvName == "" && phone == ""){
+					return;
+				}
+				$.ajax({
+                       type: "POST",  
+                       dataType: "json",  
+                       url: "http://localhost:8080/hxzy/queryNameAndPhone.action",  
+                       data: "cvName=" + cvName + "&phone="+phone  ,  
+                       success: function (data) {
+                       		
+                       }
+				});
+			});
 		});
+		/*将表单序列化成为json*/
+		(function($){  
+	        $.fn.serializeJson=function(){  
+	            var serializeObj={};  
+	            $(this.serializeArray()).each(function(){  
+	                serializeObj[this.name]=this.value;  
+	            });  
+	            return serializeObj;  
+	        };  
+	    })(jQuery);  
 	</script>
 </body>
 </html>
