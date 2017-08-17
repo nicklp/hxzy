@@ -5,22 +5,22 @@
 <!-- namespace 这个xml的里面所有的操作，都是要对这个 Mapper 接口进行定义 -->
 <mapper namespace="com.wisezone.mapper.CVInfoMapper">
 	 <insert id="insert" parameterType="com.wisezone.entity.CVInfo" useGeneratedKeys="true" keyProperty="tId">
-		insert into t_cvinfo(
+		insert into cv_info(
 			stu_name,phone,sex,school,education,major,job,msg_from,td_type,intention,cv_details,create_date
 		) 
 		values(
-			{#stuName,jdbcType=VARCHAR},
-			{#phone,jdbcType=VARCHAR},
-			{#sex,jdbcType=VARCHAR},
-			{#school,jdbcType=VARCHAR},
-			{#education,jdbcType=VARCHAR},
-			{#major,jdbcType=VARCHAR},
-			{#job,jdbcType=VARCHAR},
-			{#msgFrom,jdbcType=VARCHAR},
-			{#tdType,jdbcType=VARCHAR},
-			{#intention,jdbcType=VARCHAR},
-			{#details,jdbcType=VARCHAR},
-			{#createDate,jdbcType=DATE}
+			#{stuName},
+			#{phone},
+			#{sex},
+			#{school},
+			#{education},
+			#{major},
+			#{job},
+			#{msgFrom},
+			#{tdType},
+			#{intention},
+			#{details},
+			#{createDate}
 		)
 	</insert> 
 	
@@ -40,14 +40,14 @@
 	</resultMap>
 	
 	<select id="queryNameAndPhone" parameterType="map" resultMap="cvInfo">
-		select stu_name, phone,school,major,msg_from,create_date from cv_info 
-		<where>
-		    <if test="cvname!=null and cvname!=''">
-		      stu_name = #{cvname}
-		    </if>
-		    <if test="phone!=null and phone!=''">
-		      AND phone = #{phone}
-		    </if>
-	  </where>
+			select stu_name, phone,school,major,msg_from,create_date from cv_info 
+			<where>
+			    <if test="stuName!=null and stuName!=''">
+			      stu_name = #{stuName}
+			    </if>
+			    <if test="phone!=null and phone!=''">
+			      AND phone = #{phone}
+			    </if>
+		   </where>
 	</select>
 </mapper>

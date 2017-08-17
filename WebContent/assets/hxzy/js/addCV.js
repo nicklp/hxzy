@@ -1,15 +1,7 @@
 
 $(function(){
 	validate($('#cvForm'));
-	//$('#myModal').modal({backdrop: 'static', keyboard: false});
-	$("#myModal").ajaxStart(function(){
-		$('#myModal').modal("show");
-	});
-
-
-	$("#myModal").ajaxStop(function(){
-		$('#myModal').modal("hide");
-	});
+	$('#myModal').modal({backdrop: 'static', keyboard: false,show:false});
 });
 
 /*将表单序列化成为json*/
@@ -43,15 +35,30 @@ $(function(){
 					$("#details").val($('#editor').html());
 					var str = $("#cvForm").serialize();
 					var json_cvForm = $("#cvForm").serializeJson();
-					console.log(json_cvForm);
+					
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
 	                       contentType: "application/json; charset=utf-8",
 	                       url: "http://localhost:8080/hxzy/add.action",  
-	                       data: json_cvForm ,  
+	                       data: JSON.stringify(json_cvForm) ,
+	                       beforeSend:function(XMLHttpRequest){
+	                    	   $('#myModal').modal("show");
+	                       },
 	                       success: function (data) {
-	                       		console.log(data);
+	                    	   $('#myModal').modal("hide");
+	                    	   if(data && data.state == true){
+	                    		   swal("添加成功!", "", "success"); 
+	                    	   }else{
+	                    		   swal("添加失败!", "", "error"); 
+	                    	   }
+	                    	   
+	                    	   $("#cvForm").data("bootstrapValidator").resetForm();
+	                    	   $("#cvForm")[0].reset();
+	                    	   $('#editor').html("");
+	                       },
+	                       error:function(XMLHttpRequest,textStatus,errorThrown){
+	                    	   $('#myModal').modal("hide");
 	                       }
 					});
 				}
@@ -69,7 +76,7 @@ $(function(){
 				}
 			});
 	
-			$("#cvname").blur(function(){
+			$("#stuName").blur(function(){
 				if($(this).val() == "" || $(this).val() == null){
 					return;
 				}
@@ -77,11 +84,15 @@ $(function(){
                        type: "POST",  
                        dataType: "json",  
                        url: "http://localhost:8080/hxzy/queryNameAndPhone.action",  
-                       data: "cvName=" + $(this).val() + "&phone=" ,  
+                       data: "stuName=" + $(this).val() + "&phone=" ,  
+                       beforeSend:function(XMLHttpRequest){
+                       },
                        success: function (data) {
                        		if(data != null && data.length > 0){
                        			readJsontotab(data);
                        		}
+                       },
+                       error:function(XMLHttpRequest,textStatus,errorThrown){
                        }
 				});
 			});

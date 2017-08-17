@@ -1,6 +1,7 @@
 package com.wisezone.controller.admin;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisezone.entity.CVInfo;
 import com.wisezone.entity.CVOtherInfo;
 import com.wisezone.service.impl.CVInfoServiceImpl;
 import com.wisezone.service.impl.CVOtherInfoServiceImpl;
+import com.wisezone.util.StringUtil;
 
 import net.sf.json.JSONObject;
 
@@ -49,10 +52,10 @@ public class CVInfoController {
 	@ResponseBody
 	public List<CVInfo> queryNameAndPhone(HttpServletRequest request,  
 	           HttpServletResponse respnose){
-		String name = request.getParameter("cvName");
+		String name = request.getParameter("stuName");
 		String phone = request.getParameter("phone");
 		Map<String, String> map = new HashMap<>();
-		map.put("cvname", name);
+		map.put("stuName", name);
 		map.put("phone", phone);
 		List<CVInfo> list = service.queryNameAndPhone(map);
 		return list;
@@ -60,9 +63,9 @@ public class CVInfoController {
 	
 	@RequestMapping(value="/validateNameAndPhone", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String validateNameAndPhone(String cvname,String phone){
+	public String validateNameAndPhone(String stuName,String phone){
 		Map<String, String> map = new HashMap<>();
-		map.put("cvname", cvname);
+		map.put("stuName", stuName);
 		map.put("phone", phone);
 		List<CVInfo> list = service.queryNameAndPhone(map);
 		
@@ -78,14 +81,28 @@ public class CVInfoController {
 		return null;
 	}
 	
-	@RequestMapping(value="/add")
+	@RequestMapping(value="/add",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String insert(@RequestBody Map<String, Object> cvinfo){
+	public String insert(@RequestBody Map map){
+		String dateStr = String.valueOf(map.get("createDate"));
+		CVInfo cvinfo = new CVInfo(
+		0,
+		String.valueOf(map.get("stuName")),
+		String.valueOf(map.get("phone")),
+		String.valueOf(map.get("sex")),
+		String.valueOf(map.get("school")),
+		String.valueOf(map.get("education")),
+		String.valueOf(map.get("major")),
+		String.valueOf(map.get("job")),
+		String.valueOf(map.get("msgFrom")),
+		String.valueOf(map.get("tdType")),
+		String.valueOf(map.get("intention")),
+		String.valueOf(map.get("details")),
+		StringUtil.convertStrToDate(dateStr)
+				);
+		boolean flag = service.insert(cvinfo);
+		String msg = "{\"state\":"+flag+"}";
+		return msg;
 		
-		//boolean flag = service.insert(cvinfo);
-		//String msg = "{state:"+flag+"}";
-		//return msg;
-		
-		return null;
 	}
 }

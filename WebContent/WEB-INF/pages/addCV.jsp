@@ -32,7 +32,7 @@
 <link
 	href="assets/bootstrapvalidator/bootstrapValidator.min.css"
 	rel="stylesheet">
-
+<link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
 <style>
 #editor {
 	max-height: 250px;
@@ -92,10 +92,10 @@ div[data-role="editor-toolbar"] {
 							<div class="panel-body">
 								<form class="form-horizontal required-validate" method="post" id="cvForm" action="#">
 									<div class="form-group">
-										<label for="cvname" class="col-sm-2 control-label">姓名</label>
+										<label for="stuName" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="cvname" wisezone="notEmpty remote(<%=basePath %>/validateNameAndPhone.action)"
-												name="cvname" placeholder="请输入姓名">
+											<input type="text" class="form-control" id="stuName" wisezone="notEmpty remote(<%=basePath %>/validateNameAndPhone.action)"
+												name="stuName" placeholder="请输入姓名">
 										</div>
 									</div>
 									<div class="form-group">
@@ -366,6 +366,7 @@ div[data-role="editor-toolbar"] {
 		src="assets/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
 	<!-- Custom Js -->
 	<!-- <script src="assets/js/custom-scripts.js"></script>  -->
+	<script src="assets/sweetalert/sweetalert.min.js"></script>
 	<script>
 		$(function() {
 			function initToolbarBootstrapBindings() {
@@ -432,7 +433,6 @@ div[data-role="editor-toolbar"] {
 				fileUploadError : showErrorAlert
 			});
 			window.prettyPrint && prettyPrint();
-			$('#editor').html("test");
 		});
 	</script>
 	<script>

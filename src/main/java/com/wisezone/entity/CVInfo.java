@@ -3,6 +3,8 @@ package com.wisezone.entity;
 import java.io.Serializable;
 import java.sql.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CVInfo implements Serializable {
 
 	/**
@@ -15,7 +17,7 @@ public class CVInfo implements Serializable {
   `phone` varchar(20) NOT NULL COMMENT '电话',
   `sex` char(2) NOT NULL COMMENT '性别',
   `school` varchar(50) DEFAULT NULL COMMENT '毕业院校',
-  `education` int(2) NOT NULL COMMENT '学历（1.研究生 2.本科 3.大专 4.高中 5.中专 9.未知）',
+  `education` int(2) NOT NULL COMMENT '学历（1.高中 2.中专 3.大专 4.本科 5.研究生 9.未知）',
   `major` varchar(50) DEFAULT NULL COMMENT '所学专业',
   `job` varchar(50) DEFAULT NULL COMMENT '应聘岗位',
   `msg_from` varchar(50) NOT NULL COMMENT '信息来源',
@@ -116,6 +118,25 @@ public class CVInfo implements Serializable {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	
+	public CVInfo(Integer tId, String stuName, String phone, String sex, String school, String education, String major,
+			String job, String msgFrom, String tdType, String intention, String details, Date createDate) {
+		super();
+		this.tId = tId;
+		this.stuName = stuName;
+		this.phone = phone;
+		this.sex = sex;
+		this.school = school;
+		this.education = education;
+		this.major = major;
+		this.job = job;
+		this.msgFrom = msgFrom;
+		this.tdType = tdType;
+		this.intention = intention;
+		this.details = details;
+		this.createDate = createDate;
+	}
+	public CVInfo() {
+		super();
+	}
 	
 }

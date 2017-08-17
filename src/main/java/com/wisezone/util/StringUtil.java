@@ -1,5 +1,8 @@
 package com.wisezone.util;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,5 +30,15 @@ public class StringUtil extends StringUtils {
 			str.append(d);			
 		}
 		return str.toString();	
+	}
+	
+	public static Date convertStrToDate(String dateStr) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			return new Date(sdf.parse(dateStr).getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
