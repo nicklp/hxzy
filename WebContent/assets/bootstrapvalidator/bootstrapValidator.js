@@ -46,7 +46,8 @@ if (typeof jQuery === 'undefined') {
         }());
 
         var el = document.createElement('div');
-        this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input';
+        //this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'input';
+        this._changeEvent = (ieVersion === 9 || !('oninput' in el)) ? 'keyup' : 'blur';
 
         // The flag to indicate that the form is ready to submit when a remote/callback validator returns
         this._submitIfValid = null;

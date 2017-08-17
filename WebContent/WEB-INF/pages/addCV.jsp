@@ -5,6 +5,9 @@
 	response.setHeader("Cache-Control", "no-store");
 	response.setHeader("Pragrma", "no-cache");
 	response.setDateHeader("Expires", 0);
+	
+	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -59,12 +62,6 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
 	cursor: pointer;
 }
-
-.validate_name_phone{
-	width:30px;
-	padding-right:2px;
-	color:red;
-}
 </style>
 <title>新增面试信息</title>
 </head>
@@ -97,23 +94,15 @@ div[data-role="editor-toolbar"] {
 									<div class="form-group">
 										<label for="cvname" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="cvname" wisezone="notEmpty"
+											<input type="text" class="form-control" id="cvname" wisezone="notEmpty remote(<%=basePath %>/validateNameAndPhone.action)"
 												name="cvname" placeholder="请输入姓名">
-										</div>
-										<div class="col-sm-1" style="display:none;">
-											<i class="fa icon-exclamation-sign validate_name_phone"></i>
-											<label class="control-label">有相同姓名</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="phone" class="col-sm-2 control-label">电话</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone"
+											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone  remote(<%=basePath %>/validateNameAndPhone.action)"
 												name="phone" placeholder="请输入电话">
-										</div>
-										<div class="col-sm-1" style="display:none;">
-											<i class="fa icon-exclamation-sign validate_name_phone"></i>
-											<label class="control-label">有重复号码</label>
 										</div>
 									</div>
 									<div class="form-group">
@@ -242,32 +231,7 @@ div[data-role="editor-toolbar"] {
 											<div class="panel panel-default">
 												<div class="panel-body">
 													<div class="table-responsive">
-														<table class="table table-hover">
-															<tr>
-																<td>李勇</td>
-																<td>12345678912</td>
-																<td>四川托普信息技术职业学院</td>
-																<td>计算机游戏开发</td>
-																<td>hrm联英人才网</td>
-																<td>2013-8-1</td>
-															</tr>
-															<tr>
-																<td>2</td>
-																<td>Jacob</td>
-																<td>Thornton</td>
-																<td>@fat</td>
-																<td>@fat</td>
-																<td>@fat</td>
-															</tr>
-															<tr>
-																<td>3</td>
-																<td>Larry</td>
-																<td>the Bird</td>
-																<td>@twitter</td>
-																<td>@twitter</td>
-																<td>@twitter</td>
-															</tr>
-														</table>
+														<table class="table table-hover name_validate"></table>
 													</div>
 												</div>
 											</div>
@@ -384,13 +348,11 @@ div[data-role="editor-toolbar"] {
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content"
-				style="background: rgba(255, 255, 255, 0); color: #fff;">
-				<i class="fa fa-cog fa-spin fa-4x"></i>
+			<div
+				style="background: rgba(255, 255, 255, 0); color: #fff;width:200px;position: relative;left:50%;margin-left:-100px;top:50%;">
+				<i class="fa fa-spinner fa-spin fa-4x"></i>
 			</div>
 			<!-- /.modal-content -->
-		</div>
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
@@ -484,69 +446,8 @@ div[data-role="editor-toolbar"] {
 			todayBtn : true //显示今日按钮
 		})
 	</script>
-	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.min.js"></script>
+	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.js"></script>
 	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/customervalidater.js"></script>
-	<script>
-		$(function(){
-			/* 加载时间选择插件 */  
-			$('#createDate').datetimepicker().on('changeDate', function(ev){
-				 $('#cvForm').data('bootstrapValidator')  
-		                .updateStatus('createDate', 'NOT_VALIDATED',null)  
-		                .validateField('createDate');  
-			});
-		          
-			$("#cvForm").submit(function(ev){
-				 ev.preventDefault();
-			});
-			
-			$(".btn-success").click(function(){
-				var flag = validate($("#cvForm"));
-				if(flag){
-					$("#details").val($('#editor').html());
-					var str = $("#cvForm").serialize();
-					
-					console.log($("#cvForm").serializeJson());
-				}
-			}); 
-			
-			$("#school_select,#msgFrom_select,#tdType_select").change(function(){
-				$(this).parents(".form-group").find("input").val($(this).find("option:selected").text());
-				var fieldName = $(this).parents(".form-group").find("input").attr("name");
-				if(fieldName != 'school'){
-					if($('#cvForm').data('bootstrapValidator')){
-						$('#cvForm').data('bootstrapValidator')  
-		                .updateStatus(fieldName, 'NOT_VALIDATED',null)  
-		                .validateField(fieldName);
-					} 
-				}
-			});
-			$("#cvname,#phone").blur(function(){
-				var cvName = $("#cvname").val();
-				var phone = $("#phone").val();
-				if(cvName == "" && phone == ""){
-					return;
-				}
-				$.ajax({
-                       type: "POST",  
-                       dataType: "json",  
-                       url: "http://localhost:8080/hxzy/queryNameAndPhone.action",  
-                       data: "cvName=" + cvName + "&phone="+phone  ,  
-                       success: function (data) {
-                       		
-                       }
-				});
-			});
-		});
-		/*将表单序列化成为json*/
-		(function($){  
-	        $.fn.serializeJson=function(){  
-	            var serializeObj={};  
-	            $(this.serializeArray()).each(function(){  
-	                serializeObj[this.name]=this.value;  
-	            });  
-	            return serializeObj;  
-	        };  
-	    })(jQuery);  
-	</script>
+	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/hxzy/js/addCV.js"></script>
 </body>
 </html>

@@ -1,5 +1,4 @@
 
-
 function validate(form) {
 
     var validateObj = {

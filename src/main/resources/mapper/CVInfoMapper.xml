@@ -38,11 +38,12 @@
 		<result column="cv_details" jdbcType="VARCHAR" property="details"/>
 		<result column="create_date" jdbcType="DATE" property="createDate"/>
 	</resultMap>
+	
 	<select id="queryNameAndPhone" parameterType="map" resultMap="cvInfo">
-		select * from cv_info 
+		select stu_name, phone,school,major,msg_from,create_date from cv_info 
 		<where>
-		    <if test="cvname=null and cvname!=''">
-		      stu_name=#{cvname}
+		    <if test="cvname!=null and cvname!=''">
+		      stu_name = #{cvname}
 		    </if>
 		    <if test="phone!=null and phone!=''">
 		      AND phone = #{phone}
