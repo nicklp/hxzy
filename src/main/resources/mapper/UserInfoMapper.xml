@@ -7,13 +7,13 @@
  
 
 	<resultMap id="BaseResultMap" type="com.wisezone.entity.UserInfo">
-		<id column="userId" jdbcType="INTEGER" property="userId" />
-		<result column="loginName" jdbcType="VARCHAR" property="loginName" />
-		<result column="loginPwd" jdbcType="VARCHAR" property="loginPwd" />
+		<id column="t_id" jdbcType="INTEGER" property="tId" />
+		<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+		<result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
+		<result column="create_time" jdbcType="DATE" property="createTime" />
+		<result column="last_login_time" jdbcType="DATE" property="lastLoginTime" />
 		<result column="state" jdbcType="INTEGER" property="state" />
-		<result column="regTime" jdbcType="DATE" property="regTime" />
-		<result column="endTime" jdbcType="DATE" property="endTime" />
-		 
+		<result column="role" jdbcType="INTEGER" property="role" />
 	</resultMap>
 	 
      <!-- 新增 
@@ -32,6 +32,14 @@
 			#{role,jdbcType=INTEGER}
 		)
   </insert>
+
+	<select id="login" parameterType="map" resultMap="BaseResultMap">
+		select 
+			t_id,loginName,createTime,lastLoginTime,state,role
+		from user_info 
+		where login_name = #{loginName} and login_pwd = #{loginPwd}
+		and state not in (2,3)
+	</select>
 
     <!--更新-->
     <!--  -->

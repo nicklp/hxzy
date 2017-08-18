@@ -5,12 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>weixin</display-name>
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>login.action</welcome-file>
 	</welcome-file-list>
 
    <!-- 1、加载全局的上下文参数(存放到application容器中) -->

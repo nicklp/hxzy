@@ -30,10 +30,7 @@ public class FirstController {
 		return "page";
 	}
 	
-	@RequestMapping(value="/login")
-	public String test2(Model model){
-		return "index";
-	}
+	
 	
 	
 	@RequestMapping(value = "/test3")

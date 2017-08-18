@@ -1,5 +1,7 @@
 package com.wisezone.service.impl;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +20,11 @@ public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 	public void setUserInfoMapper(UserInfoMapper userInfoMapper) {
 		this.mapper = userInfoMapper;
 		super.setCommonMapper(this.mapper);
+	}
+
+	@Override
+	public UserInfo login(Map<String, String> map) {
+		return mapper.login(map);
 	}
  
 
