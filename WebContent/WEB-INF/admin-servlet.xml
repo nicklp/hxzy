@@ -64,6 +64,12 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<mvc:interceptors>  
+        <mvc:interceptor>  
+            <mvc:mapping path="/*"/>  
+            <bean  class="com.wisezone.controller.admin.LoginInterceptor"></bean>  
+        </mvc:interceptor>  
+ 	</mvc:interceptors>
 
 	<!--4、文件上传解析 配置  -->
 	<bean id="multipartResolver"

@@ -41,4 +41,8 @@ public class StringUtil extends StringUtils {
 		}
 		return null;
 	}
+	
+	public static boolean isNullOrEmpty(String str){
+		return  null == str || str.equals("");
+	}
 }

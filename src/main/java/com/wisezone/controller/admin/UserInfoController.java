@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Scope;
@@ -24,7 +25,10 @@ public class UserInfoController {
 	private UserInfoService  service;
 	
 	@RequestMapping(value="/login")
-	public String login(Model model){
+	public String login(Model model,HttpServletRequest request,HttpSession session){
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		session.setAttribute("basePath", basePath);
 		return "login";
 	}
 	
@@ -35,14 +39,21 @@ public class UserInfoController {
 		map.put("loginName", loginName);
 		map.put("loginPwd", loginPwd);
 		UserInfo userinfo = service.login(map);
-		StringBuilder sb = new StringBuilder("{\"loginState\":");
+		StringBuilder sb = new StringBuilder("{\"state\":");
 		if (userinfo != null) {
 			session.setAttribute("userInfo", userinfo);
+			
 			sb.append(true);
 		}else{
 			sb.append(false);
 		}
 		sb.append("}");
 		return sb.toString();
+	}
+	
+	@RequestMapping(value="/loginOut")
+	public String loginOut(HttpSession session){
+		session.invalidate();
+		return "redirect:/login.action";
 	}
 }

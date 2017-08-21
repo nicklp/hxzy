@@ -35,7 +35,7 @@
 
 	<select id="login" parameterType="map" resultMap="BaseResultMap">
 		select 
-			t_id,loginName,createTime,lastLoginTime,state,role
+			t_id,login_name,create_time,last_login_time,state,role
 		from user_info 
 		where login_name = #{loginName} and login_pwd = #{loginPwd}
 		and state not in (2,3)

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +25,11 @@
 	<link href="assets/login/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link id="base-style" href="assets/login/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="assets/login/css/style-responsive.css" rel="stylesheet">
-	
+	<link rel="shortcut icon" href="assets/login/img/favicon.ico">
+	<link
+	href="assets/bootstrapvalidator/bootstrapValidator.min.css"
+	rel="stylesheet">
+	<link rel="stylesheet" href="assets/toastr/toastr.css">
 	<!-- end: CSS -->
 	
 
@@ -36,12 +44,12 @@
 	<![endif]-->
 		
 	<!-- start: Favicon -->
-	<link rel="shortcut icon" href="assets/login/img/favicon.ico">
+	
 	<!-- end: Favicon -->
 	
-			<style type="text/css">
+	<style type="text/css">
 			body { background: url(assets/login/img/bg-login.jpg) !important; }
-		</style>
+	</style>
 		
 		
 		
@@ -58,18 +66,17 @@
 						<a href="#"><i class="halflings-icon cog"></i></a>
 					</div>
 					<h2>Login to your account</h2>
-					<form class="form-horizontal" action="index.html" method="post">
+					<form class="form-horizontal" id="loginForm" method="post">
 						<fieldset>
-							
 							<div class="input-prepend" >
 								<span class="add-on"><i class="halflings-icon user"></i></span>
-								<input class="input-large span10" name="username" id="loginName" type="text" placeholder="用户名"/>
+								<input class="input-large span10" name="loginName" id="loginName" type="text" placeholder="用户名"/>
 							</div>
 							<div class="clearfix"></div>
 
 							<div class="input-prepend" >
 								<span class="add-on"><i class="halflings-icon lock"></i></span>
-								<input class="input-large span10" name="password" id="loginPwd" type="password" placeholder="密码"/>
+								<input class="input-large span10" name="loginPwd" id="loginPwd" type="password" placeholder="密码"/>
 							</div>
 							<div class="clearfix"></div>
 							
@@ -79,6 +86,7 @@
 								<button type="submit" class="btn btn-primary">登录</button>
 							</div>
 							<div class="clearfix"></div>
+						</fieldset>
 					</form>
 					<hr>
 					<!-- <h3><a href="#">找回密码</a> </h3> -->
@@ -156,6 +164,53 @@
 		<script src="assets/login/js/retina.js"></script>
 
 		<script src="assets/login/js/custom.js"></script>
+		<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.js"></script>
+		<script type="text/javascript" language="javascript" charset="utf-8" src="assets/toastr/toastr.js"></script>
+		<script>
+			$(function(){
+				toastr.options = {
+						  "closeButton": true,
+						  "debug": false,
+						  "positionClass": "toast-bottom-right",
+						  "onclick": null,
+						  "showDuration": "300",
+						  "hideDuration": "1000",
+						  "timeOut": "5000",
+						  "extendedTimeOut": "1000",
+						  "showEasing": "swing",
+						  "hideEasing": "linear",
+						  "showMethod": "fadeIn",
+						  "hideMethod": "fadeOut"
+						}
+				
+				$("#loginForm").submit(function(){
+					if($("#loginName").val() == '' || $("#loginPwd").val() == ''){
+						console.log("用户名或密码为空");
+						return false;
+					}
+					var data_str = $("#loginForm").serialize();
+					$.ajax({
+	                       type: "POST",  
+	                       dataType: "json",  
+	                       url: "<%=basePath%>dologin.action",  
+	                       data: data_str ,
+	                       success: function (data) {
+	                    	   if(data && data.state == true){
+	                    		   window.location.href="<%=basePath%>addCV.action";
+	                    	   }else{
+	                    		   toastr.error("用户名或密码错误!");
+	                    	   }
+	                    	   
+	                    	   $("#loginForm")[0].reset();
+	                       },
+	                       error:function(XMLHttpRequest,textStatus,errorThrown){
+	                    	 
+	                       }
+					});
+					return false;
+				});
+			});
+		</script>
 	<!-- end: JavaScript-->
 	
 </body>

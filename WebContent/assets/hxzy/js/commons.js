@@ -2,7 +2,7 @@
  * 
  */
 $(function(){
-	swal({ 
+	/*swal({ 
 	    title: "您确定要删除吗？", 
 	    text: "您确定要删除这条数据？", 
 	    type: "warning", 
@@ -14,5 +14,10 @@ $(function(){
 	    $.post(getUrl("Cart/del"), {id: id}, function(data) { 
 	        location.reload(); 
 	    }) 
+	});*/
+	
+	$(".loginOut").click(function(){
+		window.location.href=  "${sessionScope.basePath}loginOut.action";
+		
 	});
 });
