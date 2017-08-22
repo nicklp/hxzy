@@ -5,9 +5,6 @@
 	response.setHeader("Cache-Control", "no-store");
 	response.setHeader("Pragrma", "no-cache");
 	response.setDateHeader("Expires", 0);
-	
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -71,7 +68,7 @@ div[data-role="editor-toolbar"] {
 		<div id="page-wrapper">
 			<div class="header">
 				<h2 class="page-header">
-					新增面试信息 <small></small>
+					新增面试信息 <small>&nbsp;Add Resume</small>
 				</h2>
 				<!-- <ol class="breadcrumb">
 				  <li><a href="#">Home</a></li>
@@ -94,14 +91,14 @@ div[data-role="editor-toolbar"] {
 									<div class="form-group">
 										<label for="stuName" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="stuName" wisezone="notEmpty remote(<%=basePath %>/validateNameAndPhone.action)"
+											<input type="text" class="form-control" id="stuName" wisezone="notEmpty remote(${sessionScope.basePath}validateNameAndPhone.action)"
 												name="stuName" placeholder="请输入姓名">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="phone" class="col-sm-2 control-label">电话</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone  remote(<%=basePath %>/validateNameAndPhone.action)"
+											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone  remote(${sessionScope.basePath}validateNameAndPhone.action)"
 												name="phone" placeholder="请输入电话">
 										</div>
 									</div>

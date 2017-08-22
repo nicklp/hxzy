@@ -25,4 +25,7 @@ h4.hxzynav {
 	background: #575757 !important;
 	color: #F36A5A !important;
 }
+.page-header>small{
+	font-style: italic;
+}
 </style>

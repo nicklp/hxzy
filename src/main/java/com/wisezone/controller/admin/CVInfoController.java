@@ -103,6 +103,10 @@ public class CVInfoController {
 		boolean flag = service.insert(cvinfo);
 		String msg = "{\"state\":"+flag+"}";
 		return msg;
-		
+	}
+	
+	@RequestMapping(value="/cvInfo")
+	public String cvInfo(){
+		return "cvInfo";
 	}
 }

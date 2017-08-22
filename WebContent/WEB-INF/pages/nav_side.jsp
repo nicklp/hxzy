@@ -45,7 +45,7 @@
                                 <a href="#">业绩排名</a>
                             </li>
                             <li>
-                                <a href="#">简历信息</a>
+                                <a visit_action="cvInfo.action" href="${sessionScope.basePath}cvInfo.action">简历信息</a>
                             </li>
                             <li>
                                 <a href="#">简历来源统计</a>
@@ -62,7 +62,7 @@
                         <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> <h4 class="hxzynav">工作管理</h4><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a class="hxzy_nav_active" href="#">简历录入</a>
+                                <a visit_action="addCV.action" href="${sessionScope.basePath}addCV.action">简历录入</a>
                             </li>
                         </ul>
                     </li>
@@ -97,4 +97,15 @@
             </div>
 
         </nav>
+        <script>
+        	window.onload = function(){
+        		$(".loginOut").click(function(){
+        			window.location.href=  "${sessionScope.basePath}loginOut.action";
+        		});
+        		var visit_action = "${sessionScope.visit_action}";
+        		if(visit_action && visit_action != undefined && visit_action != "" ){
+        			$("a[visit_action='" + visit_action + "']").addClass("hxzy_nav_active");
+        		}
+        	}
+        </script>
         <!-- /. NAV SIDE  -->

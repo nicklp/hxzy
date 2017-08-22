@@ -70,13 +70,13 @@
 						<fieldset>
 							<div class="input-prepend" >
 								<span class="add-on"><i class="halflings-icon user"></i></span>
-								<input class="input-large span10" name="loginName" id="loginName" type="text" placeholder="用户名"/>
+								<input class="input-large span10" name="loginName" value="developer" id="loginName" type="text" placeholder="用户名"/>
 							</div>
 							<div class="clearfix"></div>
 
 							<div class="input-prepend" >
 								<span class="add-on"><i class="halflings-icon lock"></i></span>
-								<input class="input-large span10" name="loginPwd" id="loginPwd" type="password" placeholder="密码"/>
+								<input class="input-large span10" name="loginPwd" value="111111" id="loginPwd" type="password" placeholder="密码"/>
 							</div>
 							<div class="clearfix"></div>
 							
@@ -192,11 +192,11 @@
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
-	                       url: "<%=basePath%>dologin.action",  
+	                       url: "${sessionScope.basePath}dologin.action",  
 	                       data: data_str ,
 	                       success: function (data) {
 	                    	   if(data && data.state == true){
-	                    		   window.location.href="<%=basePath%>addCV.action";
+	                    		   window.location.href="${sessionScope.basePath}addCV.action";
 	                    	   }else{
 	                    		   toastr.error("用户名或密码错误!");
 	                    	   }

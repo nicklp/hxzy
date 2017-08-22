@@ -80,6 +80,7 @@ $(function(){
 				if($(this).val() == "" || $(this).val() == null){
 					return;
 				}
+				
 				$.ajax({
                        type: "POST",  
                        dataType: "json",  
@@ -88,8 +89,11 @@ $(function(){
                        beforeSend:function(XMLHttpRequest){
                        },
                        success: function (data) {
+                    	   $(".name_validate").html("");
                        		if(data != null && data.length > 0){
                        			readJsontotab(data);
+                       		}else{
+                       			console.log("没有重复姓名");
                        		}
                        },
                        error:function(XMLHttpRequest,textStatus,errorThrown){
@@ -107,7 +111,6 @@ $(function(){
 		});
 		 
 		function readJsontotab(jsonobj){
-			$(".name_validate").html("");
 			for(var item in jsonobj){
 				var tr_str = "\<tr>" + 
 				 "\<td>"+ jsonobj[item].stuName + 

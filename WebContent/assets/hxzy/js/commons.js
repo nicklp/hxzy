@@ -16,8 +16,5 @@ $(function(){
 	    }) 
 	});*/
 	
-	$(".loginOut").click(function(){
-		window.location.href=  "${sessionScope.basePath}loginOut.action";
-		
-	});
+	
 });
