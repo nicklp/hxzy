@@ -57,10 +57,26 @@
 							</div>
 							<div class="panel-body">
 								<!-- fill contents -->
-								<table id="cv_tab" data-toggle="table">
-									<thead>
+								<div class="panel-body">
+									 <div id="toolbar" class="btn-group">
+										 <button id="btn_edit" type="button" class="btn btn-default" >
+										 	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+										 </button>
+										 <button id="btn_delete" type="button" class="btn btn-default">
+										 	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+										 </button>
+									 </div>
+								 </div>
+								<table id="cv_tab" data-toggle="table"
+									data-toolbar="#toolbar"
+									data-pagination="true"
+									data-show-columns="true"
+									data-page-size="5"
+								>
+									<!-- <thead>
 										<tr>
-											<th data-align="center">姓名</th>
+											<th>操作</th>
+											<th>姓名</th>
 											<th>咨询顾问</th>
 											<th>录入日期</th>
 											<th>上门日期</th>
@@ -79,7 +95,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!-- <tr>
+										<tr>
 											<td>杨婷</td>
 											<td>黄颖</td>
 											<td>2017-08-02</td>
@@ -95,10 +111,10 @@
 											<td>多媒体</td>
 											<td>免费简历</td>
 											<td>重庆师范大学</td>
-											<td>XXXXX</td>-->
+											<td>XXXXX</td>
 										</tr>
 									</tbody>
-									<tfoot></tfoot> 
+									<tfoot></tfoot>  -->
 								</table>
 							</div>
 							<!-- end of panel body -->
@@ -149,12 +165,27 @@
 	</script>
 	<script>
 			$('#cv_tab').bootstrapTable({
-				idField:'id',
-				columns : [ {
-					field : 'id',
-					title : 'id',
-					visible : false
-				}, {
+				pagination: true,
+				method: 'post',
+				striped: true,   //是否显示行间隔色
+				uniqueId:"tId",
+				columns : [
+				{
+					field : 'ch',
+					title : '全选',
+					align:'center',
+					checkbox:true
+				}, 
+				{
+					field : 'tId',
+					title : '操作',
+					align:'center',
+					visible:false
+					/* formatter:function(value,row,index){ 
+						   return "<input type='checkbox' name='checkall' value='"+value+"' />"; 
+					}  */
+				},
+				{
 					field : 'stuName',
 					title : '姓名',
 					align:'center'
@@ -164,46 +195,60 @@
 					align:'center'
 				}, {
 					field : 'createDate',
-					title : '录入日期'
+					title : '录入日期',
+					align:'center'
 				}, {
 					field : 'visitDate',
-					title : '上门日期'
+					title : '上门日期',
+					align:'center'
 				}, {
 					field : 'prePayDate',
-					title : '预付费日期'
+					title : '预付费日期',
+					align:'center'
 				}, {
 					field : 'payDate',
-					title : '缴费日期'
+					title : '缴费日期',
+					align:'center'
 				}, {
 					field : 'payType',
-					title : '缴费类型'
+					title : '缴费类型',
+					align:'center'
 				}, {
 					field : 'pay',
-					title : '缴费金额'
+					title : '缴费金额',
+					align:'center'
 				}, {
 					field : 'major',
-					title : '专业'
+					title : '专业',
+					align:'center'
 				}, {
 					field : 'phone',
-					title : '电话'
+					title : '电话',
+					align:'center'
 				}, {
 					field : 'education',
-					title : '学历'
+					title : '学历',
+					align:'center'
 				}, {
 					field : 'job',
-					title : '应聘岗位'
+					title : '应聘岗位',
+					align:'center'
 				}, {
 					field : 'msgFrom',
-					title : '信息来源'
+					title : '信息来源',
+					align:'center'
 				}, {
 					field : 'school',
-					title : '毕业院校'
+					title : '毕业院校',
+					align:'center'
 				}, {
 					field : 'intention',
-					title : '意向度分析'
+					title : '意向度分析',
+					align:'center'
 				} ],
 				data : [ {
-					id : 1,
+					ch:0,
+					tId : 1,
 					stuName : '张三',
 					userName : '李四',
 					createDate : '2017-08-02',
@@ -219,10 +264,66 @@
 					msgFrom : '免费简历',
 					school : '重庆师范大学',
 					intention : '一般'
-				} ]
+				}, 
+				{
+					ch:0,
+					tId : 2,
+					stuName : '张三',
+					userName : '李四',
+					createDate : '2017-08-02',
+					visitDate : '2017-08-02',
+					prePayDate : '2017-08-02',
+					payDate : '2017-08-02',
+					payType : '一次性付费',
+					pay : '13888',
+					major : '市场营销',
+					phone : '12345678911',
+					education : '本科',
+					job : '软件开发',
+					msgFrom : '免费简历',
+					school : '重庆师范大学',
+					intention : '一般'
+				},
+				{
+					ch:1,
+					tId : 3,
+					stuName : '张三',
+					userName : '李四',
+					createDate : '2017-08-02',
+					visitDate : '2017-08-02',
+					prePayDate : '2017-08-02',
+					payDate : '2017-08-02',
+					payType : '一次性付费',
+					pay : '13888',
+					major : '市场营销',
+					phone : '12345678911',
+					education : '本科',
+					job : '软件开发',
+					msgFrom : '免费简历',
+					school : '重庆师范大学',
+					intention : '一般'
+				}
+				]
 			});
 			
 		$(function() {
+			 /* $('#cv_tab').on('click-row.bs.table', function (row, ele) {
+				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)[0]["tId"]));
+			});  */
+			 $('#cv_tab').on('dbl-click-row.bs.table', function (row, ele) {
+				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)['tId']));
+			}); 
+			
+			$("#btn_edit").click(function(){
+				//var id = $('#cv_tab').bootstrapTable('getSelections')["id"];
+				$("tbody tr input[type='checkbox']").each(function(index,item){
+					if($(this).prop("checked")){
+						var index = $(this).attr("data-index");
+						var data = $('#cv_tab').bootstrapTable("getData")[index];
+						console.log(data);
+					}
+				});
+			});
 		});
 	</script>
 </body>
