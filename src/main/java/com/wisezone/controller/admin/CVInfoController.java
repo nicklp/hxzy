@@ -25,6 +25,7 @@ import com.wisezone.service.impl.CVInfoServiceImpl;
 import com.wisezone.service.impl.CVOtherInfoServiceImpl;
 import com.wisezone.util.StringUtil;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
@@ -108,5 +109,11 @@ public class CVInfoController {
 	@RequestMapping(value="/cvInfo")
 	public String cvInfo(){
 		return "cvInfo";
+	}
+	
+	@RequestMapping(value="/queryCVInfo", produces = "application/json;charset=UTF-8")
+	public JSONArray queryCVInfo(@RequestBody Map map){
+		
+		return null;
 	}
 }

@@ -28,7 +28,15 @@
 <!-- <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" /> -->
 <link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
 <link rel="stylesheet" href="assets/bootstrap-table/bootstrap-table.css">
-
+<style>
+	.line_height_30{
+		line-height: 30px;
+	}
+	.padding_left_right_0{
+		padding-left: 0;
+		padding-right: 0;
+	}
+</style>
 <title>简历信息</title>
 </head>
 <body>
@@ -56,6 +64,63 @@
 								</div>
 							</div>
 							<div class="panel-body">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-3">
+											<div class="row">
+												<div class="col-md-offset-1 col-md-4 padding_left_right_0">
+													<select class="form-control" id="s_text">
+														<option>姓名</option>
+														<option>电话</option>
+														<option>咨询员</option>
+													</select>
+												</div>
+												<div class="col-md-6">
+													<input type="text" id="searchText" name="searchText"  class="form-control" placeholder="查询条件" />
+												</div>
+											</div>
+											
+										</div>
+										<div class="col-md-2">
+											<div class="row">
+												<div class="col-md-4 line_height_30"><label class="control-label" for="s_type">缴费类型</label></div>
+												<div class="col-md-7" style="padding-left:0;">
+													<select class="form-control" id="s_type">
+														<option>所有</option>
+														<option>缴费</option>
+														<option>预付费</option>
+														<option>退费</option>
+														<option>一次性付清</option>
+														<option>分期</option>
+														<option>宜信</option>
+														<option>信用卡</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="row">
+												<div class="col-md-3">
+													<select class="form-control" id="s_date">
+														<option>录入日期</option>
+														<option>上门日期</option>
+														<option>预报日期</option>
+														<option>缴费日期</option>
+													</select>
+												</div>
+												<div class="col-md-4 padding_left_right_0">
+													<input type="text" id="from_date" name="from_date"  class="form-control" readonly placeholder="起始时间" />
+												</div>
+												<div class="col-md-1 line_height_30">
+													至
+												</div>
+												<div class="col-md-4 padding_left_right_0">
+													<input type="text" id="to_date" name="to_date"  class="form-control" readonly placeholder="结束时间" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div><!-- end of panel body -->
 								<!-- fill contents -->
 								<div class="panel-body">
 									 <div id="toolbar" class="btn-group">
@@ -153,7 +218,16 @@
 	<script src="assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 	<script>
 		//初始化dateTimepicker
-		$('#createDate').datetimepicker({
+		$('#from_date').datetimepicker({
+			//language: 'zh-CN',//显示中文
+			format : 'yyyy-mm-dd',//显示格式
+			minView : "month",//设置只显示到月份
+			initialDate : new Date(),//初始化当前日期
+			autoclose : true,//选中自动关闭
+			todayBtn : true
+		//显示今日按钮
+		});
+		$('#to_date').datetimepicker({
 			//language: 'zh-CN',//显示中文
 			format : 'yyyy-mm-dd',//显示格式
 			minView : "month",//设置只显示到月份
@@ -167,8 +241,26 @@
 			$('#cv_tab').bootstrapTable({
 				pagination: true,
 				method: 'post',
-				striped: true,   //是否显示行间隔色
+				striped: false,   //是否显示行间隔色
 				uniqueId:"tId",
+				method:'post',
+				url:'${sessionScope.basePath}queryCVInfo.action',
+				cache:false,
+				sidePagination:'server',
+				pageNumber:1,
+				pageSize:20,
+				contentType: "application/x-www-form-urlencoded",
+				//设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder  
+	            //设置为limit可以获取limit, offset, search, sort, order  
+				queryParamsType : "",   
+	            queryParams: function queryParams(params) {   //设置查询参数  
+	              var param = {    
+	                  pageNumber: params.pageNumber,    
+	                  pageSize: params.pageSize, 
+	                  searchText:params.searchText
+	              };    
+	              return param;                   
+	            },
 				columns : [
 				{
 					field : 'ch',
@@ -245,7 +337,8 @@
 					field : 'intention',
 					title : '意向度分析',
 					align:'center'
-				} ],
+				} ]
+				/* ,
 				data : [ {
 					ch:0,
 					tId : 1,
@@ -303,7 +396,7 @@
 					school : '重庆师范大学',
 					intention : '一般'
 				}
-				]
+				] */
 			});
 			
 		$(function() {
