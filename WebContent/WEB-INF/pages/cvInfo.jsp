@@ -70,9 +70,9 @@
 											<div class="row">
 												<div class="col-md-offset-1 col-md-4 padding_left_right_0">
 													<select class="form-control" id="s_text">
-														<option>姓名</option>
-														<option>电话</option>
-														<option>咨询员</option>
+														<option value="1">姓名</option>
+														<option value="2">电话</option>
+														<option value="3">咨询员</option>
 													</select>
 												</div>
 												<div class="col-md-6">
@@ -83,17 +83,17 @@
 										</div>
 										<div class="col-md-2">
 											<div class="row">
-												<div class="col-md-4 line_height_30"><label class="control-label" for="s_type">缴费类型</label></div>
+												<div class="col-md-4 line_height_30"><label class="control-label" for="pay_type">缴费类型</label></div>
 												<div class="col-md-7" style="padding-left:0;">
-													<select class="form-control" id="s_type">
-														<option>所有</option>
-														<option>缴费</option>
-														<option>预付费</option>
-														<option>退费</option>
-														<option>一次性付清</option>
-														<option>分期</option>
-														<option>宜信</option>
-														<option>信用卡</option>
+													<select class="form-control" id="pay_type">
+														<option value="1">所有</option>
+														<option value="2">缴费</option>
+														<option value="3">预付费</option>
+														<option value="4">退费</option>
+														<option value="5">一次性付清</option>
+														<option value="6">分期</option>
+														<option value="7">宜信</option>
+														<option value="8">信用卡</option>
 													</select>
 												</div>
 											</div>
@@ -102,10 +102,10 @@
 											<div class="row">
 												<div class="col-md-3">
 													<select class="form-control" id="s_date">
-														<option>录入日期</option>
-														<option>上门日期</option>
-														<option>预报日期</option>
-														<option>缴费日期</option>
+														<option value="1">录入日期</option>
+														<option value="2">上门日期</option>
+														<option value="3">预报日期</option>
+														<option value="4">缴费日期</option>
 													</select>
 												</div>
 												<div class="col-md-4 padding_left_right_0">
@@ -118,6 +118,9 @@
 													<input type="text" id="to_date" name="to_date"  class="form-control" readonly placeholder="结束时间" />
 												</div>
 											</div>
+										</div>
+										<div class="col-md-3">
+											<button id="btn_search" class="btn btn-default">查询</button>
 										</div>
 									</div>
 								</div><!-- end of panel body -->
@@ -249,7 +252,8 @@
 				sidePagination:'server',
 				pageNumber:1,
 				pageSize:20,
-				contentType: "application/x-www-form-urlencoded",
+				//contentType: "application/x-www-form-urlencoded",
+				contentType: "application/json",
 				//设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder  
 	            //设置为limit可以获取limit, offset, search, sort, order  
 				queryParamsType : "",   
@@ -257,7 +261,12 @@
 	              var param = {    
 	                  pageNumber: params.pageNumber,    
 	                  pageSize: params.pageSize, 
-	                  searchText:params.searchText
+	                  s_text:$("#s_text").val(),
+	                  searchText:$("#searchText").val(),
+	                  pay_type:$("#pay_type").val(),
+	                  s_date:$("#s_date").val(),
+	                  from_date:$("#from_date").val(),
+	                  to_date:$("#to_date").val()
 	              };    
 	              return param;                   
 	            },
@@ -284,31 +293,73 @@
 				}, {
 					field : 'userName',
 					title : '咨询顾问',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'createDate',
 					title : '录入日期',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'visitDate',
 					title : '上门日期',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'prePayDate',
 					title : '预付费日期',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'payDate',
 					title : '缴费日期',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'payType',
 					title : '缴费类型',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'pay',
 					title : '缴费金额',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						if(value == undefined || value == ''){
+							return '-';
+						}
+						return value;
+					}
 				}, {
 					field : 'major',
 					title : '专业',

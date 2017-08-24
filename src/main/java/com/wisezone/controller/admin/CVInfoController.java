@@ -111,8 +111,9 @@ public class CVInfoController {
 		return "cvInfo";
 	}
 	
-	@RequestMapping(value="/queryCVInfo", produces = "application/json;charset=UTF-8")
-	public JSONArray queryCVInfo(@RequestBody Map map){
+	//int pageNumber,int pageSize,int s_text,String searchText,int pay_type,int s_date,String from_date,String to_date
+	@RequestMapping(value="/queryCVInfo")
+	public JSONArray queryCVInfo(@RequestBody JSONObject obj){
 		
 		return null;
 	}

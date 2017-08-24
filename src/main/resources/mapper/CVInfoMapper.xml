@@ -50,4 +50,61 @@
 			    </if>
 		   </where>
 	</select>
+	
+	<!--分页查询-->
+	<!-- 根据面试者姓名或者电话，录入日期查询的分页 -->
+	<sql id="_searchPaging">
+		<where>
+		 	<if test="param != null">
+		  		<if test="searchText != null and searchText != ''">
+		  			<if test="s_text == 1">
+			  			and t.stu_name = #{searchText}
+		  			</if>
+		  			<if test="s_text == 2">
+			  			and t.phone = #{searchText}
+		  			</if>
+		  		</if>
+		  		<if test="s_date == 1">
+		  			<if test="from_date != null and from_date != ''">
+		  				<![CDATA[ and t.create_date >= #{from_date}]]>
+		  			</if>
+		  			<if test="to_date != null and to_date != ''">
+		  				<![CDATA[ and t.create_date <= #{to_date}]]>
+		  			</if>
+		  		</if>
+			</if>
+		</where>
+	 </sql>
+   <select id="searchPaging"  resultType="map" parameterType="map">
+      select 
+		t.t_id tId,	
+		t.stu_name stuName,
+		(select t1.login_name from user_info t1 inner join user_cv_rel t2 on t1.t_id = t2.user_id where t2.stu_id = t.t_id) userName,
+	  	t.create_date createDate,
+		(select t1.visit_date from user_cv_rel t1 where t1.stu_id = t.t_id) visitDate,
+		(select t1.pre_pay_date from user_cv_rel t1 where t1.stu_id = t.t_id) prePayDate,
+		(select t1.pay_date from user_cv_rel t1 where t1.stu_id = t.t_id) payDate,
+		(select t1.pay_type from user_cv_rel t1 where t1.stu_id = t.t_id) payType,
+		(select t1.pay from user_cv_rel t1 where t1.stu_id = t.t_id) pay,
+		t.major,
+		t.phone,
+		t.education,
+		t.job,
+		t.msg_from msgFrom,
+		t.school,
+		t.intention
+	  from cv_info t
+	  <include refid="_searchPaging"></include>
+	  order by t.create_date desc
+      <!-- 分页 -->
+      limit #{offset}, #{limit}
+ </select>
+      
+ <!-- 分页查询 -->
+ <!-- 根据面试者姓名或者电话，录入日期查询的分页 -->
+ <select id="searchPagingCount"  resultType="int">
+      select count(*) from cv_info t
+	  <include refid="_searchPaging"></include>
+	  order by t.create_date desc
+ </select>
 </mapper>
