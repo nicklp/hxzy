@@ -53,29 +53,29 @@
 	
 	<!--分页查询-->
 	<!-- 根据面试者姓名或者电话，录入日期查询的分页 -->
-	<sql id="_searchPaging">
+	<sql id="_searchPaging1">
 		<where>
 		 	<if test="param != null">
-		  		<if test="searchText != null and searchText != ''">
-		  			<if test="s_text == 1">
-			  			and t.stu_name = #{searchText}
+		  		<if test="param.searchText != null and param.searchText != ''">
+		  			<if test="param.s_text == 1">
+			  			and t.stu_name = #{param.searchText}
 		  			</if>
-		  			<if test="s_text == 2">
-			  			and t.phone = #{searchText}
+		  			<if test="param.s_text == 2">
+			  			and t.phone = #{param.searchText}
 		  			</if>
 		  		</if>
-		  		<if test="s_date == 1">
-		  			<if test="from_date != null and from_date != ''">
-		  				<![CDATA[ and t.create_date >= #{from_date}]]>
+		  		<if test="param.s_date == 1">
+		  			<if test="param.from_date != null and param.from_date != ''">
+		  				<![CDATA[ and t.create_date >= #{param.from_date}]]>
 		  			</if>
-		  			<if test="to_date != null and to_date != ''">
-		  				<![CDATA[ and t.create_date <= #{to_date}]]>
+		  			<if test="param.to_date != null and param.to_date != ''">
+		  				<![CDATA[ and t.create_date <= #{param.to_date}]]>
 		  			</if>
 		  		</if>
 			</if>
 		</where>
 	 </sql>
-   <select id="searchPaging"  resultType="map" parameterType="map">
+   <select id="searchPaging1" resultType="map" parameterType="map">
       select 
 		t.t_id tId,	
 		t.stu_name stuName,
@@ -94,7 +94,7 @@
 		t.school,
 		t.intention
 	  from cv_info t
-	  <include refid="_searchPaging"></include>
+	  <include refid="_searchPaging1"></include>
 	  order by t.create_date desc
       <!-- 分页 -->
       limit #{offset}, #{limit}
@@ -102,9 +102,100 @@
       
  <!-- 分页查询 -->
  <!-- 根据面试者姓名或者电话，录入日期查询的分页 -->
- <select id="searchPagingCount"  resultType="int">
+ <select id="searchPagingCount1"  resultType="int">
       select count(*) from cv_info t
-	  <include refid="_searchPaging"></include>
+	  <include refid="_searchPaging1"></include>
 	  order by t.create_date desc
+ </select>
+ 
+ 
+ <sql id="_searchPaging2">
+		<where>
+		 	<if test="param != null">
+		  		<if test="param.searchText != null and param.searchText != ''">
+		  			<if test="param.s_text == 1">
+			  			and t1.stu_name = #{param.searchText}
+		  			</if>
+		  			<if test="param.s_text == 2">
+			  			and t1.phone = #{param.searchText}
+		  			</if>
+		  			<if test="param.s_text == 3">
+			  			and t3.login_name = #{param.searchText}
+		  			</if>
+		  		</if>
+		  		<if test="param.pay_type != 1">
+		  			and t2.pay_type = #{param.pay_type}
+		  		</if>
+		  		<if test="param.s_date == 1">
+		  			<if test="param.from_date != null and param.from_date != ''">
+		  				<![CDATA[ and t1.create_date >= #{param.from_date}]]>
+		  			</if>
+		  			<if test="param.to_date != null and param.to_date != ''">
+		  				<![CDATA[ and t1.create_date <= #{param.to_date}]]>
+		  			</if>
+		  		</if>
+		  		<if test="param.s_date == 2">
+		  			<if test="param.from_date != null and param.from_date != ''">
+		  				<![CDATA[ and t2.visit_date >= #{param.from_date}]]>
+		  			</if>
+		  			<if test="param.to_date != null and param.to_date != ''">
+		  				<![CDATA[ and t2.visit_date <= #{param.to_date}]]>
+		  			</if>
+		  		</if>
+		  		<if test="param.s_date == 3">
+		  			<if test="param.from_date != null and param.from_date != ''">
+		  				<![CDATA[ and t2.pre_pay_date >= #{param.from_date}]]>
+		  			</if>
+		  			<if test="param.to_date != null and param.to_date != ''">
+		  				<![CDATA[ and t2.pre_pay_date <= #{param.to_date}]]>
+		  			</if>
+		  		</if>
+		  		<if test="param.s_date == 3">
+		  			<if test="param.from_date != null and param.from_date != ''">
+		  				<![CDATA[ and t2.pay_date >= #{param.from_date}]]>
+		  			</if>
+		  			<if test="param.to_date != null and param.to_date != ''">
+		  				<![CDATA[ and t2.pay_date <= #{param.to_date}]]>
+		  			</if>
+		  		</if>
+			</if>
+		</where>
+	 </sql>
+ <select id="searchPaging2" resultType="map" parameterType="map">
+ 	select 
+		t1.t_id tId,	
+		t1.stu_name stuName,
+		t3.login_name userName,
+		t1.create_date createDate,
+		t2.visit_date visitDate,
+		t2.pre_pay_date prePayDate,
+		t2.pay_date payDate,
+		t2.pay_type payType,
+		t2.pay,
+		t1.major,
+		t1.phone,
+		t1.education,
+		t1.job,
+		t1.msg_from msgFrom,
+		t1.school,
+		t1.intention
+	from cv_info t1
+	inner join user_cv_rel t2
+	on t1.t_id = t2.stu_id
+	inner join user_info t3
+	on t3.t_id = t2.user_id
+	<include refid="_searchPaging2"></include>
+	order by t1.create_date DESC
+	<!-- 分页 -->
+      limit #{offset}, #{limit}
+ </select>
+  <select id="searchPagingCount2"  resultType="int">
+      select count(*) from cv_info t1
+		inner join user_cv_rel t2
+		on t1.t_id = t2.stu_id
+		inner join user_info t3
+		on t3.t_id = t2.user_id
+	  <include refid="_searchPaging2"></include>
+	  order by t1.create_date desc
  </select>
 </mapper>

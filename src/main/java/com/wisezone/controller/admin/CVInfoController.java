@@ -23,6 +23,7 @@ import com.wisezone.entity.CVInfo;
 import com.wisezone.entity.CVOtherInfo;
 import com.wisezone.service.impl.CVInfoServiceImpl;
 import com.wisezone.service.impl.CVOtherInfoServiceImpl;
+import com.wisezone.util.PageUtil;
 import com.wisezone.util.StringUtil;
 
 import net.sf.json.JSONArray;
@@ -113,8 +114,33 @@ public class CVInfoController {
 	
 	//int pageNumber,int pageSize,int s_text,String searchText,int pay_type,int s_date,String from_date,String to_date
 	@RequestMapping(value="/queryCVInfo")
-	public JSONArray queryCVInfo(@RequestBody JSONObject obj){
+	@ResponseBody
+	public String queryCVInfo(@RequestBody JSONObject obj){
+		PageUtil<Map<String, Object>> paging = new PageUtil<>();
+		paging.setPage(obj.getInt("pageNumber"));
+		paging.setSize(obj.getInt("pageSize"));
+		Map<String, Object> param = new HashMap<>();
+		param.put("s_text", obj.getInt("s_text"));
+		param.put("searchText", obj.getString("searchText"));
+		param.put("s_date", obj.getInt("s_date"));
+		param.put("from_date", obj.getString("from_date"));
+		param.put("to_date", obj.getString("to_date"));
+		if (obj.getInt("s_text") == 3 && obj.getString("searchText") != null && !obj.getString("searchText").equals("") || obj.getInt("pay_type") != 1 || obj.getInt("s_date") != 1) {
+			param.put("pay_type", obj.getInt("pay_type"));
+			service.searchPaging2(param, paging);
+		}else{
+			service.searchPaging1(param, paging);
+		}
 		
+		Map<String, Object> jsonMap = new HashMap<>();
+		jsonMap.put("total", paging.getTotalRecords());
+		jsonMap.put("rows", paging.getData());
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(jsonMap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

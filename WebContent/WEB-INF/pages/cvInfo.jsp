@@ -133,9 +133,10 @@
 										 <button id="btn_delete" type="button" class="btn btn-default">
 										 	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
 										 </button>
+										 <a href="javascript:void(0);" id="str_date">2017-08-25</a>
 									 </div>
 								 </div>
-								<table id="cv_tab" data-toggle="table"
+								<table id="cv_tab" data-toggle="table" class="table table-bordered table-hover table-striped "
 									data-toolbar="#toolbar"
 									data-pagination="true"
 									data-show-columns="true"
@@ -221,7 +222,7 @@
 	<script src="assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 	<script>
 		//初始化dateTimepicker
-		$('#from_date').datetimepicker({
+		$('#to_date,#from_date').datetimepicker({
 			//language: 'zh-CN',//显示中文
 			format : 'yyyy-mm-dd',//显示格式
 			minView : "month",//设置只显示到月份
@@ -229,8 +230,8 @@
 			autoclose : true,//选中自动关闭
 			todayBtn : true
 		//显示今日按钮
-		});
-		$('#to_date').datetimepicker({
+		})
+		$('#str_date').datetimepicker({
 			//language: 'zh-CN',//显示中文
 			format : 'yyyy-mm-dd',//显示格式
 			minView : "month",//设置只显示到月份
@@ -241,9 +242,12 @@
 		})
 	</script>
 	<script>
+		function fn_initTab(){
+			//先销毁表格  
+	        $('#cv_tab').bootstrapTable('destroy');
 			$('#cv_tab').bootstrapTable({
-				pagination: true,
-				method: 'post',
+				method: 'get',
+				showRefresh:true,
 				striped: false,   //是否显示行间隔色
 				uniqueId:"tId",
 				method:'post',
@@ -251,9 +255,12 @@
 				cache:false,
 				sidePagination:'server',
 				pageNumber:1,
+				pagination: true,
 				pageSize:20,
+				pageList: [5, 10, 15, 20, 25],  //记录数可选列表 
 				//contentType: "application/x-www-form-urlencoded",
-				contentType: "application/json",
+				contentType: 'application/json',
+				dataType:'json',
 				//设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder  
 	            //设置为limit可以获取limit, offset, search, sort, order  
 				queryParamsType : "",   
@@ -270,6 +277,12 @@
 	              };    
 	              return param;                   
 	            },
+	            onLoadSuccess: function(){  //加载成功时执行  
+	            	console.log("加载成功");	
+	            },  
+	            onLoadError: function(){  //加载失败时执行  
+	            	console.log("加载失败");	
+	            },  
 				columns : [
 				{
 					field : 'ch',
@@ -281,7 +294,8 @@
 					field : 'tId',
 					title : '操作',
 					align:'center',
-					visible:false
+					visible:false,
+					switchable:false
 					/* formatter:function(value,row,index){ 
 						   return "<input type='checkbox' name='checkall' value='"+value+"' />"; 
 					}  */
@@ -289,31 +303,40 @@
 				{
 					field : 'stuName',
 					title : '姓名',
-					align:'center'
+					align:'center',
+					width:'5%'
 				}, {
 					field : 'userName',
 					title : '咨询顾问',
 					align:'center',
+					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
-						}
+							return "<select class='askTeacher'><option>张三</option><option>李四</option><option>吊炸天</option></select>";
+						} 
 						return value;
 					}
 				}, {
 					field : 'createDate',
 					title : '录入日期',
 					align:'center',
+					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return '-';
+						}else{
+							if(row["userName"] && row["userName"] != undefined && row["userName"] != ""){
+								return "<a href='javascript:void(0);'>"+value+"</a>"
+							}else{
+								return value;
+							}
 						}
-						return value;
 					}
 				}, {
 					field : 'visitDate',
 					title : '上门日期',
 					align:'center',
+					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return '-';
@@ -324,6 +347,7 @@
 					field : 'prePayDate',
 					title : '预付费日期',
 					align:'center',
+					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return '-';
@@ -334,6 +358,7 @@
 					field : 'payDate',
 					title : '缴费日期',
 					align:'center',
+					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return '-';
@@ -344,16 +369,37 @@
 					field : 'payType',
 					title : '缴费类型',
 					align:'center',
+					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return '-';
+						}else{
+							switch(value){
+							/*
+							1.缴费 2.预付费 3.退费 4.一次性付清 5.分期 6.宜信 7.信用卡
+							*/
+							case 1:
+								return '缴费';
+							case 2:
+								return '预付费';
+							case 3:
+								return '退费';
+							case 4:
+								return '一次性付清';
+							case 5:
+								return '分期';
+							case 6:
+								return '宜信';
+							case 7:
+								return '信用卡';
+							}
 						}
-						return value;
 					}
 				}, {
 					field : 'pay',
 					title : '缴费金额',
 					align:'center',
+					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return '-';
@@ -363,7 +409,8 @@
 				}, {
 					field : 'major',
 					title : '专业',
-					align:'center'
+					align:'center',
+					width:'8%'
 				}, {
 					field : 'phone',
 					title : '电话',
@@ -371,11 +418,28 @@
 				}, {
 					field : 'education',
 					title : '学历',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						switch(value){
+						case 1:
+							return '高中';
+						case 2:
+							return '中专';
+						case 3:
+							return '大专';
+						case 4:
+							return '本科';
+						case 5:
+							return '研究生';
+						case 6:
+							return '未知';
+						}
+					}
 				}, {
 					field : 'job',
 					title : '应聘岗位',
-					align:'center'
+					align:'center',
+					width:'10%'
 				}, {
 					field : 'msgFrom',
 					title : '信息来源',
@@ -387,75 +451,19 @@
 				}, {
 					field : 'intention',
 					title : '意向度分析',
-					align:'center'
+					align:'center',
+					width:'15%'
 				} ]
-				/* ,
-				data : [ {
-					ch:0,
-					tId : 1,
-					stuName : '张三',
-					userName : '李四',
-					createDate : '2017-08-02',
-					visitDate : '2017-08-02',
-					prePayDate : '2017-08-02',
-					payDate : '2017-08-02',
-					payType : '一次性付费',
-					pay : '13888',
-					major : '市场营销',
-					phone : '12345678911',
-					education : '本科',
-					job : '软件开发',
-					msgFrom : '免费简历',
-					school : '重庆师范大学',
-					intention : '一般'
-				}, 
-				{
-					ch:0,
-					tId : 2,
-					stuName : '张三',
-					userName : '李四',
-					createDate : '2017-08-02',
-					visitDate : '2017-08-02',
-					prePayDate : '2017-08-02',
-					payDate : '2017-08-02',
-					payType : '一次性付费',
-					pay : '13888',
-					major : '市场营销',
-					phone : '12345678911',
-					education : '本科',
-					job : '软件开发',
-					msgFrom : '免费简历',
-					school : '重庆师范大学',
-					intention : '一般'
-				},
-				{
-					ch:1,
-					tId : 3,
-					stuName : '张三',
-					userName : '李四',
-					createDate : '2017-08-02',
-					visitDate : '2017-08-02',
-					prePayDate : '2017-08-02',
-					payDate : '2017-08-02',
-					payType : '一次性付费',
-					pay : '13888',
-					major : '市场营销',
-					phone : '12345678911',
-					education : '本科',
-					job : '软件开发',
-					msgFrom : '免费简历',
-					school : '重庆师范大学',
-					intention : '一般'
-				}
-				] */
 			});
+		}
 			
 		$(function() {
+			fn_initTab();
 			 /* $('#cv_tab').on('click-row.bs.table', function (row, ele) {
 				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)[0]["tId"]));
 			});  */
 			 $('#cv_tab').on('dbl-click-row.bs.table', function (row, ele) {
-				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)['tId']));
+				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)[0]['tId']).tId);
 			}); 
 			
 			$("#btn_edit").click(function(){
@@ -466,6 +474,52 @@
 						var data = $('#cv_tab').bootstrapTable("getData")[index];
 						console.log(data);
 					}
+				});
+			});
+			$("#btn_delete").click(function(){
+				var arr = $('#cv_tab').bootstrapTable('getSelections');
+				var ids = {};
+				for(var obj in arr){
+					ids[obj] = arr[obj].tId;
+				}
+				console.log(ids);
+			});
+			$("#btn_search").on("click", function(){
+				//fn_initTab();
+				$("#cv_tab").bootstrapTable('refresh',{
+					url:'${sessionScope.basePath}queryCVInfo.action',
+					queryParams: function queryParams(params) {   //设置查询参数  
+			              var param = {    
+			                  pageNumber: params.pageNumber,    
+			                  pageSize: params.pageSize, 
+			                  s_text:$("#s_text").val(),
+			                  searchText:$("#searchText").val(),
+			                  pay_type:$("#pay_type").val(),
+			                  s_date:$("#s_date").val(),
+			                  from_date:$("#from_date").val(),
+			                  to_date:$("#to_date").val()
+			              };    
+			              return param;                   
+			            }
+					}); 
+			});
+			$(".askTeacher").on("change",function(){
+				console.log(123);
+			});
+			$("#cv_tab").on("click","a",function(){
+				$(this).datetimepicker({
+					//language: 'zh-CN',//显示中文
+					format : 'yyyy-mm-dd',//显示格式
+					minView : "month",//设置只显示到月份
+					initialDate : new Date(),//初始化当前日期
+					autoclose : true,//选中自动关闭
+					todayBtn : true
+				//显示今日按钮
+				});
+				$(this).datetimepicker('show');
+				$(this).datetimepicker().on('changeDate', function(ev){
+					var date_str = $(this).datetimepicker("getFormattedDate");
+					console.log(date_str);
 				});
 			});
 		});
