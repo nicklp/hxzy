@@ -5,6 +5,66 @@
 <!-- namespace 这个xml的里面所有的操作，都是要对这个 Mapper 接口进行定义 -->
 <mapper namespace="com.wisezone.mapper.UserCVRelMapper">
  
-
+	<insert id="insert" parameterType="com.wisezone.entity.UserCVRel" useGeneratedKeys="true" keyProperty="tId">
+		insert into user_cv_rel 
+		(
+			user_id,
+			stu_id
+			<if test="visitDate != null">
+			,visit_date
+			</if>
+			<if test="prePayDate != null">
+			,pre_pay_date
+			</if>
+			<if test="payDate != null">
+			,pay_date
+			</if>
+			<if test="payType != null">
+			,pay_type
+			</if>
+			<if test="pay != null">
+			,pay
+			</if>
+		) values (
+			#{userInfo.tId},
+			#{cvInfo.tId}
+			<if test="visitDate != null">
+			,#{visitDate}
+			</if>
+			<if test="prePayDate != null">
+			,#{prePayDate}
+			</if>
+			<if test="payDate != null">
+			,#{payDate}
+			</if>
+			<if test="payType != null">
+			,#{payType}
+			</if>
+			<if test="pay != null">
+			,#{pay}
+			</if>
+		)
+	</insert>
   
+  	<update id="update" parameterType="com.wisezone.entity.UserCVRel">
+  		update user_cv_rel set 
+  		user_id = #{userInfo.tId},
+  		stu_id = #{cvInfo.tId}
+  		<if test="visitDate != null">
+		,visit_date = #{visitDate}
+		</if>
+		<if test="prePayDate != null">
+		,pre_pay_date = #{prePayDate}
+		</if>
+		<if test="payDate != null">
+		,pay_date = #{payDate}
+		</if>
+		<if test="payType != null">
+		,pay_type = #{payType}
+		</if>
+		<if test="pay != null">
+		,pay = #{pay}
+		</if>
+		where t_id = #{tId}
+  	</update>
 </mapper>  

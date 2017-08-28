@@ -3,6 +3,7 @@ package com.wisezone.controller.admin;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import com.wisezone.service.impl.CVOtherInfoServiceImpl;
 import com.wisezone.util.PageUtil;
 import com.wisezone.util.StringUtil;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -140,6 +142,23 @@ public class CVInfoController {
 			return mapper.writeValueAsString(jsonMap);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		return null;
+	}
+	@RequestMapping(value="saveData")
+	@ResponseBody
+	public String saveData(@RequestBody JSONObject json) {
+		Iterator it = json.keys();
+		while (it.hasNext()) {
+			String key = (String) it.next();
+			JSONObject obj = (JSONObject) json.get(key);
+			if (String.valueOf(obj.get("relId")).equals("0")) {
+				//TODO 新增
+				System.out.println("新增");
+			}else {
+				//TODO 修改
+				System.out.println("修改");
+			}
 		}
 		return null;
 	}

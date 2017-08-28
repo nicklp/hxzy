@@ -185,7 +185,6 @@
 				
 				$("#loginForm").submit(function(){
 					if($("#loginName").val() == '' || $("#loginPwd").val() == ''){
-						console.log("用户名或密码为空");
 						return false;
 					}
 					var data_str = $("#loginForm").serialize();

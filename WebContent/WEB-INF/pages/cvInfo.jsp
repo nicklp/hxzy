@@ -28,6 +28,7 @@
 <!-- <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet" /> -->
 <link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
 <link rel="stylesheet" href="assets/bootstrap-table/bootstrap-table.css">
+<link rel="stylesheet" href="assets/toastr/toastr.css">
 <style>
 	.line_height_30{
 		line-height: 30px;
@@ -135,13 +136,15 @@
 										 </button>
 									 </div>
 								 </div>
-								<table id="cv_tab" data-toggle="table" class="table table-bordered table-hover table-striped "
-									data-toolbar="#toolbar"
-									data-pagination="true"
-									data-show-columns="true"
-									data-page-size="5"
-								>
-								</table>
+								 <div class="table-responsive">
+									<table id="cv_tab" data-toggle="table" class="table table-bordered table-hover table-striped "
+										data-toolbar="#toolbar"
+										data-pagination="true"
+										data-show-columns="true"
+										data-page-size="5"
+									>
+									</table>
+								 </div>
 							</div>
 							<!-- end of panel body -->
 						</div>
@@ -179,7 +182,22 @@
 	<script src="assets/sweetalert/sweetalert.min.js"></script>
 	<script src="assets/bootstrap-table/bootstrap-table.js"></script>
 	<script src="assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/toastr/toastr.js"></script>
 	<script>
+		toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "positionClass": "toast-bottom-right",
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
 		//初始化dateTimepicker
 		$('#to_date,#from_date').datetimepicker({
 			language: 'zh-CN',//显示中文
@@ -337,7 +355,7 @@
 					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return "<a class='payType' href='javascript:void(0);'>添加</a>"
+							return "<a class='payType' href='javascript:void(0);'>添加</a>";
 						}else{
 							switch(value){
 							/*
@@ -367,7 +385,7 @@
 					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
+							return "<a class='pay' href='javascript:void(0);'>添加</a>";
 						}
 						return value;
 					}
@@ -412,12 +430,13 @@
 				}, {
 					field : 'school',
 					title : '毕业院校',
-					align:'center'
+					align:'center',
+					width:'10%'
 				}, {
 					field : 'intention',
 					title : '意向度分析',
 					align:'center',
-					width:'15%'
+					width:'20%'
 				} ]
 			});
 		}
@@ -432,14 +451,36 @@
 			}); 
 			
 			$("#btn_edit").click(function(){
-				//var id = $('#cv_tab').bootstrapTable('getSelections')["id"];
-				$("tbody tr input[type='checkbox']").each(function(index,item){
-					if($(this).prop("checked")){
-						var index = $(this).attr("data-index");
-						var data = $('#cv_tab').bootstrapTable("getData")[index];
-						console.log(data);
+				if(JSON.stringify(submit_data) != "{}"){
+					var reg = /^[0-9]+(.[0-9]{2})?$/;
+					for(var item in submit_data){
+						if(submit_data[item].userId == "0"){
+							swal("请选择咨询顾问!", "", "error"); 
+							return;
+						}
+						if(submit_data[item].pay){
+							if(!reg.test(submit_data[item].pay)){
+								swal("输入的金额不合法", "", "error"); 
+								return;
+							}
+						}
 					}
-				});
+					console.log("验证通过");//TODO 提交数据
+					$.ajax({
+	                       type: "POST",  
+	                       dataType: "json",  
+	                       url: "${sessionScope.basePath}saveData.action",  
+	                       contentType: "application/json; charset=utf-8",
+	                       data: JSON.stringify(submit_data) ,  
+	                       beforeSend:function(XMLHttpRequest){
+	                       },
+	                       success: function (data) {
+	                    	   toastr.success("提交成功!");
+	                       },
+	                       error:function(XMLHttpRequest,textStatus,errorThrown){
+	                       }
+					});
+				}
 			});
 			$("#btn_delete").click(function(){
 				var arr = $('#cv_tab').bootstrapTable('getSelections');
@@ -486,20 +527,20 @@
 					var col = $(this).attr("data-row-col");
 					var relId = $(this).attr("relid");
 					var data = $('#cv_tab').bootstrapTable("getData")[index];
-					if(submit_data['\"'+index+'\"'] == null){
+					if(submit_data[index] == null){
 						obj = {};
-						obj['\"'+col+'\"'] = date_str;
-						submit_data['\"'+index+'\"'] = obj;
+						obj[col] = date_str;
+						submit_data[index] = obj;
 					}else{
-						submit_data['\"'+index+'\"']['\"'+col+'\"'] = date_str;
+						submit_data[index][col] = date_str;
 					} 
 					if(relId != "undefined"){
-						submit_data['\"'+index+'\"']['\"relId\"'] = relId;
+						submit_data[index]['relId'] = relId;
 					}else{
-						submit_data['\"'+index+'\"']['\"relId\"'] = "0";
+						submit_data[index]['relId'] = "0";
 					}
-					submit_data['\"'+index+'\"']['\"userId\"'] = data["userId"] == undefined?0:data["userId"];
-					submit_data['\"'+index+'\"']['\"stuId\"'] = data["tId"];
+					submit_data[index]['userId'] = submit_data[index]['userId'] == undefined?"0":submit_data[index]['userId'];
+					submit_data[index]['stuId'] = data["tId"];
 					console.log(submit_data);
 				});
 			});
@@ -512,15 +553,15 @@
 			$("#cv_tab").on("change",".askTeacher",function(){
 				var index = $(this).parents("tr").index();
 				var data = $('#cv_tab').bootstrapTable("getData")[index];
-				if(submit_data['\"'+index+'\"'] == null){
+				if(submit_data[index] == null){
 					obj = {};
-					obj['\"userId\"'] = $(this).val();
-					submit_data['\"'+index+'\"'] = obj;
+					obj['userId'] = $(this).val();
+					submit_data[index] = obj;
 				}else{
-					submit_data['\"'+index+'\"']['\"userId\"'] = $(this).val();
+					submit_data[index]['userId'] = $(this).val();
 				}
-				submit_data['\"'+index+'\"']['\"stuId\"'] = data["tId"];
-				submit_data['\"'+index+'\"']['\"relId\"'] = data["relId"] == undefined?0:data["relId"];
+				submit_data[index]['stuId'] = data["tId"];
+				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
 				console.log(submit_data);
 			});
 			
@@ -534,19 +575,41 @@
 				var index = $(this).parents("tr").index();
 				var data = $('#cv_tab').bootstrapTable("getData")[index];
 				
-				if(submit_data['\"'+index+'\"'] == null){
+				if(submit_data[index] == null){
 					obj = {};
-					obj['\"payType\"'] = $(this).val();
-					submit_data['\"'+index+'\"'] = obj;
+					obj['payType'] = $(this).val();
+					submit_data[index] = obj;
 				}else{
-					submit_data['\"'+index+'\"']['\"payType\"'] = $(this).val();
+					submit_data[index]['payType'] = $(this).val();
 				} 
-				submit_data['\"'+index+'\"']['\"stuId\"'] = data["tId"];
-				submit_data['\"'+index+'\"']['\"userId\"'] = data["userId"] == undefined?0:data["userId"];
-				submit_data['\"'+index+'\"']['\"relId\"'] = data["relId"] == undefined?0:data["relId"];
+				submit_data[index]['stuId'] = data["tId"];
+				submit_data[index]['userId'] = submit_data[index]['userId'] == undefined?"0":submit_data[index]['userId'];
+				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
 				console.log(submit_data);
 			});
 			
+			$("#cv_tab").on("click",".pay",function(){
+				var _tr = $(this).parent();
+				$(this).remove();	//移除缴费类型文本
+				_tr.append("<input type='text' name='_pay' style='width:100%;text-align:center;'/>");
+			});
+			
+			$("#cv_tab").on("blur","input[name='_pay']",function(){
+				var index = $(this).parents("tr").index();
+				var data = $('#cv_tab').bootstrapTable("getData")[index];
+				
+				if(submit_data[index] == null){
+					obj = {};
+					obj['pay'] = $(this).val();
+					submit_data[index] = obj;
+				}else{
+					submit_data[index]['pay'] = $(this).val();
+				} 
+				submit_data[index]['userId'] = submit_data[index]['userId'] == undefined?"0":submit_data[index]['userId'];
+				submit_data[index]['stuId'] = data["tId"];
+				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
+				console.log(submit_data);
+			});
 			
 		});
 	</script>
