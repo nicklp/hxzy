@@ -128,12 +128,11 @@
 								<div class="panel-body">
 									 <div id="toolbar" class="btn-group">
 										 <button id="btn_edit" type="button" class="btn btn-default" >
-										 	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+										 	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>保存更改
 										 </button>
 										 <button id="btn_delete" type="button" class="btn btn-default">
 										 	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
 										 </button>
-										 <a href="javascript:void(0);" id="str_date">2017-08-25</a>
 									 </div>
 								 </div>
 								<table id="cv_tab" data-toggle="table" class="table table-bordered table-hover table-striped "
@@ -142,48 +141,6 @@
 									data-show-columns="true"
 									data-page-size="5"
 								>
-									<!-- <thead>
-										<tr>
-											<th>操作</th>
-											<th>姓名</th>
-											<th>咨询顾问</th>
-											<th>录入日期</th>
-											<th>上门日期</th>
-											<th>预报日期</th>
-											<th>预报金额</th>
-											<th>缴费日期</th>
-											<th>缴费类型</th>
-											<th>缴费金额</th>
-											<th>专业</th>
-											<th>电话</th>
-											<th>学历</th>
-											<th>应聘岗位</th>
-											<th>信息来源</th>
-											<th>毕业院校</th>
-											<th>意向度分析</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>杨婷</td>
-											<td>黄颖</td>
-											<td>2017-08-02</td>
-											<td>2017-08-02</td>
-											<td>添加</td>
-											<td>添加</td>
-											<td>添加</td>
-											<td>请选择</td>
-											<td>添加</td>
-											<td>会记与统筹</td>
-											<td>12345678911</td>
-											<td>本科</td>
-											<td>多媒体</td>
-											<td>免费简历</td>
-											<td>重庆师范大学</td>
-											<td>XXXXX</td>
-										</tr>
-									</tbody>
-									<tfoot></tfoot>  -->
 								</table>
 							</div>
 							<!-- end of panel body -->
@@ -216,32 +173,28 @@
 	<!-- /.modal -->
 	<%@include file="commonScripts.jsp"%>
 	<script
-		src="assets/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+		src="assets/bootstrap-datepicker/js/bootstrap-datetimepicker.js"></script>
+	<script
+		src="assets/bootstrap-datepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script src="assets/sweetalert/sweetalert.min.js"></script>
 	<script src="assets/bootstrap-table/bootstrap-table.js"></script>
 	<script src="assets/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 	<script>
 		//初始化dateTimepicker
 		$('#to_date,#from_date').datetimepicker({
-			//language: 'zh-CN',//显示中文
+			language: 'zh-CN',//显示中文
 			format : 'yyyy-mm-dd',//显示格式
 			minView : "month",//设置只显示到月份
 			initialDate : new Date(),//初始化当前日期
 			autoclose : true,//选中自动关闭
-			todayBtn : true
+			todayBtn : true,
+			clearBtn:true
 		//显示今日按钮
-		})
-		$('#str_date').datetimepicker({
-			//language: 'zh-CN',//显示中文
-			format : 'yyyy-mm-dd',//显示格式
-			minView : "month",//设置只显示到月份
-			initialDate : new Date(),//初始化当前日期
-			autoclose : true,//选中自动关闭
-			todayBtn : true
-		//显示今日按钮
-		})
+		});
 	</script>
 	<script>
+		var submit_data = {};
+		var obj = {};
 		function fn_initTab(){
 			//先销毁表格  
 	        $('#cv_tab').bootstrapTable('destroy');
@@ -281,7 +234,8 @@
 	            	console.log("加载成功");	
 	            },  
 	            onLoadError: function(){  //加载失败时执行  
-	            	console.log("加载失败");	
+	            	console.log("加载失败,请刷新页面重试");
+	            	window.location.reload();
 	            },  
 				columns : [
 				{
@@ -295,10 +249,21 @@
 					title : '操作',
 					align:'center',
 					visible:false,
-					switchable:false
-					/* formatter:function(value,row,index){ 
-						   return "<input type='checkbox' name='checkall' value='"+value+"' />"; 
-					}  */
+					switchable:false	/*列表中不显示列*/
+				},
+				{
+					field : 'relId',
+					title : '关系',
+					align:'center',
+					visible:false,
+					switchable:false	/*列表中不显示列*/
+				},
+				{
+					field : 'userId',
+					title : '关系',
+					align:'center',
+					visible:false,
+					switchable:false	/*列表中不显示列*/
 				},
 				{
 					field : 'stuName',
@@ -312,9 +277,10 @@
 					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return "<select class='askTeacher'><option>张三</option><option>李四</option><option>吊炸天</option></select>";
-						} 
-						return value;
+							//return "<select class='askTeacher'><option value='1'>张三</option><option value='2'>李四</option><option value='3'>吊炸天</option></select>";
+							return "<a class='userName'>添加</a>"
+						}
+						return "<a href='javascript:void(0);' class='userName'>"+value+"</a>";
 					}
 				}, {
 					field : 'createDate',
@@ -323,13 +289,9 @@
 					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='createDate'>添加</a>"
 						}else{
-							if(row["userName"] && row["userName"] != undefined && row["userName"] != ""){
-								return "<a href='javascript:void(0);'>"+value+"</a>"
-							}else{
-								return value;
-							}
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='createDate'>"+value+"</a>"
 						}
 					}
 				}, {
@@ -339,9 +301,10 @@
 					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='visitDate'>添加</a>"
+						}else{
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='visitDate'>"+value+"</a>"
 						}
-						return value;
 					}
 				}, {
 					field : 'prePayDate',
@@ -350,9 +313,10 @@
 					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='prePayDate'>添加</a>"
+						}else{
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='prePayDate'>"+value+"</a>"
 						}
-						return value;
 					}
 				}, {
 					field : 'payDate',
@@ -361,9 +325,10 @@
 					width:'7%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='payDate'>添加</a>"
+						}else{
+							return "<a class='dataDate' href='javascript:void(0);' data-row-index='"+index+"' relId='"+row.relId+"' data-row-col='payDate'>"+value+"</a>"
 						}
-						return value;
 					}
 				}, {
 					field : 'payType',
@@ -372,26 +337,26 @@
 					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							return '-';
+							return "<a class='payType' href='javascript:void(0);'>添加</a>"
 						}else{
 							switch(value){
 							/*
 							1.缴费 2.预付费 3.退费 4.一次性付清 5.分期 6.宜信 7.信用卡
 							*/
 							case 1:
-								return '缴费';
+								return '<a href="javascript:void(0);" class="payType">缴费</a>';
 							case 2:
-								return '预付费';
+								return '<a href="javascript:void(0);" class="payType">预付费</a>';
 							case 3:
-								return '退费';
+								return '<a href="javascript:void(0);" class="payType">退费</a>';
 							case 4:
-								return '一次性付清';
+								return '<a href="javascript:void(0);" class="payType">一次性付清</a>';
 							case 5:
-								return '分期';
+								return '<a href="javascript:void(0);" class="payType">分期</a>';
 							case 6:
-								return '宜信';
+								return '<a href="javascript:void(0);" class="payType">宜信</a>';
 							case 7:
-								return '信用卡';
+								return '<a href="javascript:void(0);" class="payType">信用卡</a>';
 							}
 						}
 					}
@@ -503,12 +468,9 @@
 			            }
 					}); 
 			});
-			$(".askTeacher").on("change",function(){
-				console.log(123);
-			});
-			$("#cv_tab").on("click","a",function(){
+			$("#cv_tab").on("click",".dataDate",function(){
 				$(this).datetimepicker({
-					//language: 'zh-CN',//显示中文
+					language: 'zh-CN',//显示中文
 					format : 'yyyy-mm-dd',//显示格式
 					minView : "month",//设置只显示到月份
 					initialDate : new Date(),//初始化当前日期
@@ -519,9 +481,73 @@
 				$(this).datetimepicker('show');
 				$(this).datetimepicker().on('changeDate', function(ev){
 					var date_str = $(this).datetimepicker("getFormattedDate");
-					console.log(date_str);
+					$(this).text(date_str);
+					var index = $(this).attr("data-row-index");
+					var col = $(this).attr("data-row-col");
+					var relId = $(this).attr("relid");
+					var data = $('#cv_tab').bootstrapTable("getData")[index];
+					if(submit_data['\"'+index+'\"'] == null){
+						obj = {};
+						obj['\"'+col+'\"'] = date_str;
+						submit_data['\"'+index+'\"'] = obj;
+					}else{
+						submit_data['\"'+index+'\"']['\"'+col+'\"'] = date_str;
+					} 
+					if(relId != "undefined"){
+						submit_data['\"'+index+'\"']['\"relId\"'] = relId;
+					}else{
+						submit_data['\"'+index+'\"']['\"relId\"'] = "0";
+					}
+					submit_data['\"'+index+'\"']['\"userId\"'] = data["userId"] == undefined?0:data["userId"];
+					submit_data['\"'+index+'\"']['\"stuId\"'] = data["tId"];
+					console.log(submit_data);
 				});
 			});
+			$("#cv_tab").on("click",".userName",function(){
+				var _tr = $(this).parent();
+				$(this).remove();
+				_tr.append("<select class='askTeacher'><option value='-1'>请选择</option><option value='1'>张三</option><option value='2'>李四</option><option value='3'>吊炸天</option></select>");
+			});
+			
+			$("#cv_tab").on("change",".askTeacher",function(){
+				var index = $(this).parents("tr").index();
+				var data = $('#cv_tab').bootstrapTable("getData")[index];
+				if(submit_data['\"'+index+'\"'] == null){
+					obj = {};
+					obj['\"userId\"'] = $(this).val();
+					submit_data['\"'+index+'\"'] = obj;
+				}else{
+					submit_data['\"'+index+'\"']['\"userId\"'] = $(this).val();
+				}
+				submit_data['\"'+index+'\"']['\"stuId\"'] = data["tId"];
+				submit_data['\"'+index+'\"']['\"relId\"'] = data["relId"] == undefined?0:data["relId"];
+				console.log(submit_data);
+			});
+			
+			$("#cv_tab").on("click",".payType",function(){
+				var _tr = $(this).parent();
+				$(this).remove();	//移除缴费类型文本
+				_tr.append("<select class='sel_payType'><option value='-1'>请选择</option><option value='1'>缴费</option><option value='2'>预付费</option><option value='3'>退费</option><option value='4'>一次性付清</option><option value='5'>分期</option><option value='6'>宜信</option><option value='7'>信用卡</option></select>");
+			});
+			
+			$("#cv_tab").on("change",".sel_payType",function(){
+				var index = $(this).parents("tr").index();
+				var data = $('#cv_tab').bootstrapTable("getData")[index];
+				
+				if(submit_data['\"'+index+'\"'] == null){
+					obj = {};
+					obj['\"payType\"'] = $(this).val();
+					submit_data['\"'+index+'\"'] = obj;
+				}else{
+					submit_data['\"'+index+'\"']['\"payType\"'] = $(this).val();
+				} 
+				submit_data['\"'+index+'\"']['\"stuId\"'] = data["tId"];
+				submit_data['\"'+index+'\"']['\"userId\"'] = data["userId"] == undefined?0:data["userId"];
+				submit_data['\"'+index+'\"']['\"relId\"'] = data["relId"] == undefined?0:data["relId"];
+				console.log(submit_data);
+			});
+			
+			
 		});
 	</script>
 </body>

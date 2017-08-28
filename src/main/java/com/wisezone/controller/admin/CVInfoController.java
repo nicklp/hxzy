@@ -127,9 +127,9 @@ public class CVInfoController {
 		param.put("to_date", obj.getString("to_date"));
 		if (obj.getInt("s_text") == 3 && obj.getString("searchText") != null && !obj.getString("searchText").equals("") || obj.getInt("pay_type") != 1 || obj.getInt("s_date") != 1) {
 			param.put("pay_type", obj.getInt("pay_type"));
-			service.searchPaging2(param, paging);
+			service.searchPaging2(param, paging);	//业务逻辑层
 		}else{
-			service.searchPaging1(param, paging);
+			service.searchPaging1(param, paging);	//业务逻辑层
 		}
 		
 		Map<String, Object> jsonMap = new HashMap<>();

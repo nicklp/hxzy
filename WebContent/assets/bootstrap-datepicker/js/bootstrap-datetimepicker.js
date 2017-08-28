@@ -1963,5 +1963,4 @@
   $(function () {
     $('[data-provide="datetimepicker-inline"]').datetimepicker();
   });
-
 }));
