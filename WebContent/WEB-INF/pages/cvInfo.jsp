@@ -61,11 +61,35 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<div class="card-title">
-									<div class="title"></div>
+									<div class="title">
+									</div>
 								</div>
 							</div>
 							<div class="panel-body">
 								<div class="panel-body">
+									<div class="row" style="padding-bottom:20px;">
+											<div class="col-md-2">
+												<label class="control-label">上门人数：<span>10086</span></label>
+											</div>
+											<div class="col-md-2">
+												<label class="control-label">付费人数：<span>10086</span></label>
+											</div>
+											<div class="col-md-2">
+												<label class="control-label">退费人数：<span>10086</span></label>
+											</div>
+											<div class="col-md-2">
+												<label class="control-label">一次性付清：<span>10086</span></label>
+											</div>
+											<div class="col-md-1">
+												<label class="control-label">分期：<span>10086</span></label>
+											</div>
+											<div class="col-md-1">
+												<label class="control-label">宜信：<span>10086</span></label>
+											</div>
+											<div class="col-md-1">
+												<label class="control-label">信用卡：<span>10086</span></label>
+											</div>
+										</div>
 									<div class="row">
 										<div class="col-md-3">
 											<div class="row">
@@ -465,21 +489,28 @@
 							}
 						}
 					}
+					var params = submit_data;
+					submit_data = {};
 					console.log("验证通过");//TODO 提交数据
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
 	                       url: "${sessionScope.basePath}saveData.action",  
 	                       contentType: "application/json; charset=utf-8",
-	                       data: JSON.stringify(submit_data) ,  
+	                       data: JSON.stringify(params) ,  
 	                       beforeSend:function(XMLHttpRequest){
 	                       },
 	                       success: function (data) {
-	                    	   toastr.success("提交成功!");
+	                    	   refreshTab();//刷新表格
+	                    	   console.log(data);
+	                    	   //toastr.success("操作成功!");
 	                       },
 	                       error:function(XMLHttpRequest,textStatus,errorThrown){
+	                    	   refreshTab();//刷新表格
+	                    	   toastr.error("发生未知错误");
 	                       }
 					});
+					
 				}
 			});
 			$("#btn_delete").click(function(){
@@ -491,23 +522,7 @@
 				console.log(ids);
 			});
 			$("#btn_search").on("click", function(){
-				//fn_initTab();
-				$("#cv_tab").bootstrapTable('refresh',{
-					url:'${sessionScope.basePath}queryCVInfo.action',
-					queryParams: function queryParams(params) {   //设置查询参数  
-			              var param = {    
-			                  pageNumber: params.pageNumber,    
-			                  pageSize: params.pageSize, 
-			                  s_text:$("#s_text").val(),
-			                  searchText:$("#searchText").val(),
-			                  pay_type:$("#pay_type").val(),
-			                  s_date:$("#s_date").val(),
-			                  from_date:$("#from_date").val(),
-			                  to_date:$("#to_date").val()
-			              };    
-			              return param;                   
-			            }
-					}); 
+				refreshTab();//刷新表格
 			});
 			$("#cv_tab").on("click",".dataDate",function(){
 				$(this).datetimepicker({
@@ -612,6 +627,25 @@
 			});
 			
 		});
+		
+		function refreshTab(){
+			$("#cv_tab").bootstrapTable('refresh',{
+				url:'${sessionScope.basePath}queryCVInfo.action',
+				queryParams: function queryParams(params) {   //设置查询参数  
+		              var param = {    
+		                  pageNumber: params.pageNumber,    
+		                  pageSize: params.pageSize, 
+		                  s_text:$("#s_text").val(),
+		                  searchText:$("#searchText").val(),
+		                  pay_type:$("#pay_type").val(),
+		                  s_date:$("#s_date").val(),
+		                  from_date:$("#from_date").val(),
+		                  to_date:$("#to_date").val()
+		              };    
+		              return param;                   
+		            }
+				}); 
+		}
 	</script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.wisezone.controller.admin;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,13 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisezone.entity.CVInfo;
 import com.wisezone.entity.CVOtherInfo;
-import com.wisezone.service.impl.CVInfoServiceImpl;
-import com.wisezone.service.impl.CVOtherInfoServiceImpl;
+import com.wisezone.service.CVInfoService;
+import com.wisezone.service.CVOtherInfoService;
 import com.wisezone.util.PageUtil;
 import com.wisezone.util.StringUtil;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
@@ -38,10 +35,13 @@ import net.sf.json.JSONObject;
 public class CVInfoController {
 	
 	@Resource(name="CVInfoServiceImpl")
-	private CVInfoServiceImpl service;
+	private CVInfoService service;
 
 	@Resource(name="CVOtherInfoServiceImpl")
-	private CVOtherInfoServiceImpl otherService;
+	private CVOtherInfoService otherService;
+	
+	/*@Resource(name="UserRelServiceImpl")
+	private UserRelServiceImpl userRelService;*/
 	
 	@RequestMapping(value="/addCV")
 	public String addCVInfo(Model model) {
@@ -149,17 +149,31 @@ public class CVInfoController {
 	@ResponseBody
 	public String saveData(@RequestBody JSONObject json) {
 		Iterator it = json.keys();
+		boolean isSuccess = true;
 		while (it.hasNext()) {
 			String key = (String) it.next();
 			JSONObject obj = (JSONObject) json.get(key);
-			if (String.valueOf(obj.get("relId")).equals("0")) {
-				//TODO 新增
-				System.out.println("新增");
-			}else {
-				//TODO 修改
-				System.out.println("修改");
+			
+			/*抽取json中的键值到Map中*/
+			Iterator keys = obj.keys();
+			Map map = new HashMap<>();
+			while (keys.hasNext()) {
+				String obj_key = (String) keys.next();
+				map.put(obj_key, obj.get(obj_key));
+			}
+			if (String.valueOf(map.get("relId")).equals("0")) {
+				//isSuccess = userCvRelService.insert(map);	//新增
+			}else {	
+				//isSuccess = userCvRelService.update(map);	//修改
+			}
+			
+			if (!isSuccess) {
+				break;
 			}
 		}
-		return null;
+		JSONObject msg = new JSONObject();
+		msg.put("state", isSuccess);
+		return msg.toString();
 	}
+	
 }

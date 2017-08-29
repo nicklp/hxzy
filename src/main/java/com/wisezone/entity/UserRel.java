@@ -3,7 +3,7 @@ package com.wisezone.entity;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class UserCVRel implements Serializable {
+public class UserRel implements Serializable {
 
 	/**
 	 * 

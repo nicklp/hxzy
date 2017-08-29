@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.wisezone.entity.CVInfo;
-import com.wisezone.util.PageUtil;
 
 public interface CVInfoMapper extends CommonMapper<CVInfo> {
 	public List<CVInfo> queryNameAndPhone(Map<String, String> map);

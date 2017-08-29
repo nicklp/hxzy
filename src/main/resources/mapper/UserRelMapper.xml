@@ -3,9 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace 这个xml的里面所有的操作，都是要对这个 Mapper 接口进行定义 -->
-<mapper namespace="com.wisezone.mapper.UserCVRelMapper">
+<mapper namespace="com.wisezone.mapper.UserRelMapper">
  
-	<insert id="insert" parameterType="com.wisezone.entity.UserCVRel" useGeneratedKeys="true" keyProperty="tId">
+	<insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="tId">
 		insert into user_cv_rel 
 		(
 			user_id,
@@ -26,8 +26,8 @@
 			,pay
 			</if>
 		) values (
-			#{userInfo.tId},
-			#{cvInfo.tId}
+			#{userId},
+			#{stuId}
 			<if test="visitDate != null">
 			,#{visitDate}
 			</if>
@@ -46,10 +46,10 @@
 		)
 	</insert>
   
-  	<update id="update" parameterType="com.wisezone.entity.UserCVRel">
+  	<update id="update" parameterType="map">
   		update user_cv_rel set 
-  		user_id = #{userInfo.tId},
-  		stu_id = #{cvInfo.tId}
+  		user_id = #{userId},
+  		stu_id = #{stuId}
   		<if test="visitDate != null">
 		,visit_date = #{visitDate}
 		</if>
@@ -67,4 +67,16 @@
 		</if>
 		where t_id = #{tId}
   	</update>
+  	
+  	<select id="getStatistics" resultType="map">
+  		select 
+		(select count(*) from user_cv_rel t where t.visit_date is not null) visitCount,
+		(select count(*) from user_cv_rel t where t.pay is not null) payCount,
+		(select count(*) from user_cv_rel t where t.pay_type = 3) leaveCount,
+		(select count(*) from user_cv_rel t where t.pay_type = 4) payOneTime,
+		(select count(*) from user_cv_rel t where t.pay_type = 5) instalmentCount,
+		(select count(*) from user_cv_rel t where t.pay_type = 6) yxCount,
+		(select count(*) from user_cv_rel t where t.pay_type = 7) creditCount
+		  		
+  	</select>
 </mapper>  
