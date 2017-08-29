@@ -23,6 +23,7 @@ import com.wisezone.entity.CVInfo;
 import com.wisezone.entity.CVOtherInfo;
 import com.wisezone.service.CVInfoService;
 import com.wisezone.service.CVOtherInfoService;
+import com.wisezone.service.UserRelService;
 import com.wisezone.util.PageUtil;
 import com.wisezone.util.StringUtil;
 
@@ -40,8 +41,8 @@ public class CVInfoController {
 	@Resource(name="CVOtherInfoServiceImpl")
 	private CVOtherInfoService otherService;
 	
-	/*@Resource(name="UserRelServiceImpl")
-	private UserRelServiceImpl userRelService;*/
+	@Resource(name="UserRelServiceImpl")
+	private UserRelService userRelService;
 	
 	@RequestMapping(value="/addCV")
 	public String addCVInfo(Model model) {
