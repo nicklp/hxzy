@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,13 +36,13 @@ import net.sf.json.JSONObject;
 @RequestMapping(value="/")
 public class CVInfoController {
 	
-	@Resource(name="CVInfoServiceImpl")
+	 @Resource(name="CVInfoServiceImpl")
 	private CVInfoService service;
 
-	@Resource(name="CVOtherInfoServiceImpl")
+	 @Resource(name="CVOtherInfoServiceImpl")
 	private CVOtherInfoService otherService;
 	
-	@Resource(name="UserRelServiceImpl")
+	@Resource(name="userRelServiceImpl")
 	private UserRelService userRelService;
 	
 	@RequestMapping(value="/addCV")

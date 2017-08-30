@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wisezone.entity.UserInfo;
@@ -16,7 +17,7 @@ public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 
 	private UserInfoMapper mapper;
 
-	@Resource(name = "userInfoMapper")
+	@Resource(name="userInfoMapper")
 	public void setUserInfoMapper(UserInfoMapper userInfoMapper) {
 		this.mapper = userInfoMapper;
 		super.setCommonMapper(this.mapper);
