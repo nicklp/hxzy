@@ -64,7 +64,13 @@
   <select id="userLogin" parameterType="com.wisezone.entity.UserInfo" resultMap="doLogin">
   	select * from user_info
   </select>
- 
+  <select id="getUserInfo" resultMap="doLogin">
+  	select * from user_info t where t.state = 1 
+  	<![CDATA[
+  		and t.role != 9
+  	]]>
+  </select>	
+	 
   <!--分页查询-->
    <select id="searchPaging"  resultMap="BaseResultMap">
       select *

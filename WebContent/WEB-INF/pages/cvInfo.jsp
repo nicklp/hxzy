@@ -69,25 +69,25 @@
 								<div class="panel-body">
 									<div class="row" style="padding-bottom:20px;">
 											<div class="col-md-2">
-												<label class="control-label">上门人数：<span>10086</span></label>
+												<label class="control-label">上门人数：<span>${map.visitCount}</span></label>
 											</div>
 											<div class="col-md-2">
-												<label class="control-label">付费人数：<span>10086</span></label>
+												<label class="control-label">付费人数：<span>${map.payCount}</span></label>
 											</div>
 											<div class="col-md-2">
-												<label class="control-label">退费人数：<span>10086</span></label>
+												<label class="control-label">退费人数：<span>${map.leaveCount}</span></label>
 											</div>
 											<div class="col-md-2">
-												<label class="control-label">一次性付清：<span>10086</span></label>
+												<label class="control-label">一次性付清：<span>${map.payOneTime}</span></label>
 											</div>
 											<div class="col-md-1">
-												<label class="control-label">分期：<span>10086</span></label>
+												<label class="control-label">分期：<span>${map.instalmentCount}</span></label>
 											</div>
 											<div class="col-md-1">
-												<label class="control-label">宜信：<span>10086</span></label>
+												<label class="control-label">宜信：<span>${map.yxCount}</span></label>
 											</div>
 											<div class="col-md-1">
-												<label class="control-label">信用卡：<span>10086</span></label>
+												<label class="control-label">信用卡：<span>${map.creditCount}</span></label>
 											</div>
 										</div>
 									<div class="row">
@@ -319,7 +319,6 @@
 					width:'5%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
-							//return "<select class='askTeacher'><option value='1'>张三</option><option value='2'>李四</option><option value='3'>吊炸天</option></select>";
 							return "<a class='userName'>添加</a>"
 						}
 						return "<a href='javascript:void(0);' class='userName'>"+value+"</a>";
@@ -376,7 +375,7 @@
 					field : 'payType',
 					title : '缴费类型',
 					align:'center',
-					width:'5%',
+					width:'8%',
 					formatter:function(value,row,index){
 						if(value == undefined || value == ''){
 							return "<a class='payType' href='javascript:void(0);'>添加</a>";
@@ -411,7 +410,7 @@
 						if(value == undefined || value == ''){
 							return "<a class='pay' href='javascript:void(0);'>添加</a>";
 						}
-						return value;
+						return "<a class='pay' href='javascript:void(0);'>" + value + "</a>";
 					}
 				}, {
 					field : 'major',
@@ -478,7 +477,7 @@
 				if(JSON.stringify(submit_data) != "{}"){
 					var reg = /^[0-9]+(.[0-9]{2})?$/;
 					for(var item in submit_data){
-						if(submit_data[item].userId == "0"){
+						if(submit_data[item].userId == "0" || submit_data[item].userId == -1){
 							swal("请选择咨询顾问!", "", "error"); 
 							return;
 						}
@@ -502,8 +501,12 @@
 	                       },
 	                       success: function (data) {
 	                    	   refreshTab();//刷新表格
-	                    	   console.log(data);
-	                    	   //toastr.success("操作成功!");
+	                    	   if(data && data.state){
+	                    		 toastr.success("操作成功!");
+	                    	   }else{
+	                    		 toastr.error("操作失败!");
+	                    	   }
+	                    	   
 	                       },
 	                       error:function(XMLHttpRequest,textStatus,errorThrown){
 	                    	   refreshTab();//刷新表格
@@ -562,7 +565,7 @@
 			$("#cv_tab").on("click",".userName",function(){
 				var _tr = $(this).parent();
 				$(this).remove();
-				_tr.append("<select class='askTeacher'><option value='-1'>请选择</option><option value='1'>张三</option><option value='2'>李四</option><option value='3'>吊炸天</option></select>");
+				_tr.append("${userList}");
 			});
 			
 			$("#cv_tab").on("change",".askTeacher",function(){
@@ -598,7 +601,15 @@
 					submit_data[index]['payType'] = $(this).val();
 				} 
 				submit_data[index]['stuId'] = data["tId"];
-				submit_data[index]['userId'] = submit_data[index]['userId'] == undefined?"0":submit_data[index]['userId'];
+				if (data['userId'] == undefined && submit_data[index]['userId'] == undefined) {
+					submit_data[index]['userId'] = "0";
+				}else{
+					if(data['userId'] != undefined){
+						submit_data[index]['userId'] = data['userId'];
+					}else{
+						submit_data[index]['userId'] = submit_data[index]['userId'];
+					}
+				}
 				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
 				console.log(submit_data);
 			});
@@ -620,7 +631,15 @@
 				}else{
 					submit_data[index]['pay'] = $(this).val();
 				} 
-				submit_data[index]['userId'] = submit_data[index]['userId'] == undefined?"0":submit_data[index]['userId'];
+				if (data['userId'] == undefined && submit_data[index]['userId'] == undefined) {
+					submit_data[index]['userId'] = "0";
+				}else{
+					if(data['userId'] != undefined){
+						submit_data[index]['userId'] = data['userId'];
+					}else{
+						submit_data[index]['userId'] = submit_data[index]['userId'];
+					}
+				}
 				submit_data[index]['stuId'] = data["tId"];
 				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
 				console.log(submit_data);

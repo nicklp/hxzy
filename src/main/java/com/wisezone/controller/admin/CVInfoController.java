@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisezone.entity.CVInfo;
 import com.wisezone.entity.CVOtherInfo;
+import com.wisezone.entity.UserInfo;
 import com.wisezone.service.CVInfoService;
 import com.wisezone.service.CVOtherInfoService;
+import com.wisezone.service.UserInfoService;
 import com.wisezone.service.UserRelService;
 import com.wisezone.util.PageUtil;
 import com.wisezone.util.StringUtil;
@@ -44,6 +46,9 @@ public class CVInfoController {
 	
 	@Resource(name="userRelServiceImpl")
 	private UserRelService userRelService;
+	
+	@Resource(name="userInfoServiceImpl")
+	private UserInfoService userInfoService;
 	
 	@RequestMapping(value="/addCV")
 	public String addCVInfo(Model model) {
@@ -112,7 +117,18 @@ public class CVInfoController {
 	}
 	
 	@RequestMapping(value="/cvInfo")
-	public String cvInfo(){
+	public String cvInfo(Model model){
+		Map<String, Integer> statistics = userRelService.getStatistics();
+		model.addAttribute("map", statistics);
+		
+		List<UserInfo> list = userInfoService.getUserInfo();
+		StringBuilder sb = new StringBuilder("<select class='askTeacher'><option value='-1'>请选择</option>");
+		for (UserInfo item : list) {
+			sb.append("<option value='"+item.gettId()+"'>" + item.getLoginName() + "</option>");
+		}
+		sb.append("</select>");
+		model.addAttribute("userList", sb.toString());
+		
 		return "cvInfo";
 	}
 	
@@ -164,9 +180,9 @@ public class CVInfoController {
 				map.put(obj_key, obj.get(obj_key));
 			}
 			if (String.valueOf(map.get("relId")).equals("0")) {
-				//isSuccess = userCvRelService.insert(map);	//新增
+				isSuccess = userRelService.insert(map);	//新增
 			}else {	
-				//isSuccess = userCvRelService.update(map);	//修改
+				isSuccess = userRelService.update(map);	//修改
 			}
 			
 			if (!isSuccess) {

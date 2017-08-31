@@ -65,7 +65,7 @@
 		<if test="pay != null">
 		,pay = #{pay}
 		</if>
-		where t_id = #{tId}
+		where t_id = #{relId}
   	</update>
   	
   	<select id="getStatistics" resultType="map">

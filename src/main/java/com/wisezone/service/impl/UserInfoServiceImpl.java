@@ -1,5 +1,6 @@
 package com.wisezone.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -26,6 +27,11 @@ public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 	@Override
 	public UserInfo login(Map<String, String> map) {
 		return mapper.login(map);
+	}
+
+	@Override
+	public List<UserInfo> getUserInfo() {
+		return mapper.getUserInfo();
 	}
  
 
