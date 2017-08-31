@@ -121,7 +121,7 @@ public class CVInfoController {
 		Map<String, Integer> statistics = userRelService.getStatistics();
 		model.addAttribute("map", statistics);
 		
-		List<UserInfo> list = userInfoService.getUserInfo();
+		List<UserInfo> list = userInfoService.getUserInfo(3);//查询咨询顾问
 		StringBuilder sb = new StringBuilder("<select class='askTeacher'><option value='-1'>请选择</option>");
 		for (UserInfo item : list) {
 			sb.append("<option value='"+item.gettId()+"'>" + item.getLoginName() + "</option>");
@@ -199,6 +199,7 @@ public class CVInfoController {
 	@RequestMapping(value="deleteData")
 	@ResponseBody
 	public String deleteData(@RequestBody JSONObject json){
+		//TODO 预留删除学生缴费信息功能
 		StringBuilder sb = new StringBuilder();
 		Iterator it = json.keys();
 		while (it.hasNext()) {

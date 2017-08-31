@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -44,26 +45,22 @@
                             <li>
                                 <a href="#">业绩排名</a>
                             </li>
-                            <li>
-                                <a visit_action="cvInfo.action" href="${sessionScope.basePath}cvInfo.action">简历信息</a>
-                            </li>
-                            <li>
-                                <a href="#">简历来源统计</a>
-                            </li>
+                            <c:if test="${userInfo.role!=2&&userInfo.role!=3}">
+	                            <li>
+	                                <a visit_action="cvInfo.action" href="${sessionScope.basePath}cvInfo.action">简历信息</a>
+	                            </li>
+	                            <li>
+	                                <a href="#">简历来源统计</a>
+	                            </li>
+                            </c:if>
                             <li>
                                 <a href="#">业绩查询</a>
                             </li>
-                            <li>
-                                <a href="#">简历一览（今日）</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> <h4 class="hxzynav">工作管理</h4><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a visit_action="addCV.action" href="${sessionScope.basePath}addCV.action">简历录入</a>
-                            </li>
+                            <c:if test="${userInfo.role!=3}">
+	                            <li>
+	                                <a href="#">简历一览（今日）</a>
+	                            </li>
+                            </c:if>
                         </ul>
                     </li>
                     <li>
@@ -75,23 +72,32 @@
                             </li>
                         </ul>
                     </li>
-					<li>
-                        <a href="javascript:void(0)"><i class="fa icon-cogs"></i> <h4 class="hxzynav">系统管理</h4><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">简历相关资料管理</a>
-                            </li>
-                        </ul>
-                    </li>
-					<li>
-                        <a href="javascript:void(0)"><i class="fa icon-user"></i> <h4 class="hxzynav">用户管理</h4><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">用户相关资料管理</a>
-                            </li>
-                        </ul>
-                    </li>
-					
+                    <c:if test="${userInfo.role!=2&&userInfo.role!=3}">
+                    	<li>
+	                        <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> <h4 class="hxzynav">工作管理</h4><span class="fa arrow"></span></a>
+	                        <ul class="nav nav-second-level">
+	                            <li>
+	                                <a visit_action="addCV.action" href="${sessionScope.basePath}addCV.action">简历录入</a>
+	                            </li>
+	                        </ul>
+	                    </li>
+						<li>
+	                        <a href="javascript:void(0)"><i class="fa icon-cogs"></i> <h4 class="hxzynav">系统管理</h4><span class="fa arrow"></span></a>
+	                        <ul class="nav nav-second-level">
+	                            <li>
+	                                <a href="#">简历相关资料管理</a>
+	                            </li>
+	                        </ul>
+	                    </li>
+						<li>
+	                        <a href="javascript:void(0)"><i class="fa icon-user"></i> <h4 class="hxzynav">用户管理</h4><span class="fa arrow"></span></a>
+	                        <ul class="nav nav-second-level">
+	                            <li>
+	                                <a href="#">用户相关资料管理</a>
+	                            </li>
+	                        </ul>
+	                    </li>
+					</c:if>
                 </ul>
 
             </div>

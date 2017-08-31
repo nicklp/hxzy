@@ -64,10 +64,10 @@
   <select id="userLogin" parameterType="com.wisezone.entity.UserInfo" resultMap="doLogin">
   	select * from user_info
   </select>
-  <select id="getUserInfo" resultMap="doLogin">
+  <select id="getUserInfo" resultMap="doLogin" parameterType="Integer">
   	select * from user_info t where t.state = 1 
   	<![CDATA[
-  		and t.role != 9
+  		and t.role = #{role}
   	]]>
   </select>	
 	 

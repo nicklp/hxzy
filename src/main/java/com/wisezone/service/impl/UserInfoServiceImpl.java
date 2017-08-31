@@ -30,8 +30,8 @@ public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 	}
 
 	@Override
-	public List<UserInfo> getUserInfo() {
-		return mapper.getUserInfo();
+	public List<UserInfo> getUserInfo(int role) {
+		return mapper.getUserInfo(role);
 	}
  
 

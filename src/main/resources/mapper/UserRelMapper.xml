@@ -74,7 +74,7 @@
   	<select id="getStatistics" resultType="map">
   		select 
 		(select count(*) from user_cv_rel t where t.visit_date is not null) visitCount,
-		(select count(*) from user_cv_rel t where t.pay is not null) payCount,
+		(select count(*) from user_cv_rel t where t.pay_date is not null) payCount,
 		(select count(*) from user_cv_rel t where t.pay_type = 3) leaveCount,
 		(select count(*) from user_cv_rel t where t.pay_type = 4) payOneTime,
 		(select count(*) from user_cv_rel t where t.pay_type = 5) instalmentCount,

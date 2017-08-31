@@ -9,5 +9,5 @@ public interface UserInfoMapper extends CommonMapper<UserInfo> {
  
 	public UserInfo login(Map<String,String> map);
 	
-	public List<UserInfo> getUserInfo();
+	public List<UserInfo> getUserInfo(int role);
 }
