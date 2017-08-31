@@ -68,6 +68,9 @@
 		where t_id = #{relId}
   	</update>
   	
+  	<update id="updateCreateDate" parameterType="map">
+  		update cv_info set create_date = #{createDate} where t_id = #{stuId}
+  	</update>
   	<select id="getStatistics" resultType="map">
   		select 
 		(select count(*) from user_cv_rel t where t.visit_date is not null) visitCount,

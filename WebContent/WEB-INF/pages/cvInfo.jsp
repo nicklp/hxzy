@@ -111,14 +111,14 @@
 												<div class="col-md-4 line_height_30"><label class="control-label" for="pay_type">缴费类型</label></div>
 												<div class="col-md-7" style="padding-left:0;">
 													<select class="form-control" id="pay_type">
-														<option value="1">所有</option>
-														<option value="2">缴费</option>
-														<option value="3">预付费</option>
-														<option value="4">退费</option>
-														<option value="5">一次性付清</option>
-														<option value="6">分期</option>
-														<option value="7">宜信</option>
-														<option value="8">信用卡</option>
+														<option value="-1">所有</option>
+														<option value="1">缴费</option>
+														<option value="2">预付费</option>
+														<option value="3">退费</option>
+														<option value="4">一次性付清</option>
+														<option value="5">分期</option>
+														<option value="6">宜信</option>
+														<option value="7">信用卡</option>
 													</select>
 												</div>
 											</div>
@@ -273,10 +273,10 @@
 	              return param;                   
 	            },
 	            onLoadSuccess: function(){  //加载成功时执行  
-	            	console.log("加载成功");	
+	            	//console.log("加载成功");	
 	            },  
 	            onLoadError: function(){  //加载失败时执行  
-	            	console.log("加载失败,请刷新页面重试");
+	            	//console.log("加载失败,请刷新页面重试");
 	            	window.location.reload();
 	            },  
 				columns : [
@@ -466,13 +466,6 @@
 			
 		$(function() {
 			fn_initTab();
-			 /* $('#cv_tab').on('click-row.bs.table', function (row, ele) {
-				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)[0]["tId"]));
-			});  */
-			 $('#cv_tab').on('dbl-click-row.bs.table', function (row, ele) {
-				 console.log($('#cv_tab').bootstrapTable('getRowByUniqueId', $(ele)[0]['tId']).tId);
-			}); 
-			
 			$("#btn_edit").click(function(){
 				if(JSON.stringify(submit_data) != "{}"){
 					var reg = /^[0-9]+(.[0-9]{2})?$/;
@@ -490,7 +483,6 @@
 					}
 					var params = submit_data;
 					submit_data = {};
-					console.log("验证通过");//TODO 提交数据
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
@@ -523,6 +515,30 @@
 					ids[obj] = arr[obj].tId;
 				}
 				console.log(ids);
+				if(JSON.stringify(submit_data) != "{}"){
+					$.ajax({
+	                    type: "POST",  
+	                    dataType: "json",  
+	                    url: "${sessionScope.basePath}deleteData.action",  
+	                    contentType: "application/json; charset=utf-8",
+	                    data: JSON.stringify(ids) ,  
+	                    beforeSend:function(XMLHttpRequest){
+	                    },
+	                    success: function (data) {
+	                 	   refreshTab();//刷新表格
+	                 	   if(data && data.state){
+	                 		 toastr.success("操作成功!");
+	                 	   }else{
+	                 		 toastr.error("操作失败!");
+	                 	   }
+	                 	   
+	                    },
+	                    error:function(XMLHttpRequest,textStatus,errorThrown){
+	                 	   refreshTab();//刷新表格
+	                 	   toastr.error("发生未知错误");
+	                    }
+					});
+				}
 			});
 			$("#btn_search").on("click", function(){
 				refreshTab();//刷新表格
@@ -557,9 +573,16 @@
 					}else{
 						submit_data[index]['relId'] = "0";
 					}
-					submit_data[index]['userId'] = submit_data[index]['userId'] == undefined?"0":submit_data[index]['userId'];
+					if (data['userId'] == undefined && submit_data[index]['userId'] == undefined) {
+						submit_data[index]['userId'] = "0";
+					}else{
+						if(data['userId'] != undefined){
+							submit_data[index]['userId'] = data['userId'];
+						}else{
+							submit_data[index]['userId'] = submit_data[index]['userId'];
+						}
+					}
 					submit_data[index]['stuId'] = data["tId"];
-					console.log(submit_data);
 				});
 			});
 			$("#cv_tab").on("click",".userName",function(){
@@ -580,7 +603,6 @@
 				}
 				submit_data[index]['stuId'] = data["tId"];
 				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
-				console.log(submit_data);
 			});
 			
 			$("#cv_tab").on("click",".payType",function(){
@@ -611,7 +633,6 @@
 					}
 				}
 				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
-				console.log(submit_data);
 			});
 			
 			$("#cv_tab").on("click",".pay",function(){
@@ -642,7 +663,6 @@
 				}
 				submit_data[index]['stuId'] = data["tId"];
 				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
-				console.log(submit_data);
 			});
 			
 		});

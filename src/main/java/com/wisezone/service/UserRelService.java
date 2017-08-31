@@ -11,4 +11,6 @@ public interface UserRelService extends CommonService<UserRel> {
 	public boolean update(Map<String,Object> map);
 	
 	public Map<String, Integer> getStatistics();
+	
+	public boolean updateCreateDate(Map<String,Object> map);
 }

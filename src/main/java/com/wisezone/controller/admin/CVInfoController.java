@@ -145,7 +145,7 @@ public class CVInfoController {
 		param.put("s_date", obj.getInt("s_date"));
 		param.put("from_date", obj.getString("from_date"));
 		param.put("to_date", obj.getString("to_date"));
-		if (obj.getInt("s_text") == 3 && obj.getString("searchText") != null && !obj.getString("searchText").equals("") || obj.getInt("pay_type") != 1 || obj.getInt("s_date") != 1) {
+		if (obj.getInt("s_text") == 3 && obj.getString("searchText") != null && !obj.getString("searchText").equals("") || obj.getInt("pay_type") != -1 || obj.getInt("s_date") != 1) {
 			param.put("pay_type", obj.getInt("pay_type"));
 			service.searchPaging2(param, paging);	//业务逻辑层
 		}else{
@@ -184,7 +184,9 @@ public class CVInfoController {
 			}else {	
 				isSuccess = userRelService.update(map);	//修改
 			}
-			
+			if (map.containsKey("createDate")) {
+				userRelService.updateCreateDate(map);
+			}
 			if (!isSuccess) {
 				break;
 			}
@@ -192,6 +194,23 @@ public class CVInfoController {
 		JSONObject msg = new JSONObject();
 		msg.put("state", isSuccess);
 		return msg.toString();
+	}
+	
+	@RequestMapping(value="deleteData")
+	@ResponseBody
+	public String deleteData(@RequestBody JSONObject json){
+		StringBuilder sb = new StringBuilder();
+		Iterator it = json.keys();
+		while (it.hasNext()) {
+			String key = (String) it.next();
+			String str = (String) json.get(key);
+			sb.append(str + ",");
+		}
+		String params = sb.toString();
+		if (params.length() > 0) {
+			params = sb.toString().substring(0,params.length() - 2);
+		}
+		return null;
 	}
 	
 }

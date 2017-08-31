@@ -10,4 +10,6 @@ public interface UserRelMapper extends CommonMapper<UserRel> {
 	public boolean update(Map<String,Object> map);
 	
 	public Map<String, Integer> getStatistics();
+	
+	public boolean updateCreateDate(Map<String,Object> map);
 }

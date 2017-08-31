@@ -125,7 +125,7 @@
 			  			and t3.login_name = #{param.searchText}
 		  			</if>
 		  		</if>
-		  		<if test="param.pay_type != 1">
+		  		<if test="param.pay_type != -1">
 		  			and t2.pay_type = #{param.pay_type}
 		  		</if>
 		  		<if test="param.s_date == 1">
