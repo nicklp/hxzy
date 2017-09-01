@@ -11,5 +11,7 @@ public interface UserRelMapper extends CommonMapper<UserRel> {
 	
 	public Map<String, Integer> getStatistics();
 	
+	public Map<String, Integer> getStatisticsByUser(int inviteId);
+	
 	public boolean updateCreateDate(Map<String,Object> map);
 }

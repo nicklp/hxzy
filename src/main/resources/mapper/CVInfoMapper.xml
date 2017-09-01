@@ -202,4 +202,48 @@
 	  <include refid="_searchPaging2"></include>
 	  order by t1.create_date desc
  </select>
+ <select id="searchViewPaging" parameterType="map" resultType="map">
+ 	SELECT 
+	    t1.t_id stuId,
+	    t2.invite_id invitId,
+	    (select t3.login_name from user_info t3 where t3.t_id = t2.invite_id) invitPerson,
+		t1.stu_name ,
+		t1.create_date createDate,
+		t1.phone,
+		t1.sex,
+		t1.school,
+		t1.education,
+		t1.major,
+		t1.job,
+		t1.msg_from msgFrom,
+		t1.td_type tdType,
+		t1.intention,
+		t2.user_id userId,
+		(select t3.login_name from user_info t3 where t3.t_id = t2.user_id) askPerson
+	from cv_info t1 left join user_cv_rel t2
+	on t1.t_id = t2.stu_id
+	<if test="param != null">
+		<where>
+			<foreach collection="param" index="key" item="value" separator="and" open="(" close=")">
+				${key} = #{value} 
+			</foreach>
+		</where>
+	</if>
+	order by t1.create_date
+	limit #{offset}, #{limit}
+ </select>
+ 
+ <select id="searchViewPagingCount" resultType="Integer">
+ 	SELECT 
+	    count(*)
+	from cv_info t1 left join user_cv_rel t2
+	on t1.t_id = t2.stu_id
+	<if test="param != null">
+		<where>
+			<foreach collection="param" index="key" item="value" separator="and" open="(" close=")">
+				${key} = #{value} 
+			</foreach>
+		</where>
+	</if>
+ </select>
 </mapper>

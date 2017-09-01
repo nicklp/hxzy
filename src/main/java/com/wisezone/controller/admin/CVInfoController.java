@@ -38,10 +38,10 @@ import net.sf.json.JSONObject;
 @RequestMapping(value="/")
 public class CVInfoController {
 	
-	 @Resource(name="CVInfoServiceImpl")
+	@Resource(name="CVInfoServiceImpl")
 	private CVInfoService service;
 
-	 @Resource(name="CVOtherInfoServiceImpl")
+	@Resource(name="CVOtherInfoServiceImpl")
 	private CVOtherInfoService otherService;
 	
 	@Resource(name="userRelServiceImpl")

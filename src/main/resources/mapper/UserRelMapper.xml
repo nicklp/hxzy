@@ -82,4 +82,29 @@
 		(select count(*) from user_cv_rel t where t.pay_type = 7) creditCount
 		  		
   	</select>
+  	
+  	<select id="getStatisticsByUser" parameterType="Integer" resultType="map">
+  		<choose>
+  			<when test="userId != 0">
+  					select 
+					(select count(*) from user_cv_rel t where t.visit_date is not null and t.invite_id = #{userId}) visitCount,
+					(select count(*) from user_cv_rel t where t.pay_date is not null and t.invite_id = #{userId}) payCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 3 and t.invite_id = #{userId}) leaveCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 4 and t.invite_id = #{userId}) payOneTime,
+					(select count(*) from user_cv_rel t where t.pay_type = 5 and t.invite_id = #{userId}) instalmentCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 6 and t.invite_id = #{userId}) yxCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 7 and t.invite_id = #{userId}) creditCount
+  			</when>
+  			<otherwise>
+  				select 
+				(select count(*) from user_cv_rel t where t.visit_date is not null) visitCount,
+				(select count(*) from user_cv_rel t where t.pay_date is not null) payCount,
+				(select count(*) from user_cv_rel t where t.pay_type = 3) leaveCount,
+				(select count(*) from user_cv_rel t where t.pay_type = 4) payOneTime,
+				(select count(*) from user_cv_rel t where t.pay_type = 5) instalmentCount,
+				(select count(*) from user_cv_rel t where t.pay_type = 6) yxCount,
+				(select count(*) from user_cv_rel t where t.pay_type = 7) creditCount
+  			</otherwise>
+  		</choose>
+  	</select>
 </mapper>  

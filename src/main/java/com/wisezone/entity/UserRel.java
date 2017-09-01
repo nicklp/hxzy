@@ -23,9 +23,11 @@ public class UserRel implements Serializable {
   `record_create_date` date DEFAULT NULL COMMENT '本次记录产生时间',
   `last_modify_date` date DEFAULT NULL COMMENT '本次记录最后一次修改时间',
   `last_modify_person` int(11) DEFAULT NULL COMMENT '修改人',
+   invite_id 市场助理
 	 */
 	private Integer tId;
 	private UserInfo userInfo;
+	private UserInfo invitePerson;
 	private CVInfo cvInfo;
 	private Date visitDate;
 	private Date prePayDate;
@@ -107,6 +109,12 @@ public class UserRel implements Serializable {
 	}
 	public void setLastModifyPerson(UserInfo lastModifyPerson) {
 		this.lastModifyPerson = lastModifyPerson;
+	}
+	public UserInfo getInvitePerson() {
+		return invitePerson;
+	}
+	public void setInvitePerson(UserInfo invitePerson) {
+		this.invitePerson = invitePerson;
 	}
 	
 }

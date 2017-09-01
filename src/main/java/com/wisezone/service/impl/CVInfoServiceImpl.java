@@ -40,5 +40,11 @@ public class CVInfoServiceImpl extends CommonServiceImpl<CVInfo> implements CVIn
 		paging.setData(mapper.searchPaging1(param, paging.getBegin(), paging.getSize()));
 		paging.setTotalRecords(mapper.searchPagingCount1(param));
 	}
+
+	@Override
+	public void searchViewPaging(Map<String, Object> param, PageUtil<Map<String, Object>> paging) {
+		paging.setData(mapper.searchViewPaging(param, paging.getBegin(), paging.getEnd()));
+		paging.setTotalRecords(mapper.searchViewPagingCount(param));
+	}
 	
 }

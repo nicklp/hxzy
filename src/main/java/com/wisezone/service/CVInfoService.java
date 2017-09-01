@@ -12,4 +12,6 @@ public interface CVInfoService extends CommonService<CVInfo>{
 	public void searchPaging1(Map<String, Object> param,PageUtil<Map<String, Object>> paging);
 	
 	public void searchPaging2(Map<String, Object> param,PageUtil<Map<String, Object>> paging);
+	
+	public void searchViewPaging(Map<String, Object> param,PageUtil<Map<String, Object>> paging);
 }

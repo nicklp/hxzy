@@ -41,6 +41,11 @@ public class UserRelServiceImpl extends CommonServiceImpl<UserRel> implements Us
 	public boolean updateCreateDate(Map<String, Object> map) {
 		return mapper.updateCreateDate(map);
 	}
+
+	@Override
+	public Map<String, Integer> getStatisticsByUser(int inviteId) {
+		return mapper.getStatisticsByUser(inviteId);
+	}
 	
 
 }
