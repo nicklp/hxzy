@@ -345,6 +345,7 @@
 						if(value == undefined || value == ''){
 							return '未分配';
 						}
+						return value;
 					}
 				} ]
 			});
