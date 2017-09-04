@@ -45,6 +45,7 @@ public class TodayViewContoller {
 		Map<String, Integer> statistics = userRelService.getStatisticsByUser(inviteId);
 		model.addAttribute("map", statistics);
 		
+		//TODO 调试页面显示数据
 		List<UserInfo> list = userInfoService.getUserInfo(2);//查询市场助理
 		StringBuilder sb = new StringBuilder("<select class='askTeacher'><option value='-1'>请选择</option>");
 		for (UserInfo item : list) {
