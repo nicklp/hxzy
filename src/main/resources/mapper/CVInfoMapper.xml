@@ -207,7 +207,7 @@
 	    t1.t_id stuId,
 	    t2.invite_id invitId,
 	    (select t3.login_name from user_info t3 where t3.t_id = t2.invite_id) invitPerson,
-		t1.stu_name ,
+		t1.stu_name stuName ,
 		t1.create_date createDate,
 		t1.phone,
 		t1.sex,
@@ -224,9 +224,22 @@
 	on t1.t_id = t2.stu_id
 	<if test="param != null">
 		<where>
-			<foreach collection="param" index="key" item="value" separator="and" open="(" close=")">
-				${key} = #{value} 
-			</foreach>
+			<if test="param.login_name != null and param.login_name != ''">
+				and t3.login_name = #{param.login_name}
+			</if>
+			<if test="param.stu_name != null and param.stu_name != ''">
+				and t1.stu_name = #{param.stu_name}
+			</if>
+			<if test="param.from_date != null and param.from_date != ''">
+				<![CDATA[
+					and t1.create_date >= #{param.from_date}
+				]]>
+			</if>
+			<if test="param.to_date != null and param.to_date != ''">
+				<![CDATA[
+					and t1.create_date <= #{param.to_date}
+				]]>
+			</if>
 		</where>
 	</if>
 	order by t1.create_date
@@ -240,9 +253,22 @@
 	on t1.t_id = t2.stu_id
 	<if test="param != null">
 		<where>
-			<foreach collection="param" index="key" item="value" separator="and" open="(" close=")">
-				${key} = #{value} 
-			</foreach>
+			<if test="param.login_name != null and param.login_name != ''">
+				and t3.login_name = #{param.login_name}
+			</if>
+			<if test="param.stu_name != null and param.stu_name != ''">
+				and t1.stu_name = #{param.stu_name}
+			</if>
+			<if test="param.from_date != null and param.from_date != ''">
+				<![CDATA[
+					and t1.create_date >= #{param.from_date}
+				]]>
+			</if>
+			<if test="param.to_date != null and param.to_date != ''">
+				<![CDATA[
+					and t1.create_date <= #{param.to_date}
+				]]>
+			</if>
 		</where>
 	</if>
  </select>

@@ -83,17 +83,17 @@
 		  		
   	</select>
   	
-  	<select id="getStatisticsByUser" parameterType="Integer" resultType="map">
+  	<select id="getStatisticsByUser" parameterType="int" resultType="map">
   		<choose>
-  			<when test="userId != 0">
+  			<when test="inviteId != 0">
   					select 
-					(select count(*) from user_cv_rel t where t.visit_date is not null and t.invite_id = #{userId}) visitCount,
-					(select count(*) from user_cv_rel t where t.pay_date is not null and t.invite_id = #{userId}) payCount,
-					(select count(*) from user_cv_rel t where t.pay_type = 3 and t.invite_id = #{userId}) leaveCount,
-					(select count(*) from user_cv_rel t where t.pay_type = 4 and t.invite_id = #{userId}) payOneTime,
-					(select count(*) from user_cv_rel t where t.pay_type = 5 and t.invite_id = #{userId}) instalmentCount,
-					(select count(*) from user_cv_rel t where t.pay_type = 6 and t.invite_id = #{userId}) yxCount,
-					(select count(*) from user_cv_rel t where t.pay_type = 7 and t.invite_id = #{userId}) creditCount
+					(select count(*) from user_cv_rel t where t.visit_date is not null and t.invite_id = #{inviteId}) visitCount,
+					(select count(*) from user_cv_rel t where t.pay_date is not null and t.invite_id = #{inviteId}) payCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 3 and t.invite_id = #{inviteId}) leaveCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 4 and t.invite_id = #{inviteId}) payOneTime,
+					(select count(*) from user_cv_rel t where t.pay_type = 5 and t.invite_id = #{inviteId}) instalmentCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 6 and t.invite_id = #{inviteId}) yxCount,
+					(select count(*) from user_cv_rel t where t.pay_type = 7 and t.invite_id = #{inviteId}) creditCount
   			</when>
   			<otherwise>
   				select 

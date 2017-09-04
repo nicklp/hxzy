@@ -212,7 +212,7 @@
 				striped: false,   //是否显示行间隔色
 				uniqueId:"tId",
 				method:'post',
-				url:'${sessionScope.basePath}queryCVInfo.action',
+				url:'${sessionScope.basePath}queryView.action', 
 				cache:false,
 				sidePagination:'server',
 				pageNumber:1,
@@ -231,8 +231,6 @@
 	                  pageSize: params.pageSize, 
 	                  s_text:$("#s_text").val(),
 	                  searchText:$("#searchText").val(),
-	                  pay_type:$("#pay_type").val(),
-	                  s_date:$("#s_date").val(),
 	                  from_date:$("#from_date").val(),
 	                  to_date:$("#to_date").val()
 	              };    
@@ -313,7 +311,23 @@
 				}, {
 					field : 'education',
 					title : '学历',
-					align:'center'
+					align:'center',
+					formatter:function(value,row,index){
+						switch(value){
+						case 1:
+							return '高中';
+						case 2:
+							return '中专';
+						case 3:
+							return '大专';
+						case 4:
+							return '本科';
+						case 5:
+							return '研究生';
+						case 6:
+							return '未知';
+						}
+					}
 				}, {
 					field : 'major',
 					title : '所读专业',
@@ -395,176 +409,27 @@
 					
 				}
 			});
-			$("#btn_delete").click(function(){
-				var arr = $('#cv_tab').bootstrapTable('getSelections');
-				var ids = {};
-				for(var obj in arr){
-					ids[obj] = arr[obj].tId;
-				}
-				console.log(ids);
-				if(JSON.stringify(submit_data) != "{}"){
-					$.ajax({
-	                    type: "POST",  
-	                    dataType: "json",  
-	                    url: "${sessionScope.basePath}deleteData.action",  
-	                    contentType: "application/json; charset=utf-8",
-	                    data: JSON.stringify(ids) ,  
-	                    beforeSend:function(XMLHttpRequest){
-	                    },
-	                    success: function (data) {
-	                 	   refreshTab();//刷新表格
-	                 	   if(data && data.state){
-	                 		 toastr.success("操作成功!");
-	                 	   }else{
-	                 		 toastr.error("操作失败!");
-	                 	   }
-	                 	   
-	                    },
-	                    error:function(XMLHttpRequest,textStatus,errorThrown){
-	                 	   refreshTab();//刷新表格
-	                 	   toastr.error("发生未知错误");
-	                    }
-					});
-				}
-			});
+			
 			$("#btn_search").on("click", function(){
 				refreshTab();//刷新表格
 			});
-			$("#cv_tab").on("click",".dataDate",function(){
-				$(this).datetimepicker({
-					language: 'zh-CN',//显示中文
-					format : 'yyyy-mm-dd',//显示格式
-					minView : "month",//设置只显示到月份
-					initialDate : new Date(),//初始化当前日期
-					autoclose : true,//选中自动关闭
-					todayBtn : true
-				//显示今日按钮
-				});
-				$(this).datetimepicker('show');
-				$(this).datetimepicker().on('changeDate', function(ev){
-					var date_str = $(this).datetimepicker("getFormattedDate");
-					$(this).text(date_str);
-					var index = $(this).attr("data-row-index");
-					var col = $(this).attr("data-row-col");
-					var relId = $(this).attr("relid");
-					var data = $('#cv_tab').bootstrapTable("getData")[index];
-					if(submit_data[index] == null){
-						obj = {};
-						obj[col] = date_str;
-						submit_data[index] = obj;
-					}else{
-						submit_data[index][col] = date_str;
-					} 
-					if(relId != "undefined"){
-						submit_data[index]['relId'] = relId;
-					}else{
-						submit_data[index]['relId'] = "0";
-					}
-					if (data['userId'] == undefined && submit_data[index]['userId'] == undefined) {
-						submit_data[index]['userId'] = "0";
-					}else{
-						if(data['userId'] != undefined){
-							submit_data[index]['userId'] = data['userId'];
-						}else{
-							submit_data[index]['userId'] = submit_data[index]['userId'];
-						}
-					}
-					submit_data[index]['stuId'] = data["tId"];
-				});
-			});
+			
 			$("#cv_tab").on("click",".invitPerson",function(){
-				var _tr = $(this).parent();
-				$(this).remove();
-				_tr.append("${userList}");
-			});
-			
-			$("#cv_tab").on("change",".askTeacher",function(){
-				var index = $(this).parents("tr").index();
-				var data = $('#cv_tab').bootstrapTable("getData")[index];
-				if(submit_data[index] == null){
-					obj = {};
-					obj['userId'] = $(this).val();
-					submit_data[index] = obj;
-				}else{
-					submit_data[index]['userId'] = $(this).val();
-				}
-				submit_data[index]['stuId'] = data["tId"];
-				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
-			});
-			
-			$("#cv_tab").on("click",".payType",function(){
 				var _tr = $(this).parent();
 				$(this).remove();	//移除缴费类型文本
 				_tr.append("<select class='sel_payType'><option value='-1'>请选择</option><option value='1'>缴费</option><option value='2'>预付费</option><option value='3'>退费</option><option value='4'>一次性付清</option><option value='5'>分期</option><option value='6'>宜信</option><option value='7'>信用卡</option></select>");
 			});
-			
-			$("#cv_tab").on("change",".sel_payType",function(){
-				var index = $(this).parents("tr").index();
-				var data = $('#cv_tab').bootstrapTable("getData")[index];
-				
-				if(submit_data[index] == null){
-					obj = {};
-					obj['payType'] = $(this).val();
-					submit_data[index] = obj;
-				}else{
-					submit_data[index]['payType'] = $(this).val();
-				} 
-				submit_data[index]['stuId'] = data["tId"];
-				if (data['userId'] == undefined && submit_data[index]['userId'] == undefined) {
-					submit_data[index]['userId'] = "0";
-				}else{
-					if(data['userId'] != undefined){
-						submit_data[index]['userId'] = data['userId'];
-					}else{
-						submit_data[index]['userId'] = submit_data[index]['userId'];
-					}
-				}
-				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
-			});
-			
-			$("#cv_tab").on("click",".pay",function(){
-				var _tr = $(this).parent();
-				$(this).remove();	//移除缴费类型文本
-				_tr.append("<input type='text' name='_pay' style='width:100%;text-align:center;'/>");
-			});
-			
-			$("#cv_tab").on("blur","input[name='_pay']",function(){
-				var index = $(this).parents("tr").index();
-				var data = $('#cv_tab').bootstrapTable("getData")[index];
-				
-				if(submit_data[index] == null){
-					obj = {};
-					obj['pay'] = $(this).val();
-					submit_data[index] = obj;
-				}else{
-					submit_data[index]['pay'] = $(this).val();
-				} 
-				if (data['userId'] == undefined && submit_data[index]['userId'] == undefined) {
-					submit_data[index]['userId'] = "0";
-				}else{
-					if(data['userId'] != undefined){
-						submit_data[index]['userId'] = data['userId'];
-					}else{
-						submit_data[index]['userId'] = submit_data[index]['userId'];
-					}
-				}
-				submit_data[index]['stuId'] = data["tId"];
-				submit_data[index]['relId'] = data["relId"] == undefined?"0":data["relId"];
-			});
-			
 		});
 		
 		function refreshTab(){
 			$("#cv_tab").bootstrapTable('refresh',{
-				url:'${sessionScope.basePath}queryCVInfo.action',
+				url:'${sessionScope.basePath}queryView.action',
 				queryParams: function queryParams(params) {   //设置查询参数  
 		              var param = {    
 		                  pageNumber: params.pageNumber,    
 		                  pageSize: params.pageSize, 
 		                  s_text:$("#s_text").val(),
 		                  searchText:$("#searchText").val(),
-		                  pay_type:$("#pay_type").val(),
-		                  s_date:$("#s_date").val(),
 		                  from_date:$("#from_date").val(),
 		                  to_date:$("#to_date").val()
 		              };    
