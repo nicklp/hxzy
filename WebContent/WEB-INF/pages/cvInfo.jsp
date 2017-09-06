@@ -280,12 +280,12 @@
 	            	window.location.reload();
 	            },  
 				columns : [
-				{
+				/* {
 					field : 'ch',
 					title : '全选',
 					align:'center',
 					checkbox:true
-				}, 
+				},  */
 				{
 					field : 'tId',
 					title : '操作',

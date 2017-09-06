@@ -96,7 +96,9 @@
 												<div class="col-md-offset-1 col-md-4 padding_left_right_0">
 													<select class="form-control" id="s_text">
 														<option value="1">姓名</option>
-														<option value="2">市场助理</option>
+														<c:if test="${userInfo.role!=2&&userInfo.role!=3}">
+															<option value="2">市场助理</option>
+														</c:if>
 													</select>
 												</div>
 												<div class="col-md-6">
@@ -129,9 +131,11 @@
 								<!-- fill contents -->
 								<div class="panel-body">
 									 <div id="toolbar" class="btn-group">
-										 <button id="btn_edit" type="button" class="btn btn-default" >
-										 	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>保存更改
-										 </button>
+									 	 <c:if test="${userInfo.role!=2&&userInfo.role!=3}">
+											 <button id="btn_edit" type="button" class="btn btn-default" >
+											 	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>保存更改
+											 </button>
+										 </c:if>
 										 <!-- <button id="btn_delete" type="button" class="btn btn-default">
 										 	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
 										 </button> -->
@@ -244,12 +248,12 @@
 	            	window.location.reload();
 	            },  
 				columns : [
-				{
+				/* {
 					field : 'ch',
 					title : '全选',
 					align:'center',
 					checkbox:true
-				}, 
+				},  */
 				{
 					field : 'stuId',
 					title : '学号',
@@ -283,10 +287,15 @@
 					align:'center',
 					width:'5%',
 					formatter:function(value,row,index){
-						if(value == undefined || value == ''){
-							return "<a class='invitPerson'>添加</a>"
+						var role = ${userInfo.role};
+						if(role == 2){
+							return value;
+						}else{
+							if(value == undefined || value == ''){
+								return "<a class='invitPerson'>添加</a>"
+							}
+							return "<a href='javascript:void(0);' class='invitPerson'>"+value+"</a>";
 						}
-						return "<a href='javascript:void(0);' class='invitPerson'>"+value+"</a>";
 					}
 				}, {
 					field : 'createDate',
@@ -369,22 +378,10 @@
 			fn_initTab();
 			$("#btn_edit").click(function(){
 				if(JSON.stringify(submit_data) != "{}"){
-					var reg = /^[0-9]+(.[0-9]{2})?$/;
-					for(var item in submit_data){
-						if(submit_data[item].userId == "0" || submit_data[item].userId == -1){
-							swal("请选择咨询顾问!", "", "error"); 
-							return;
-						}
-						if(submit_data[item].pay){
-							if(!reg.test(submit_data[item].pay)){
-								swal("输入的金额不合法", "", "error"); 
-								return;
-							}
-						}
-					}
+					
 					var params = submit_data;
 					submit_data = {};
-					$.ajax({
+					 $.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
 	                       url: "${sessionScope.basePath}saveData.action",  
@@ -405,7 +402,7 @@
 	                    	   refreshTab();//刷新表格
 	                    	   toastr.error("发生未知错误");
 	                       }
-					});
+					}); 
 					
 				}
 			});
@@ -416,8 +413,22 @@
 			
 			$("#cv_tab").on("click",".invitPerson",function(){
 				var _tr = $(this).parent();
-				$(this).remove();	//移除缴费类型文本
-				_tr.append("<select class='sel_payType'><option value='-1'>请选择</option><option value='1'>缴费</option><option value='2'>预付费</option><option value='3'>退费</option><option value='4'>一次性付清</option><option value='5'>分期</option><option value='6'>宜信</option><option value='7'>信用卡</option></select>");
+				$(this).remove();	
+				_tr.append("${invitePerson}");
+			});
+			
+			$("#cv_tab").on("change",".invitePersonList",function(){
+				var index = $(this).parents("tr").index();
+				var data = $('#cv_tab').bootstrapTable("getData")[index];
+				if(submit_data[index] == null){
+					obj = {};
+					obj['inviteId'] = $(this).val();
+					submit_data[index] = obj;
+				}else{
+					submit_data[index]['inviteId'] = $(this).val();
+				}
+				submit_data[index]['stuId'] = data["stuId"];
+				submit_data[index]['relId'] = data["relId"] == undefined?0:data["relId"];
 			});
 		});
 		

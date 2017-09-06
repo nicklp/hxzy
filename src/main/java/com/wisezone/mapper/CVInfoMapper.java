@@ -19,7 +19,7 @@ public interface CVInfoMapper extends CommonMapper<CVInfo> {
 	
 	public int searchPagingCount2(@Param("param") Map<String, Object> param);
 	
-	public List<Map<String, Object>> searchViewPaging(@Param("param") Map<String, Object> param,@Param("offset") int offset,@Param("limit")int limit);
+	public List<Map<String, Object>> searchViewPaging(@Param("param") Map<String, Object> param,@Param("inviteId") int inviteId,@Param("offset") int offset,@Param("limit")int limit);
 	
-	public int searchViewPagingCount(@Param("param") Map<String, Object> param);
+	public int searchViewPagingCount(@Param("param") Map<String, Object> param,@Param("inviteId") int inviteId);
 }

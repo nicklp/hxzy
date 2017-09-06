@@ -58,7 +58,7 @@
                             </li>
                             <c:if test="${userInfo.role!=3}">
 	                            <li>
-	                                <a href="${sessionScope.basePath}todayView.action">简历一览（今日）</a>
+	                                <a visit_action="todayView.action" href="${sessionScope.basePath}todayView.action">简历一览（今日）</a>
 	                            </li>
                             </c:if>
                         </ul>

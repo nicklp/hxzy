@@ -8,8 +8,13 @@
 	<insert id="insert" parameterType="map" useGeneratedKeys="true" keyProperty="tId">
 		insert into user_cv_rel 
 		(
-			user_id,
 			stu_id
+			<if test="userId != null">
+			,user_id
+			</if>
+			<if test="inviteId != null">
+			,invite_id
+			</if>
 			<if test="visitDate != null">
 			,visit_date
 			</if>
@@ -26,8 +31,13 @@
 			,pay
 			</if>
 		) values (
-			#{userId},
 			#{stuId}
+			<if test="userId != null">
+			,#{userId}
+			</if>
+			<if test="inviteId != null">
+			,#{inviteId}
+			</if>
 			<if test="visitDate != null">
 			,#{visitDate}
 			</if>
@@ -48,22 +58,27 @@
   
   	<update id="update" parameterType="map">
   		update user_cv_rel set 
-  		user_id = #{userId},
   		stu_id = #{stuId}
+  		<if test="userId != null">
+  			,user_id = #{userId}
+		</if>
+		<if test="inviteId != null">
+			,invite_id = #{inviteId}
+		</if>
   		<if test="visitDate != null">
-		,visit_date = #{visitDate}
+			,visit_date = #{visitDate}
 		</if>
 		<if test="prePayDate != null">
-		,pre_pay_date = #{prePayDate}
+			,pre_pay_date = #{prePayDate}
 		</if>
 		<if test="payDate != null">
-		,pay_date = #{payDate}
+			,pay_date = #{payDate}
 		</if>
 		<if test="payType != null">
-		,pay_type = #{payType}
+			,pay_type = #{payType}
 		</if>
 		<if test="pay != null">
-		,pay = #{pay}
+			,pay = #{pay}
 		</if>
 		where t_id = #{relId}
   	</update>
