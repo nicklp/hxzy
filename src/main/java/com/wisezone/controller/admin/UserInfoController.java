@@ -1,6 +1,7 @@
 package com.wisezone.controller.admin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -56,5 +57,17 @@ public class UserInfoController {
 	public String loginOut(HttpSession session){
 		session.invalidate();
 		return "redirect:/login.action";
+	}
+	
+	@RequestMapping(value="/yjpm")
+	public String yjpm(){
+		return "yjpm";
+	}
+	
+	@RequestMapping(value="queryyjpm")
+	@ResponseBody
+	public List<Map<String, Object>> queryyjpm(String dateMonth){
+		List<Map<String, Object>> list = service.yj_sort(dateMonth);
+		return list;
 	}
 }

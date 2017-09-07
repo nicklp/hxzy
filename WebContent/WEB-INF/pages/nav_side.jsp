@@ -43,7 +43,7 @@
                         <a href="javascript:void(0)"><i class="fa fa-list-alt"></i> <h4 class="hxzynav">信息管理</h4><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#">业绩排名</a>
+                                <a visit_action="yjpm.action" href="${sessionScope.basePath}yjpm.action">业绩排名</a>
                             </li>
                             <c:if test="${userInfo.role!=2&&userInfo.role!=3}">
 	                            <li>

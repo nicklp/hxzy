@@ -102,5 +102,55 @@
      
  </select>  
   
-  
+  <select id="yj_sort" parameterType="String" resultType="map">
+  		select 
+		t.login_name userName,
+		(
+			select count(t1.visit_date) 
+			from user_cv_rel t1
+			where date_format(t1.visit_date,'%Y-%m') = 
+			<choose>
+				<when test="dateMonth != null and dateMonth != ''">
+					#{dateMonth}
+				</when>
+				<otherwise>
+					date_format(now(),'%Y-%m') 
+				</otherwise>
+			</choose>
+			and t1.user_id = t.t_id
+			and t1.visit_date is not null
+		) zx ,
+		(
+			select count(t1.pay) 
+			from user_cv_rel t1
+			where date_format(t1.visit_date,'%Y-%m') = 
+			<choose>
+				<when test="dateMonth != null and dateMonth != ''">
+					#{dateMonth}
+				</when>
+				<otherwise>
+					date_format(now(),'%Y-%m') 
+				</otherwise>
+			</choose>
+			and t1.user_id = t.t_id
+			and t1.pay is not NULL
+		) pay,
+		(
+			select count(t1.pre_pay_date) 
+			from user_cv_rel t1
+			where date_format(t1.visit_date,'%Y-%m') = 
+			<choose>
+				<when test="dateMonth != null and dateMonth != ''">
+					#{dateMonth}
+				</when>
+				<otherwise>
+					date_format(now(),'%Y-%m') 
+				</otherwise>
+			</choose> 
+			and t1.user_id = t.t_id
+			and t1.pre_pay_date is not NULL
+		) prePay
+		from user_info t
+		where t.role = 3
+  </select>
 </mapper>  
