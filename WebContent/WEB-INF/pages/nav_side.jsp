@@ -50,7 +50,7 @@
 	                                <a visit_action="cvInfo.action" href="${sessionScope.basePath}cvInfo.action">简历信息</a>
 	                            </li>
 	                            <li>
-	                                <a href="#">简历来源统计</a>
+	                                <a visit_action="tjmsgfrom.action" href="${sessionScope.basePath}tjmsgfrom.action">简历来源统计</a>
 	                            </li>
                             </c:if>
                             <li>

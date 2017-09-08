@@ -32,4 +32,28 @@
   	<delete id="deleteById" parameterType="java.lang.Integer">
   		delete from cv_other_info where t_id = #{tId}
   	</delete>
+  	
+  	<!-- 统计信息来源 -->
+  	<select id="searchMsgFromCount" parameterType="map" resultType="map">
+  		select t1.t_name msgFrom,IFNULL(t3.c,0) counts from cv_other_info t1 left join(
+			select t2.msg_from,count(t2.msg_from) c from cv_info t2
+			<if test="param != null">
+				<where>
+					1=1
+					<if test="param.from_date != null and param.from_date != ''">
+						<![CDATA[
+							and t2.create_date >= #{param.from_date}
+						]]>
+					</if>
+					<if test="param.to_date != null and param.to_date != ''">
+						<![CDATA[
+							and t2.create_date <= #{param.to_date}
+						]]>
+					</if>
+				</where>
+			</if>
+			group by t2.msg_from
+		) t3 on t1.t_name = t3.msg_from
+		where t1.t_type = 2		
+  	</select>
 </mapper>  

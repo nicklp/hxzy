@@ -2,6 +2,7 @@ package com.wisezone.service.impl;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -31,6 +32,11 @@ public class CVOtherInfoServiceImpl extends CommonServiceImpl<CVOtherInfo> imple
 	@Override
 	public boolean deleteById(int tId) {
 		return this.mapper.deleteById(tId);
+	}
+
+	@Override
+	public List<Map<String, Object>> searchMsgFromCount(Map<String, Object> param) {
+		return mapper.searchMsgFromCount(param);
 	}
 
 	
