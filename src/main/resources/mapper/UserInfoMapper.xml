@@ -153,4 +153,93 @@
 		from user_info t
 		where t.role = 3
   </select>
+  
+  <select id="searchYear" parameterType="String" resultType="map">
+		
+	select 	<!--一月-->
+	'1月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'01')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'01')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'01')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'01') and t1.pay is not null) ff
+	union ALL
+	select <!--二月-->
+	'2月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'02')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'02')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'02')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'02') and t1.pay is not null) ff
+	union ALL
+	select <!--三月-->
+	'3月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'03')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'03')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'03')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'03') and t1.pay is not null) ff
+	union ALL
+	select <!--四月-->
+	'4月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'04')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'04')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'04')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'04') and t1.pay is not null) ff
+	union ALL
+	select <!--五月-->
+	'5月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'05')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'05')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'05')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'05') and t1.pay is not null) ff
+	union ALL
+	select <!--六月-->
+	'6月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'06')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'06')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'06')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'06') and t1.pay is not null) ff
+	union ALL
+	select <!--七月-->
+	'7月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'07')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'07')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'07')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'07') and t1.pay is not null) ff
+	union ALL
+	select <!--八月-->
+	'8月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'08')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'08')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'08')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'08') and t1.pay is not null) ff
+	union ALL
+	select <!--九月-->
+	'9月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'09')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'09')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'09')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'09') and t1.pay is not null) ff
+	union ALL
+	select <!--十月-->
+	'10月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'10')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'10')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'10')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'10') and t1.pay is not null) ff
+	union ALL
+	select <!--十一月-->
+	'11月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'11')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'11')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'11')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'11') and t1.pay is not null) ff
+	union ALL
+	select <!--十二月-->
+	'12月' mon,
+	(select count(*) from cv_info t1 where date_format(t1.create_date,'%Y%m') = CONCAT(#{year},'12')) lr,
+	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'12')) sm,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'12')) yb,
+	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'12') and t1.pay is not null) ff
+
+		
+  </select>
 </mapper>  

@@ -1,5 +1,7 @@
 package com.wisezone.controller.admin;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisezone.entity.UserInfo;
 import com.wisezone.service.UserInfoService;
+import com.wisezone.util.StringUtil;
 
 @Controller
 @Scope(value="prototype")
@@ -68,6 +71,22 @@ public class UserInfoController {
 	@ResponseBody
 	public List<Map<String, Object>> queryyjpm(String dateMonth){
 		List<Map<String, Object>> list = service.yj_sort(dateMonth);
+		return list;
+	}
+	
+	@RequestMapping(value="yjofYear")
+	public String queryByYear(){
+		return "yjofYear";
+	}
+	
+	@RequestMapping(value="queryyjofYear")
+	@ResponseBody
+	public List<Map<String, Object>> queryyjofYear(String year){
+		if (StringUtil.isNullOrEmpty(year)) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+			year = sdf.format(new Date());
+		}
+		List<Map<String, Object>> list = service.searchYear(year);
 		return list;
 	}
 }

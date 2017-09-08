@@ -54,7 +54,7 @@
 	                            </li>
                             </c:if>
                             <li>
-                                <a href="#">业绩查询</a>
+                                <a visit_action="yjofYear.action"  href="${sessionScope.basePath}yjofYear.action">业绩查询</a>
                             </li>
                             <c:if test="${userInfo.role!=3}">
 	                            <li>

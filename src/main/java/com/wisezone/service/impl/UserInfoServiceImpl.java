@@ -38,6 +38,11 @@ public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 	public List<Map<String, Object>> yj_sort(String dateMonth) {
 		return mapper.yj_sort(dateMonth);
 	}
+
+	@Override
+	public List<Map<String, Object>> searchYear(String year) {
+		return mapper.searchYear(year);
+	}
  
 
 }
