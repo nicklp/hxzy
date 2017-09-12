@@ -359,6 +359,8 @@ div[data-role="editor-toolbar"] {
 	<script src="assets/bootstrap-wysiwyg-master/bootstrap-wysiwyg.js"></script>
 	<script
 		src="assets/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script
+		src="assets/bootstrap-datepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 	<!-- Custom Js -->
 	<!-- <script src="assets/js/custom-scripts.js"></script>  -->
 	<script src="assets/sweetalert/sweetalert.min.js"></script>
@@ -433,7 +435,7 @@ div[data-role="editor-toolbar"] {
 	<script>
 		//初始化dateTimepicker
 		$('#createDate').datetimepicker({
-			//language: 'zh-CN',//显示中文
+			language: 'zh-CN',//显示中文
 			format : 'yyyy-mm-dd',//显示格式
 			minView : "month",//设置只显示到月份
 			initialDate : new Date(),//初始化当前日期
