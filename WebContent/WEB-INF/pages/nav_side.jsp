@@ -85,7 +85,7 @@
 	                        <a href="javascript:void(0)"><i class="fa icon-cogs"></i> <h4 class="hxzynav">系统管理</h4><span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">
 	                            <li>
-	                                <a href="#">简历相关资料管理</a>
+	                                <a visit_action="cvothers.action" href="${sessionScope.basePath}cvothers.action">简历相关资料管理</a>
 	                            </li>
 	                        </ul>
 	                    </li>

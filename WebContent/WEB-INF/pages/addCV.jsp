@@ -198,11 +198,9 @@ div[data-role="editor-toolbar"] {
 													<select id="tdType_select" class="selectbox"
 														style="width: 200px;">
 														<option value="-1">请选择</option>
-														<option value="1">网上搜索</option>
-														<option value="2">电话咨询</option>
-														<option value="3">口碑</option>
-														<option value="4">主动投递</option>
-														<option value="9">其他</option>
+														<c:forEach items="${requestScope.td_list}" var="item">
+															<option value="${item.tName}">${item.tName}</option>
+														</c:forEach>
 													</select>
 												</div>
 											</div>

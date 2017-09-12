@@ -54,8 +54,10 @@ public class CVInfoController {
 	public String addCVInfo(Model model) {
 		List<CVOtherInfo> school_list = otherService.queryByType(CVOtherInfo.SCHOOL_TYPE);
 		List<CVOtherInfo> msg_from_list = otherService.queryByType(CVOtherInfo.MSG_FROM);
+		List<CVOtherInfo> td_list = otherService.queryByType(CVOtherInfo.TD_TYPE);
 		model.addAttribute("school", school_list);
 		model.addAttribute("msg_from", msg_from_list);
+		model.addAttribute("td_list", td_list);
 		return "addCV";
 	}
 	

@@ -63,4 +63,9 @@ public class CVOtherInfo implements Serializable {
 		return "CVOtherInfo [tId=" + tId + ", tName=" + tName + ", tType=" + tType + "]";
 	}
 
+	public CVOtherInfo(String tName, String tType) {
+		super();
+		this.tName = tName;
+		this.tType = tType;
+	}
 }

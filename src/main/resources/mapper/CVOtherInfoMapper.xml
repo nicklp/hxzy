@@ -21,9 +21,8 @@
   	</select>
   	
   	<insert id="insert" parameterType="com.wisezone.entity.CVOtherInfo" useGeneratedKeys="true" keyProperty="tId">
-  		insert into cv_other_info (t_id,t_name,t_type)
+  		insert into cv_other_info (t_name,t_type)
   		values(
-  			#{tId,jdbcType=INTEGER},
   			#{tName,jdbcType=VARCHAR},
   			#{tType,jdbcType=VARCHAR}
   		)
