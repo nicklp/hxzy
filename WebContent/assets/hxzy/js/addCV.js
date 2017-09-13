@@ -16,6 +16,7 @@ $(function(){
 })(jQuery); 
 
 $(function(){
+			
 			var validator = $('#cvForm').data('bootstrapValidator');
 			
 			/* 加载时间选择插件 */  
@@ -40,7 +41,7 @@ $(function(){
 	                       type: "POST",  
 	                       dataType: "json",  
 	                       contentType: "application/json; charset=utf-8",
-	                       url: "http://localhost:8080/hxzy/add.action",  
+	                       url: baseUrl + "/add.action",  
 	                       data: JSON.stringify(json_cvForm) ,
 	                       beforeSend:function(XMLHttpRequest){
 	                    	   $('#myModal').modal("show");
@@ -55,6 +56,7 @@ $(function(){
 	                    	   
 	                    	   $("#cvForm").data("bootstrapValidator").resetForm();
 	                    	   $("#cvForm")[0].reset();
+	                    	   $("#stuName,#phone").parents(".form-group").find("div:last").hide();
 	                    	   $('#editor').html("");
 	                       },
 	                       error:function(XMLHttpRequest,textStatus,errorThrown){
@@ -75,16 +77,17 @@ $(function(){
 					} 
 				}
 			});
-	
+			$("#stuName,#phone").focus(function(){
+				$(this).parents(".form-group").find("div:last").hide();
+			});
 			$("#stuName").blur(function(){
 				if($(this).val() == "" || $(this).val() == null){
 					return;
 				}
-				
 				$.ajax({
                        type: "POST",  
                        dataType: "json",  
-                       url: "http://localhost:8080/hxzy/queryNameAndPhone.action",  
+                       url: baseUrl + "/queryNameAndPhone.action",  
                        data: "stuName=" + $(this).val() + "&phone=" ,  
                        beforeSend:function(XMLHttpRequest){
                        },
@@ -92,8 +95,30 @@ $(function(){
                     	   $(".name_validate").html("");
                        		if(data != null && data.length > 0){
                        			readJsontotab(data);
-                       		}else{
-                       			console.log("没有重复姓名");
+                       			$("#stuName").parents(".form-group").find("div:last").show();
+                       		}
+                       },
+                       error:function(XMLHttpRequest,textStatus,errorThrown){
+                       }
+				});
+			});
+			
+			$("#phone").blur(function(){
+				if($(this).val() == "" || $(this).val() == null){
+					return;
+				}
+				$.ajax({
+                       type: "POST",  
+                       dataType: "json",  
+                       url: baseUrl + "/queryNameAndPhone.action",  
+                       data: "stuName=&phone=" + $(this).val() ,  
+                       beforeSend:function(XMLHttpRequest){
+                       },
+                       success: function (data) {
+                    	   $(".name_validate").html("");
+                       		if(data != null && data.length > 0){
+                       			readJsontotab(data);
+                       			$("#phone").parents(".form-group").find("div:last").show();
                        		}
                        },
                        error:function(XMLHttpRequest,textStatus,errorThrown){

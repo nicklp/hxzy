@@ -13,7 +13,7 @@ function init(){
 	$.ajax({
         type: "POST",  
         dataType: "json",  
-        url: "http://localhost:8080/hxzy/queryyjpm.action",  
+        url: baseUrl + "/queryyjpm.action",  
         data: "dateMonth="+$("#dateMonth").val() ,  
         beforeSend:function(XMLHttpRequest){
         },

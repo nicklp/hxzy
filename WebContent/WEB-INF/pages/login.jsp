@@ -164,6 +164,7 @@
 		<script src="assets/login/js/retina.js"></script>
 
 		<script src="assets/login/js/custom.js"></script>
+		<script src="assets/hxzy/js/commons.js"></script>
 		<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.js"></script>
 		<script type="text/javascript" language="javascript" charset="utf-8" src="assets/toastr/toastr.js"></script>
 		<script>
@@ -191,11 +192,11 @@
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
-	                       url: "${sessionScope.basePath}dologin.action",  
+	                       url: baseUrl + "/dologin.action",  
 	                       data: data_str ,
 	                       success: function (data) {
 	                    	   if(data && data.state == true){
-	                    		   window.location.href="${sessionScope.basePath}addCV.action";
+	                    		   window.location.href= baseUrl + "/addCV.action";
 	                    	   }else{
 	                    		   toastr.error("用户名或密码错误!");
 	                    	   }

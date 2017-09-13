@@ -216,7 +216,7 @@
 				striped: false,   //是否显示行间隔色
 				uniqueId:"tId",
 				method:'post',
-				url:'${sessionScope.basePath}queryView.action', 
+				url:baseUrl + '/queryView.action', 
 				cache:false,
 				sidePagination:'server',
 				pageNumber:1,
@@ -384,7 +384,7 @@
 					 $.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
-	                       url: "${sessionScope.basePath}saveData.action",  
+	                       url: baseUrl + "/saveData.action",  
 	                       contentType: "application/json; charset=utf-8",
 	                       data: JSON.stringify(params) ,  
 	                       beforeSend:function(XMLHttpRequest){
@@ -434,7 +434,7 @@
 		
 		function refreshTab(){
 			$("#cv_tab").bootstrapTable('refresh',{
-				url:'${sessionScope.basePath}queryView.action',
+				url:baseUrl + '/queryView.action',
 				queryParams: function queryParams(params) {   //设置查询参数  
 		              var param = {    
 		                  pageNumber: params.pageNumber,    

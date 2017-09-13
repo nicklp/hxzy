@@ -147,7 +147,7 @@
 				$.ajax({
                     type: "POST",  
                     dataType: "json",  
-                    url: "${sessionScope.basePath}deleteinfobyid.action",  
+                    url: baseUrl + "/deleteinfobyid.action",  
                     data: "tId=" + $(this).find("input").val() ,
                     success: function (data) {
                  	 	if(data){
@@ -179,7 +179,7 @@
 			$.ajax({
                 type: "POST",  
                 dataType: "json",  
-                url: "${sessionScope.basePath}querycvothers.action",  
+                url: baseUrl + "/querycvothers.action",  
                 data: "tType=" + $("#tType").val() ,
                 success: function (data) {
              	  $(".data_wrap table tbody").empty();
@@ -201,7 +201,7 @@
 				$.ajax({
 	                type: "POST",  
 	                dataType: "json",  
-	                url: "${sessionScope.basePath}addcvOthers.action",  
+	                url: baseUrl + "/addcvOthers.action",  
 	                data: "tName=" + $("#info").val() + "&tType=" + $("#tType").val() ,
 	                success: function (data) {
 	             	 	if(data){

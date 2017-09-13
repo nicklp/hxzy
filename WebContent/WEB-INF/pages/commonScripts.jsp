@@ -6,6 +6,7 @@
 <!-- Metis Menu Js -->
 <script src="assets/js/jquery.metisMenu.js"></script>
 <script src="assets/js/select2.full.min.js"></script>
+<script src="assets/hxzy/js/commons.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 	  $(".selectbox").select2();

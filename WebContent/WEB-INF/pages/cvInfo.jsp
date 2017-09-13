@@ -246,7 +246,7 @@
 				striped: false,   //是否显示行间隔色
 				uniqueId:"tId",
 				method:'post',
-				url:'${sessionScope.basePath}queryCVInfo.action',
+				url:baseUrl + '/queryCVInfo.action',
 				cache:false,
 				sidePagination:'server',
 				pageNumber:1,
@@ -449,7 +449,8 @@
 				}, {
 					field : 'msgFrom',
 					title : '信息来源',
-					align:'center'
+					align:'center',
+					width:'10%'
 				}, {
 					field : 'school',
 					title : '毕业院校',
@@ -486,7 +487,7 @@
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
-	                       url: "${sessionScope.basePath}saveData.action",  
+	                       url: baseUrl + "/saveData.action",  
 	                       contentType: "application/json; charset=utf-8",
 	                       data: JSON.stringify(params) ,  
 	                       beforeSend:function(XMLHttpRequest){
@@ -519,7 +520,7 @@
 					$.ajax({
 	                    type: "POST",  
 	                    dataType: "json",  
-	                    url: "${sessionScope.basePath}deleteData.action",  
+	                    url: baseUrl + "/deleteData.action",  
 	                    contentType: "application/json; charset=utf-8",
 	                    data: JSON.stringify(ids) ,  
 	                    beforeSend:function(XMLHttpRequest){
@@ -669,7 +670,7 @@
 		
 		function refreshTab(){
 			$("#cv_tab").bootstrapTable('refresh',{
-				url:'${sessionScope.basePath}queryCVInfo.action',
+				url:baseUrl + '/queryCVInfo.action',
 				queryParams: function queryParams(params) {   //设置查询参数  
 		              var param = {    
 		                  pageNumber: params.pageNumber,    

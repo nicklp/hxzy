@@ -1,6 +1,8 @@
 /**
  * 
  */
+var baseUrl = document.location.href;
+	baseUrl = baseUrl.substring(0,baseUrl.lastIndexOf("/"));
 $(function(){
 	/*swal({ 
 	    title: "您确定要删除吗？", 

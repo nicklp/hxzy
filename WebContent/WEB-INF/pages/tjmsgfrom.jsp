@@ -143,7 +143,7 @@
 				showRefresh:true,
 				striped: true,   //是否显示行间隔色
 				method:'post',
-				url:'${sessionScope.basePath}querytjmsgfrom.action',
+				url:baseUrl + '/querytjmsgfrom.action',
 				cache:false,
 				sidePagination:'server',
 				contentType: 'application/json',
@@ -182,7 +182,7 @@
 		
 		function refreshTab(){
 			$("#cv_tab").bootstrapTable('refresh',{
-				url:'${sessionScope.basePath}querytjmsgfrom.action',
+				url:baseUrl + '/querytjmsgfrom.action',
 				queryParams: function queryParams(params) {   //设置查询参数  
 		              var param = {   
 		                  from_date:$("#from_date").val(),

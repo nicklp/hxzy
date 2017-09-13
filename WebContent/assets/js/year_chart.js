@@ -13,7 +13,7 @@ function init(){
 	$.ajax({
         type: "POST",  
         dataType: "json",  
-        url: "http://localhost:8080/hxzy/queryyjofYear.action",  
+        url: baseUrl + "/queryyjofYear.action",  
         data: "year="+$("#dateYear").val() ,  
         beforeSend:function(XMLHttpRequest){
         },

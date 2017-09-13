@@ -190,7 +190,7 @@ function validate(form) {
               
                 validators.remote = {
                 	type:'POST',
-                	url: arr[0],
+                	url: "http://" + document.location.hostname + ":8080/hxzy/" + arr[0],
                 	data:cust_data,
                 	message: $(item).parent().prev().html()+'已经存在!'
                 };

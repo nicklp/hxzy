@@ -59,6 +59,11 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
 	cursor: pointer;
 }
+.validate_name_phone{
+	width:30px;
+	padding-right:2px;
+	color:red;
+}
 </style>
 <title>新增面试信息</title>
 </head>
@@ -91,16 +96,21 @@ div[data-role="editor-toolbar"] {
 									<div class="form-group">
 										<label for="stuName" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="stuName" wisezone="notEmpty remote(${sessionScope.basePath}validateNameAndPhone.action)"
+											<input type="text" class="form-control" id="stuName" wisezone="notEmpty"
 												name="stuName" placeholder="请输入姓名">
+										</div>
+										<div class="col-sm-1" style="display:none;">
+											<i class="fa icon-exclamation-sign validate_name_phone"></i>
+											<label class="control-label">有相同姓名</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="phone" class="col-sm-2 control-label">电话</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone  remote(${sessionScope.basePath}validateNameAndPhone.action)"
+											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone"
 												name="phone" placeholder="请输入电话">
 										</div>
+										<div class="col-sm-1" style="display:none;"><i class="fa icon-exclamation-sign validate_name_phone"></i><label class="control-label">有重复号码</label></div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">性别</label>
