@@ -108,6 +108,10 @@ public class UserInfoController {
 		paging.setSize(obj.getInt("pageSize"));
 		Map<String, Object> param = new HashMap<>();
 		param.put("state", obj.getInt("userState"));
+		if (obj.getString("loginName") != null && !obj.getString("loginName").equals("")) {
+			param.put("login_name", obj.getString("loginName"));
+			
+		}
 		service.searchPaging(param,paging);
 		Map<String, Object> jsonMap = new HashMap<>();
 		jsonMap.put("total", paging.getTotalRecords());

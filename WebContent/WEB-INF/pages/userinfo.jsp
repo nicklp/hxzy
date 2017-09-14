@@ -63,12 +63,18 @@
 											<div class="col-md-2 line_height_30">
 												请选择查询条件
 											</div>
-											<div class="col-md-2 padding_left_right_0">
+											<div class="col-md-1 padding_left_right_0">
 												<select id="userState">
 													<option value="1">正常</option>
 													<option value="2">禁用</option>
 													<option value="3">离职</option>
 												</select>
+											</div>
+											<div class="col-md-2">
+												<input type="text" id="loginName" name="loginName"  class="form-control" placeholder="姓名" />
+											</div>
+											<div class="col-md-3">
+												<button id="btn_search" class="btn btn-default">查询</button>
 											</div>
 										</div>
 									</div>
@@ -126,7 +132,7 @@
 			}
 		$(function() {
 			fn_initTab();
-			$("#userState").change(function(){
+			$("#btn_search").click(function(){
 				refreshTab();
 			});
 			
@@ -190,7 +196,8 @@
 	              var param = {    
 	                  pageNumber: params.pageNumber,    
 	                  pageSize: params.pageSize, 
-	                  userState:$("#userState").val()
+	                  userState:$("#userState").val(),
+	                  loginName:$("#loginName").val()
 	              };    
 	              return param;                   
 	            },
@@ -244,7 +251,8 @@
 		              var param = {    
 		                  pageNumber: params.pageNumber,    
 		                  pageSize: params.pageSize, 
-		                  userState:$("#userState").val()
+		                  userState:$("#userState").val(),
+		                  loginName:$("#loginName").val()
 		              };    
 		              return param;                   
 		            }
