@@ -195,10 +195,16 @@
 	                       url: baseUrl + "/dologin.action",  
 	                       data: data_str ,
 	                       success: function (data) {
-	                    	   if(data && data.state == true){
-	                    		   window.location.href= baseUrl + "/addCV.action";
-	                    	   }else{
+	                    	   if(data.state == -1){
 	                    		   toastr.error("用户名或密码错误!");
+	                    	   }else{
+	                    		   if (data.state == 1) {
+		                    		   window.location.href= baseUrl + "/addCV.action";
+								   }else if (data.state == 2) {
+									   toastr.error("该用户已禁止登陆，请与管理员联系!");
+								   }else if (data.state == 3) {
+									   toastr.error("该用户已办理离职!");
+								   }
 	                    	   }
 	                    	   
 	                    	   $("#loginForm")[0].reset();

@@ -44,12 +44,13 @@
     <!--更新-->
     <!--  -->
     <update id="update" parameterType="com.wisezone.entity.UserInfo">
-    	
 	    update user_info
-	    set login_name = #{loginName,jdbcType=VARCHAR},
-	      login_pwd = #{loginPwd,jdbcType=VARCHAR},
-	      state = #{state,jdbcType=INTEGER},
-	      role = #{role,jdbcType=INTEGER}
+	    <trim prefix="set" suffixOverrides=",">
+		  <if test="loginName!=null">login_name = #{loginName,jdbcType=VARCHAR},</if>
+		  <if test="loginPwd!=null">login_pwd = #{loginPwd,jdbcType=VARCHAR},</if>
+		  <if test="state!=0">state = #{state,jdbcType=INTEGER},</if>
+		  <if test="role!=0">role = #{role,jdbcType=INTEGER}</if>
+		 </trim>
 	    where t_id = #{tId,jdbcType=INTEGER}
   </update>
   
@@ -75,14 +76,15 @@
    <select id="searchPaging"  resultMap="BaseResultMap">
       select *
       from user_info 
-      <if test="param != null">
 	      <where>          
+     		 <if test="param != null">
 	          <!-- 遍历map集合  index相当于是键,  item相当于是值 -->
 	           <foreach collection="param" index="key" item="value" open="(" separator="and"  close=")">
 	                  ${key} = #{value} 
 	           </foreach>      
+      		</if>
+      		and role != 9
 	      </where> 
-      </if>
       <!-- 分页 -->
       limit #{offset}, #{limit}
  </select>
@@ -91,14 +93,15 @@
    <select id="searchPagingCount"  resultType="int">
       select count(*)
       from user_info 
-      <if test="param != null">
 	      <where>          
+		      <if test="param != null">
 	          <!-- 遍历map集合  index相当于是键,  item相当于是值 -->
 	           <foreach collection="param" index="key" item="value" open="(" separator="and"  close=")">
 	                  ${key} = #{value}    
 	           </foreach>      
+		      </if>
+		      and role != 9
 	      </where> 
-      </if>
      
  </select>  
   

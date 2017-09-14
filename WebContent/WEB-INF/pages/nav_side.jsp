@@ -93,7 +93,10 @@
 	                        <a href="javascript:void(0)"><i class="fa icon-user"></i> <h4 class="hxzynav">用户管理</h4><span class="fa arrow"></span></a>
 	                        <ul class="nav nav-second-level">
 	                            <li>
-	                                <a href="#">用户相关资料管理</a>
+	                                <a visit_action="userInfo.action" href="${sessionScope.basePath}userInfo.action">用户相关资料管理</a>
+	                            </li>
+	                            <li>
+	                                <a visit_action="addUser.action" href="${sessionScope.basePath}addUser.action">录入新员工</a>
 	                            </li>
 	                        </ul>
 	                    </li>

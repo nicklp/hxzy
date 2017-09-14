@@ -89,7 +89,7 @@
 											<div class="col-md-1">
 												<label class="control-label">信用卡：<span>${map.creditCount}</span></label>
 											</div>
-										</div>
+									</div>
 									<div class="row">
 										<div class="col-md-3">
 											<div class="row">
@@ -165,7 +165,7 @@
 										data-toolbar="#toolbar"
 										data-pagination="true"
 										data-show-columns="true"
-										data-page-size="5"
+										data-page-size="20"
 									>
 									</table>
 								 </div>

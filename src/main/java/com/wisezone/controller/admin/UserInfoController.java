@@ -1,5 +1,6 @@
 package com.wisezone.controller.admin;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,15 +11,20 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisezone.entity.UserInfo;
 import com.wisezone.service.UserInfoService;
+import com.wisezone.util.PageUtil;
 import com.wisezone.util.StringUtil;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @Scope(value="prototype")
@@ -47,9 +53,9 @@ public class UserInfoController {
 		if (userinfo != null) {
 			session.setAttribute("userInfo", userinfo);
 			
-			sb.append(true);
+			sb.append(userinfo.getState());
 		}else{
-			sb.append(false);
+			sb.append(-1);
 		}
 		sb.append("}");
 		return sb.toString();
@@ -87,5 +93,42 @@ public class UserInfoController {
 		}
 		List<Map<String, Object>> list = service.searchYear(year);
 		return list;
+	}
+	
+	@RequestMapping(value="/userInfo")
+	public String userInfo(){
+		return "userinfo";
+	}
+	
+	@RequestMapping(value="/queryUserInfo")
+	@ResponseBody
+	public String queryCVInfo(@RequestBody JSONObject obj){
+		PageUtil<UserInfo> paging = new PageUtil<>();
+		paging.setPage(obj.getInt("pageNumber"));
+		paging.setSize(obj.getInt("pageSize"));
+		Map<String, Object> param = new HashMap<>();
+		param.put("state", obj.getInt("userState"));
+		service.searchPaging(param,paging);
+		Map<String, Object> jsonMap = new HashMap<>();
+		jsonMap.put("total", paging.getTotalRecords());
+		jsonMap.put("rows", paging.getData());
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(jsonMap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/updateState")
+	@ResponseBody
+	public boolean updateState(int state,int tId){
+		return service.update(new UserInfo(tId,null,null,state,0));
+	}
+	
+	@RequestMapping(value="/addUser")
+	public String addUser(){
+		return "addUser";
 	}
 }

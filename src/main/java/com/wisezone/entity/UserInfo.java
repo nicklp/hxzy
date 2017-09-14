@@ -68,5 +68,16 @@ public class UserInfo implements Serializable {
 	public void setRole(Integer role) {
 		this.role = role;
 	}
+	public UserInfo(Integer tId, String loginName, String loginPwd, Integer state,Integer role) {
+		super();
+		this.tId = tId;
+		this.loginName = loginName;
+		this.loginPwd = loginPwd;
+		this.state = state;
+		this.role = role;
+	}
+	public UserInfo() {
+		super();
+	}
 	
 }
