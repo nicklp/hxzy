@@ -49,7 +49,7 @@ public class TodayViewContoller {
 		List<UserInfo> list = userInfoService.getUserInfo(2);//查询市场助理
 		StringBuilder sb = new StringBuilder("<select class='invitePersonList'><option value='-1'>请选择</option>");
 		for (UserInfo item : list) {
-			sb.append("<option value='"+item.gettId()+"'>" + item.getLoginName() + "</option>");
+			sb.append("<option value='"+item.gettId()+"'>" + item.getUserName() + "</option>");
 		}
 		sb.append("</select>");
 		model.addAttribute("invitePerson", sb.toString());
@@ -68,7 +68,7 @@ public class TodayViewContoller {
 		if(s_text == 1){
 			param.put("stu_name", obj.getString("searchText"));	//根据市场助理名称查询
 		}else{
-			param.put("login_name", obj.getString("searchText"));		//根据学生姓名查询
+			param.put("user_name", obj.getString("searchText"));		//根据学生姓名查询
 		}
 		
 		param.put("from_date", obj.getString("from_date"));

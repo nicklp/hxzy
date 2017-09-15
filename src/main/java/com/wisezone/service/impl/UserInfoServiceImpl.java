@@ -43,6 +43,11 @@ public class UserInfoServiceImpl extends CommonServiceImpl<UserInfo> implements
 	public List<Map<String, Object>> searchYear(String year) {
 		return mapper.searchYear(year);
 	}
+
+	@Override
+	public List<UserInfo> validateLoginName(Map<String, String> map) {
+		return mapper.validateLoginName(map);
+	}
  
 
 }

@@ -20,6 +20,7 @@ public class UserInfo implements Serializable {
   `role` int(1) NOT NULL COMMENT '1.普通管理员 2.员工 9.超级管理员',
 	 */
 	private Integer tId;
+	private String userName;
 	private String loginName;
 	private String loginPwd;
 	private Date createTime;
@@ -68,9 +69,18 @@ public class UserInfo implements Serializable {
 	public void setRole(Integer role) {
 		this.role = role;
 	}
-	public UserInfo(Integer tId, String loginName, String loginPwd, Integer state,Integer role) {
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	public UserInfo(Integer tId, String userName, String loginName, String loginPwd,Integer state, Integer role) {
 		super();
 		this.tId = tId;
+		this.userName = userName;
 		this.loginName = loginName;
 		this.loginPwd = loginPwd;
 		this.state = state;

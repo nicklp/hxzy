@@ -9,6 +9,7 @@
 	<resultMap id="BaseResultMap" type="com.wisezone.entity.UserInfo">
 		<id column="t_id" jdbcType="INTEGER" property="tId" />
 		<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
 		<result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
 		<result column="create_time" jdbcType="DATE" property="createTime" />
 		<result column="last_login_time" jdbcType="DATE" property="lastLoginTime" />
@@ -21,9 +22,10 @@
      keyProperty 是java对象的属性名
      -->
      <insert id="insert" parameterType="com.wisezone.entity.UserInfo" useGeneratedKeys="true" keyProperty="tId">
-		insert into user_info (t_id, login_name, login_pwd,create_time, last_login_time, state,role)
+		insert into user_info (t_id,user_name, login_name, login_pwd,create_time, last_login_time, state,role)
 		values (
 			#{tId,jdbcType=INTEGER}, 
+			#{userName,jdbcType=VARCHAR},
 			#{loginName,jdbcType=VARCHAR},
 			#{loginPwd,jdbcType=VARCHAR},
 			#{createTime,jdbcType=DATE},
@@ -35,7 +37,7 @@
 
 	<select id="login" parameterType="map" resultMap="BaseResultMap">
 		select 
-			t_id,login_name,create_time,last_login_time,state,role
+			t_id,login_name,user_name,create_time,last_login_time,state,role
 		from user_info 
 		where login_name = #{loginName} and login_pwd = #{loginPwd}
 		and state not in (2,3)
@@ -47,6 +49,7 @@
 	    update user_info
 	    <trim prefix="set" suffixOverrides=",">
 		  <if test="loginName!=null">login_name = #{loginName,jdbcType=VARCHAR},</if>
+		  <if test="userName!=null">user_name = #{userName,jdbcType=VARCHAR},</if>
 		  <if test="loginPwd!=null">login_pwd = #{loginPwd,jdbcType=VARCHAR},</if>
 		  <if test="state!=0">state = #{state,jdbcType=INTEGER},</if>
 		  <if test="role!=0">role = #{role,jdbcType=INTEGER}</if>
@@ -58,6 +61,7 @@
   <resultMap type="com.wisezone.entity.UserInfo" id="doLogin">
   	<id column="t_id" jdbcType="INTEGER" property="tId" />
 	<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+	<result column="user_name" jdbcType="VARCHAR" property="userName" />
 	<result column="last_login_time" jdbcType="DATE" property="lastLoginTime" />
 	<result column="state" jdbcType="INTEGER" property="state" />
 	<result column="role" jdbcType="INTEGER" property="role" />
@@ -107,7 +111,7 @@
   
   <select id="yj_sort" parameterType="String" resultType="map">
   		select 
-		t.login_name userName,
+		t.user_name userName,
 		(
 			select count(t1.visit_date) 
 			from user_cv_rel t1
@@ -242,7 +246,13 @@
 	(select count(*) from user_cv_rel t1 where date_format(t1.visit_date,'%Y%m') = CONCAT(#{year},'12')) sm,
 	(select count(*) from user_cv_rel t1 where date_format(t1.pre_pay_date,'%Y%m') = CONCAT(#{year},'12')) yb,
 	(select count(*) from user_cv_rel t1 where date_format(t1.pay_date,'%Y%m') = CONCAT(#{year},'12') and t1.pay is not null) ff
-
-		
   </select>
+  <select id="validateLoginName" parameterType="map" resultMap="BaseResultMap">
+			select * from user_info 
+			<where>
+			    <if test="loginName !=null and loginName !=''">
+			      login_name = #{loginName}
+			    </if>
+		   </where>
+	</select>
 </mapper>  

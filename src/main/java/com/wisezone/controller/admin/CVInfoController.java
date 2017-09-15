@@ -126,7 +126,7 @@ public class CVInfoController {
 		List<UserInfo> list = userInfoService.getUserInfo(3);//查询咨询顾问
 		StringBuilder sb = new StringBuilder("<select class='askTeacher'><option value='-1'>请选择</option>");
 		for (UserInfo item : list) {
-			sb.append("<option value='"+item.gettId()+"'>" + item.getLoginName() + "</option>");
+			sb.append("<option value='"+item.gettId()+"'>" + item.getUserName() + "</option>");
 		}
 		sb.append("</select>");
 		model.addAttribute("userList", sb.toString());

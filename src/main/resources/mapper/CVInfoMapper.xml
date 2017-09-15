@@ -82,7 +82,7 @@
 		<!-- (select t2.t_id from user_info t1 inner join user_cv_rel t2 on t1.t_id = t2.user_id where t2.stu_id = t.t_id) relId, -->
 		(select t1.t_id from user_cv_rel t1 where t1.stu_id = t.t_id) relId,
 		
-		(select t1.login_name from user_info t1 inner join user_cv_rel t2 on t1.t_id = t2.user_id where t2.stu_id = t.t_id) userName,
+		(select t1.user_name from user_info t1 inner join user_cv_rel t2 on t1.t_id = t2.user_id where t2.stu_id = t.t_id) userName,
 		(select t1.t_id from user_info t1 inner join user_cv_rel t2 on t1.t_id = t2.user_id where t2.stu_id = t.t_id) userId,
 	  	t.create_date createDate,
 		(select t1.visit_date from user_cv_rel t1 where t1.stu_id = t.t_id) visitDate,
@@ -124,7 +124,7 @@
 			  			and t1.phone = #{param.searchText}
 		  			</if>
 		  			<if test="param.s_text == 3">
-			  			and t3.login_name = #{param.searchText}
+			  			and t3.user_name = #{param.searchText}
 		  			</if>
 		  		</if>
 		  		<if test="param.pay_type != -1">
@@ -169,7 +169,7 @@
  	select 
 		t1.t_id tId,	
 		t1.stu_name stuName,
-		t3.login_name userName,
+		t3.user_name userName,
 		t3.t_id userId,
 		t1.create_date createDate,
 		t2.t_id relId,
@@ -208,7 +208,7 @@
  	SELECT 
 	    t1.t_id stuId,
 	    t2.invite_id invitId,
-	    (select t3.login_name from user_info t3 where t3.t_id = t2.invite_id) invitPerson,
+	    (select t3.user_name from user_info t3 where t3.t_id = t2.invite_id) invitPerson,
 		t1.stu_name stuName ,
 		t1.create_date createDate,
 		t1.phone,
@@ -221,14 +221,14 @@
 		t1.td_type tdType,
 		t1.intention,
 		t2.user_id userId,
-		(select t3.login_name from user_info t3 where t3.t_id = t2.user_id) askPerson,
+		(select t3.user_name from user_info t3 where t3.t_id = t2.user_id) askPerson,
 		t2.t_id relId
 	from cv_info t1 left join user_cv_rel t2
 	on t1.t_id = t2.stu_id
 	<if test="param != null">
 		<where>
-			<if test="param.login_name != null and param.login_name != ''">
-				and t2.invite_id = (select t3.t_id from user_info t3 where t3.login_name = #{param.login_name})
+			<if test="param.user_name != null and param.user_name != ''">
+				and t2.invite_id = (select t3.t_id from user_info t3 where t3.user_name = #{param.user_name})
 			</if>
 			<if test="param.stu_name != null and param.stu_name != ''">
 				and t1.stu_name = #{param.stu_name}
@@ -259,8 +259,8 @@
 	on t1.t_id = t2.stu_id
 	<if test="param != null">
 		<where>
-			<if test="param.login_name != null and param.login_name != ''">
-				and t2.invite_id = (select t3.t_id from user_info t3 where t3.login_name = #{param.login_name})
+			<if test="param.user_name != null and param.user_name != ''">
+				and t2.invite_id = (select t3.t_id from user_info t3 where t3.user_name = #{param.user_name})
 			</if>
 			<if test="param.stu_name != null and param.stu_name != ''">
 				and t1.stu_name = #{param.stu_name}

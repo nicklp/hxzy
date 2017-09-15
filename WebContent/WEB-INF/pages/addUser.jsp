@@ -92,18 +92,25 @@ div[data-role="editor-toolbar"] {
 								</div>
 							</div>
 							<div class="panel-body">
-								<form class="form-horizontal required-validate" method="post" id="cvForm" action="#">
+								<form class="form-horizontal required-validate" method="post" id="userForm" action="#">
+									<div class="form-group">
+										<label for="loginName" class="col-sm-2 control-label">登录名</label>
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="loginName" wisezone="notEmpty nameregexp remote(${sessionScope.basePath}validateLoginName.action)"
+												name="loginName" placeholder="请输入姓名">
+										</div>
+									</div>
 									<div class="form-group">
 										<label for="loginName" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="loginName" wisezone="notEmpty"
-												name="loginName" placeholder="请输入姓名">
+											<input type="text" class="form-control" id="userName" wisezone="notEmpty"
+												name="userName" placeholder="请输入姓名">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="loginPwd" class="col-sm-2 control-label">密码</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="loginPwd" wisezone="notEmpty identical"
+											<input type="password" class="form-control" id="loginPwd" wisezone="notEmpty stringLength(6,20)"
 												name="loginPwd" placeholder="请输入密码">
 										</div>
 										<div class="col-sm-1" style="display:none;"><i class="fa icon-exclamation-sign validate_name_phone"></i><label class="control-label">有重复号码</label></div>
@@ -111,7 +118,7 @@ div[data-role="editor-toolbar"] {
 									<div class="form-group">
 										<label for="loginPwd" class="col-sm-2 control-label">确认密码</label>
 										<div class="col-sm-3">
-											<input type="text" class="form-control" id="confirmloginPwd" wisezone="notEmpty identical"
+											<input type="password" class="form-control" id="confirmloginPwd" name="confirmloginPwd" wisezone="notEmpty stringLength(6,20) identical(loginPwd)"
 												 placeholder="请再次输入密码">
 										</div>
 										<div class="col-sm-1" style="display:none;"><i class="fa icon-exclamation-sign validate_name_phone"></i><label class="control-label">有重复号码</label></div>
@@ -181,13 +188,69 @@ div[data-role="editor-toolbar"] {
 	<!-- Custom Js -->
 	<!-- <script src="assets/js/custom-scripts.js"></script>  -->
 	<script src="assets/sweetalert/sweetalert.min.js"></script>
-	<script>
-		$(function() {
-			
-		});
-	</script>
 
 	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.js"></script>
 	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/customervalidater.js"></script>
+	<script>
+		/*将表单序列化成为json*/
+		(function($){  
+		    $.fn.serializeJson=function(){  
+		        var serializeObj={};  
+		        $(this.serializeArray()).each(function(){  
+		            serializeObj[this.name]=this.value;  
+		        });  
+		        return serializeObj;  
+		    };  
+		})(jQuery); 
+		
+		$(function() {
+			validate($('#userForm'));
+			
+			var validator = $('#userForm').data('bootstrapValidator');
+			
+			$("#userForm").submit(function(ev){
+				 ev.preventDefault();
+			});
+			
+			$(".btn-success").click(function(){
+				var flag = validate($("#userForm"));
+				if(flag){
+					var json_userForm = $("#userForm").serializeJson();
+					
+					$.ajax({
+	                       type: "POST",  
+	                       dataType: "json",  
+	                       contentType: "application/json; charset=utf-8",
+	                       url: baseUrl + "/doaddUser.action",  
+	                       data: JSON.stringify(json_userForm) ,
+	                       beforeSend:function(XMLHttpRequest){
+	                    	   //$('#myModal').modal("show");
+	                       },
+	                       success: function (data) {
+	                    	  // $('#myModal').modal("hide");
+	                    	   if(data && data.state == true){
+	                    		   swal("添加成功!", "", "success"); 
+	                    	   }else{
+	                    		   swal("添加失败!", "", "error"); 
+	                    	   }
+	                    	   
+	                    	   $("#userForm").data("bootstrapValidator").resetForm();
+	                    	   $("#userForm")[0].reset();
+	                       },
+	                       error:function(XMLHttpRequest,textStatus,errorThrown){
+	                    	   //$('#myModal').modal("hide");
+	                       }
+					});
+				}
+			});
+			
+			$("#userForm").find("input[wisezone]").on("blur",function(){
+				var attrName = $(this).prop("name");
+				validator  
+                .updateStatus(attrName, 'NOT_VALIDATED',null)  
+                .validateField(attrName);  
+			});
+		});
+	</script>
 </body>
 </html>

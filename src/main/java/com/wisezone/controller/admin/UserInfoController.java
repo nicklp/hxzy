@@ -17,8 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wisezone.entity.CVInfo;
 import com.wisezone.entity.UserInfo;
 import com.wisezone.service.UserInfoService;
 import com.wisezone.util.PageUtil;
@@ -108,9 +110,12 @@ public class UserInfoController {
 		paging.setSize(obj.getInt("pageSize"));
 		Map<String, Object> param = new HashMap<>();
 		param.put("state", obj.getInt("userState"));
-		if (obj.getString("loginName") != null && !obj.getString("loginName").equals("")) {
-			param.put("login_name", obj.getString("loginName"));
+		if (obj.getString("userName") != null && !obj.getString("userName").equals("")) {
+			param.put("user_name", obj.getString("userName"));
 			
+		}
+		if (obj.getInt("userRole") != -1) {
+			param.put("role", obj.getInt("userRole"));
 		}
 		service.searchPaging(param,paging);
 		Map<String, Object> jsonMap = new HashMap<>();
@@ -128,11 +133,40 @@ public class UserInfoController {
 	@RequestMapping(value="/updateState")
 	@ResponseBody
 	public boolean updateState(int state,int tId){
-		return service.update(new UserInfo(tId,null,null,state,0));
+		return service.update(new UserInfo(tId,null,null,null,state,0));
 	}
 	
 	@RequestMapping(value="/addUser")
 	public String addUser(){
 		return "addUser";
+	}
+	
+	@RequestMapping(value="/doaddUser",method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String insert(@RequestBody Map map){
+		//Integer tId, String userName, String loginName, String loginPwd,Integer state, Integer role
+		UserInfo user = new UserInfo(0, String.valueOf(map.get("userName")),String.valueOf(map.get("loginName")), String.valueOf(map.get("loginPwd")), 1,Integer.valueOf(String.valueOf(map.get("role"))));
+		boolean flag = service.insert(user);
+		String msg = "{\"state\":"+flag+"}";
+		return msg;
+	}
+	
+	@RequestMapping(value="/validateLoginName", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String validateNameAndPhone(String loginName){
+		Map<String, String> map = new HashMap<>();
+		map.put("loginName", loginName);
+		List<UserInfo> list = service.validateLoginName(map);
+		
+		Map<String, Boolean> v_map = new HashMap<>();
+		v_map.put("valid", list.size() == 0);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			String str = mapper.writeValueAsString(v_map);
+			return str;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

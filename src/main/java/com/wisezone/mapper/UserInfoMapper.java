@@ -16,4 +16,6 @@ public interface UserInfoMapper extends CommonMapper<UserInfo> {
 	public List<Map<String, Object>> yj_sort(@Param("dateMonth") String dateMonth);
 	
 	public List<Map<String, Object>> searchYear(@Param("year") String year);
+	
+	public List<UserInfo> validateLoginName(Map<String, String> map);
 }
