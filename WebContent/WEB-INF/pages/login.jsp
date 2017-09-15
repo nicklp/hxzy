@@ -199,7 +199,7 @@
 	                    		   toastr.error("用户名或密码错误!");
 	                    	   }else{
 	                    		   if (data.state == 1) {
-		                    		   window.location.href= baseUrl + "/addCV.action";
+		                    		   window.location.href= baseUrl + "/index.action";
 								   }else if (data.state == 2) {
 									   toastr.error("该用户已禁止登陆，请与管理员联系!");
 								   }else if (data.state == 3) {

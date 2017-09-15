@@ -22,10 +22,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li>
+                        <!-- <li>
                         	<a href="#"><i class="fa fa-user fa-fw"></i> 修改密码</a>
-                        </li>
-                        <li class="divider"></li>
+                        </li> 
+                        <li class="divider"></li>-->
                         <li>
                         	<a href="javascript:void(0);" class="loginOut"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
                         </li>
@@ -63,7 +63,7 @@
                             </c:if>
                         </ul>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="javascript:void(0)"><i class="fa icon-bar-chart "></i> <h4 class="hxzynav">统计信息</h4><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -71,7 +71,7 @@
                                 <a href="#">查看每月信息曲线</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                     <c:if test="${userInfo.role!=2&&userInfo.role!=3}">
                     	<li>
 	                        <a href="javascript:void(0)"><i class="fa fa-sitemap"></i> <h4 class="hxzynav">工作管理</h4><span class="fa arrow"></span></a>

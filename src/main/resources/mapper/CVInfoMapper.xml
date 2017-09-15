@@ -233,6 +233,9 @@
 			<if test="param.stu_name != null and param.stu_name != ''">
 				and t1.stu_name = #{param.stu_name}
 			</if>
+			<if test="param.phone != null and param.phone != ''">
+				and t1.phone = #{param.phone}
+			</if>
 			<if test="param.from_date != null and param.from_date != ''">
 				<![CDATA[
 					and t1.create_date >= #{param.from_date}
@@ -265,6 +268,9 @@
 			<if test="param.stu_name != null and param.stu_name != ''">
 				and t1.stu_name = #{param.stu_name}
 			</if>
+			<if test="param.phone != null and param.phone != ''">
+				and t1.phone = #{param.phone}
+			</if>
 			<if test="param.from_date != null and param.from_date != ''">
 				<![CDATA[
 					and t1.create_date >= #{param.from_date}
@@ -275,7 +281,7 @@
 					and t1.create_date <= #{param.to_date}
 				]]>
 			</if>
-			<if test="inviteId != 1 and inviteId != 9">
+			<if test="role != 1 and role != 9">
 					and t2.invite_id = #{inviteId}
 			</if>
 		</where>

@@ -63,6 +63,10 @@ public class UserInfoController {
 		return sb.toString();
 	}
 	
+	@RequestMapping(value="/index")
+	public String index(){
+		return "index";
+	}
 	@RequestMapping(value="/loginOut")
 	public String loginOut(HttpSession session){
 		session.invalidate();

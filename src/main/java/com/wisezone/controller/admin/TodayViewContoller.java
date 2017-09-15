@@ -66,9 +66,11 @@ public class TodayViewContoller {
 		
 		int s_text = obj.getInt("s_text");
 		if(s_text == 1){
-			param.put("stu_name", obj.getString("searchText"));	//根据市场助理名称查询
-		}else{
-			param.put("user_name", obj.getString("searchText"));		//根据学生姓名查询
+			param.put("stu_name", obj.getString("searchText"));	//根据学生姓名查询
+		}else if(s_text == 2){
+			param.put("user_name", obj.getString("searchText"));//根据市场助理名称查询	
+		}else if (s_text == 3) {
+			param.put("phone", obj.getString("searchText"));//根据市场面试者电话
 		}
 		
 		param.put("from_date", obj.getString("from_date"));
@@ -76,7 +78,7 @@ public class TodayViewContoller {
 		
 		UserInfo loginUser = (UserInfo) session.getAttribute("userInfo");
 		//如果登录的用户为市场助理，则只能看到自己做的简历
-		cvService.searchViewPaging(param, paging,loginUser.gettId());
+		cvService.searchViewPaging(param, paging,loginUser.gettId(),loginUser.getRole());
 		
 		Map<String, Object> jsonMap = new HashMap<>();
 		jsonMap.put("total", paging.getTotalRecords());

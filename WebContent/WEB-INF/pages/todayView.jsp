@@ -99,6 +99,7 @@
 														<c:if test="${userInfo.role!=2&&userInfo.role!=3}">
 															<option value="2">市场助理</option>
 														</c:if>
+														<option value="3">电话</option>
 													</select>
 												</div>
 												<div class="col-md-6">
