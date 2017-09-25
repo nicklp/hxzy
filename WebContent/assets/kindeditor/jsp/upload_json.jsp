@@ -17,11 +17,11 @@
 
 //文件保存目录路径
 //String savePath = pageContext.getServletContext().getRealPath("/") + "attached/";
-String savePath="e:/weixinimage/attached/";
+String savePath="D:/apache-tomcat-8.0.9-windows-x64/hxzyResource/";
 
 //文件保存目录URL
 //String saveUrl  = request.getContextPath() + "/attached/";
-String saveUrl="/weixinImage/attached/";
+String saveUrl="/hxzyResource/";
 
 //定义允许上传的文件扩展名
 HashMap<String, String> extMap = new HashMap<String, String>();

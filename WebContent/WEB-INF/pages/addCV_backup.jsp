@@ -30,8 +30,32 @@
 	href="assets/bootstrapvalidator/bootstrapValidator.min.css"
 	rel="stylesheet">
 <link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
-<link rel="stylesheet" href="assets/kindeditor/themes/default/default.css">
 <style>
+#editor {
+	max-height: 250px;
+	height: 250px;
+	background-color: white;
+	border-collapse: separate;
+	border: 1px solid rgb(204, 204, 204);
+	padding: 4px;
+	box-sizing: content-box;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+	box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+	overflow: scroll;
+	outline: none;
+}
+
+div[data-role="editor-toolbar"] {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 .dropdown-menu a {
 	cursor: pointer;
 }
@@ -222,9 +246,86 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">简历</label>
 										<div class="col-sm-8">
-											<textarea name="details" style="width:inherit; height: 400px; visibility: hidden; display: none;"></textarea>
+											<div class="btn-toolbar" data-role="editor-toolbar"
+												data-target="#editor">
+												<div class="btn-group">
+													<a class="btn dropdown-toggle" data-toggle="dropdown"
+														title="Font"><i class="icon-font"></i><b class="caret"></b></a>
+													<ul class="dropdown-menu">
+													</ul>
+												</div>
+												<div class="btn-group">
+													<a class="btn dropdown-toggle" data-toggle="dropdown"
+														title="Font Size"><i class="icon-text-height"></i> <b
+														class="caret"></b></a>
+													<ul class="dropdown-menu">
+														<li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+														<li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+														<li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+													</ul>
+												</div>
+												<div class="btn-group">
+													<a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i
+														class="icon-bold"></i></a> <a class="btn" data-edit="italic"
+														title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+													<a class="btn" data-edit="strikethrough"
+														title="Strikethrough"><i class="icon-strikethrough"></i></a>
+													<a class="btn" data-edit="underline"
+														title="Underline (Ctrl/Cmd+U)"><i
+														class="icon-underline"></i></a>
+												</div>
+												<div class="btn-group">
+													<a class="btn" data-edit="insertunorderedlist"
+														title="Bullet list"><i class="icon-list-ul"></i></a> <a
+														class="btn" data-edit="insertorderedlist"
+														title="Number list"><i class="icon-list-ol"></i></a> <a
+														class="btn" data-edit="outdent"
+														title="Reduce indent (Shift+Tab)"><i
+														class="icon-indent-left"></i></a> <a class="btn"
+														data-edit="indent" title="Indent (Tab)"><i
+														class="icon-indent-right"></i></a>
+												</div>
+												<div class="btn-group">
+													<a class="btn" data-edit="justifyleft"
+														title="Align Left (Ctrl/Cmd+L)"><i
+														class="icon-align-left"></i></a> <a class="btn"
+														data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i
+														class="icon-align-center"></i></a> <a class="btn"
+														data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i
+														class="icon-align-right"></i></a> <a class="btn"
+														data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i
+														class="icon-align-justify"></i></a>
+												</div>
+												<div class="btn-group">
+													<a class="btn dropdown-toggle" data-toggle="dropdown"
+														title="Hyperlink"><i class="icon-link"></i></a>
+													<div class="dropdown-menu input-append">
+														<input class="span2" placeholder="URL" type="text"
+															data-edit="createLink" />
+														<button class="btn" type="button">Add</button>
+													</div>
+													<a class="btn" data-edit="unlink" title="Remove Hyperlink"><i
+														class="icon-cut"></i></a>
+												</div>
+
+												<div class="btn-group">
+													<a class="btn" title="Insert picture (or just drag & drop)"
+														id="pictureBtn"><i class="icon-picture"></i></a> <input
+														type="file" data-role="magic-overlay"
+														data-target="#pictureBtn" data-edit="insertImage" />
+												</div>
+												<div class="btn-group">
+													<a class="btn" data-edit="undo" title="撤销 (Ctrl/Cmd+Z)"><i
+														class="icon-undo"></i></a> <a class="btn" data-edit="redo"
+														title="取消撤销 (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+												</div>
+
+											</div>
+
+											<div id="editor"></div>
+											<input type="hidden" name="details" id="details" />
 										</div>
-									</div><!-- end of 简历信息 -->
+									</div>
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10">
 											<button type="submit" class="btn btn-success">提交</button>
@@ -261,10 +362,11 @@
 	</div>
 	<!-- /.modal -->
 	<%@include file="commonScripts.jsp"%>
+	<script
+		src="assets/bootstrap-wysiwyg-master/external/jquery.hotkeys.js"></script>
 	<!-- <script
 	src="assets/bootstrap/js/bootstrap.min.js"></script> -->
-	<script type="text/javascript" src="assets/kindeditor/kindeditor-min.js"></script>
-	<script type="text/javascript" src="assets/kindeditor/lang/zh_CN.js"></script>
+	<script src="assets/bootstrap-wysiwyg-master/bootstrap-wysiwyg.js"></script>
 	<script
 		src="assets/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
 	<script
@@ -273,38 +375,71 @@
 	<!-- <script src="assets/js/custom-scripts.js"></script>  -->
 	<script src="assets/sweetalert/sweetalert.min.js"></script>
 	<script>
-		var editor;
-		KindEditor.ready(function(K) {
-			editor = K.create('textarea[name="details"]', {
-				allowFileManager : true
+		$(function() {
+			function initToolbarBootstrapBindings() {
+				var fonts = [ 'Serif', 'Sans', 'Arial', 'Arial Black',
+						'Courier', 'Courier New', 'Comic Sans MS', 'Helvetica',
+						'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma',
+						'Times', 'Times New Roman', 'Verdana' ], fontTarget = $(
+						'[title=Font]').siblings('.dropdown-menu');
+				$
+						.each(
+								fonts,
+								function(idx, fontName) {
+									fontTarget
+											.append($('<li><a data-edit="fontName ' + fontName +'" style="font-family:\''+ fontName +'\'">'
+													+ fontName + '</a></li>'));
+								});
+				$('a[title]').tooltip({
+					container : 'body'
+				});
+				$('.dropdown-menu input').click(function() {
+					return false;
+				}).change(
+						function() {
+							$(this).parent('.dropdown-menu').siblings(
+									'.dropdown-toggle').dropdown('toggle');
+						}).keydown('esc', function() {
+					this.value = '';
+					$(this).change();
+				});
+
+				$('[data-role=magic-overlay]').each(
+						function() {
+							var overlay = $(this), target = $(overlay
+									.data('target'));
+							overlay.css('opacity', 0).css('position',
+									'absolute').offset(target.offset()).width(
+									target.outerWidth()).height(
+									target.outerHeight());
+						});
+				if ("onwebkitspeechchange" in document.createElement("input")) {
+					var editorOffset = $('#editor').offset();
+
+				} else {
+
+				}
+			}
+			;
+			function showErrorAlert(reason, detail) {
+				var msg = '';
+				if (reason === 'unsupported-file-type') {
+					msg = "Unsupported format " + detail;
+				} else {
+					console.log("error uploading file", reason, detail);
+				}
+				$(
+						'<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'
+								+ '<strong>File upload error</strong> '
+								+ msg
+								+ ' </div>').prependTo('#alerts');
+			}
+			;
+			initToolbarBootstrapBindings();
+			$('#editor').wysiwyg({
+				fileUploadError : showErrorAlert
 			});
-			/* K('input[name=getHtml]').click(function(e) {
-				alert(editor.html());
-			});
-			K('input[name=isEmpty]').click(function(e) {
-				alert(editor.isEmpty());
-			});
-			K('input[name=getText]').click(function(e) {
-				alert(editor.text());
-			});
-			K('input[name=selectedHtml]').click(function(e) {
-				alert(editor.selectedHtml());
-			});
-			K('input[name=setHtml]').click(function(e) {
-				editor.html('<h3>Hello KindEditor</h3>');
-			});
-			K('input[name=setText]').click(function(e) {
-				editor.text('<h3>Hello KindEditor</h3>');
-			});
-			K('input[name=insertHtml]').click(function(e) {
-				editor.insertHtml('<strong>插入HTML</strong>');
-			});
-			K('input[name=appendHtml]').click(function(e) {
-				editor.appendHtml('<strong>添加HTML</strong>');
-			});
-			K('input[name=clear]').click(function(e) {
-				editor.html('');
-			}); */
+			window.prettyPrint && prettyPrint();
 		});
 	</script>
 	<script>

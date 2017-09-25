@@ -31,12 +31,17 @@ $(function(){
 			});
 			
 			$(".btn-success").click(function(){
+				$("#cvForm").find("input[wisezone]").each(function(){
+					var attrName = $(this).prop("name");
+					validator  
+	                .updateStatus(attrName, 'NOT_VALIDATED',null)  
+	                .validateField(attrName);  
+				});
 				var flag = validate($("#cvForm"));
 				if(flag){
 					$("[name='details']").val(editor.html());
 					var str = $("#cvForm").serialize();
 					var json_cvForm = $("#cvForm").serializeJson();
-					console.log(json_cvForm);
 					$.ajax({
 	                       type: "POST",  
 	                       dataType: "json",  
@@ -49,13 +54,10 @@ $(function(){
 	                       success: function (data) {
 	                    	   $('#myModal').modal("hide");
 	                    	   if(data && data.state == true){
-	                    		   swal("添加成功!", "", "success"); 
-	                    		   $("#cvForm").data("bootstrapValidator").resetForm();
-	                    		   $("#cvForm")[0].reset();
+	                    		   swal("修改成功!", "", "success"); 
 	                    		   $("#stuName,#phone").parents(".form-group").find("div:last").hide();
-	                    		   editor.html("");
 	                    	   }else{
-	                    		   swal("添加失败!", "", "error"); 
+	                    		   swal("修改失败!", "", "error"); 
 	                    	   }
 	                    	   
 	                       },
@@ -102,7 +104,6 @@ $(function(){
                        }
 				});
 			});
-			
 			$("#phone").blur(function(){
 				if($(this).val() == "" || $(this).val() == null){
 					return;

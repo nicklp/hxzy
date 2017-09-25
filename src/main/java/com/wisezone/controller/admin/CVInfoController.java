@@ -98,8 +98,10 @@ public class CVInfoController {
 	@ResponseBody
 	public String insert(@RequestBody Map map){
 		String dateStr = String.valueOf(map.get("createDate"));
+		Integer tId = null == map.get("tId")?0:Integer.parseInt(map.get("tId").toString());
+		
 		CVInfo cvinfo = new CVInfo(
-		0,
+		tId,
 		String.valueOf(map.get("stuName")),
 		String.valueOf(map.get("phone")),
 		String.valueOf(map.get("sex")),
@@ -113,7 +115,12 @@ public class CVInfoController {
 		String.valueOf(map.get("details")),
 		StringUtil.convertStrToDate(dateStr)
 				);
-		boolean flag = service.insert(cvinfo);
+		boolean flag = false;
+		if (tId == 0) {
+			flag = service.insert(cvinfo);
+		}else{
+			flag = service.update(cvinfo);
+		}
 		String msg = "{\"state\":"+flag+"}";
 		return msg;
 	}
@@ -216,4 +223,10 @@ public class CVInfoController {
 		return null;
 	}
 	
+	@RequestMapping(value="/cvInforDetails")
+	public String cvInforDetails(int tId,Model model){
+		CVInfo cvInfo = service.findById(tId);
+		model.addAttribute("cvInfo", cvInfo);
+		return "cvInfoDetails";
+	}
 }

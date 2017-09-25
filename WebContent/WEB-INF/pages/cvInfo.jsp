@@ -311,7 +311,11 @@
 					field : 'stuName',
 					title : '姓名',
 					align:'center',
-					width:'5%'
+					width:'5%',
+					formatter:function(value,row,index){
+						var tId = $('#cv_tab').bootstrapTable("getData")[index].tId;
+						return "<a href='${pageContext.request.contextPath}/cvInforDetails.action?tId="+tId+"'>"+value+"</a>";
+					}
 				}, {
 					field : 'userName',
 					title : '咨询顾问',
@@ -425,6 +429,7 @@
 					field : 'education',
 					title : '学历',
 					align:'center',
+					width:'5%',
 					formatter:function(value,row,index){
 						switch(value){
 						case 1:

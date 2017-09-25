@@ -69,11 +69,12 @@
 							</div>
 							<div class="panel-body">
 								<form class="form-horizontal required-validate" method="post" id="cvForm" action="#">
+									<input type="hidden" name="tId" value="${cvInfo.tId}" />
 									<div class="form-group">
 										<label for="stuName" class="col-sm-2 control-label">姓名</label>
 										<div class="col-sm-3">
 											<input type="text" class="form-control" id="stuName" wisezone="notEmpty"
-												name="stuName" placeholder="请输入姓名">
+												name="stuName" value="${cvInfo.stuName}" placeholder="请输入姓名">
 										</div>
 										<div class="col-sm-1" style="display:none;">
 											<i class="fa icon-exclamation-sign validate_name_phone"></i>
@@ -84,7 +85,7 @@
 										<label for="phone" class="col-sm-2 control-label">电话</label>
 										<div class="col-sm-3">
 											<input type="text" class="form-control" id="phone" wisezone="notEmpty numeric phone"
-												name="phone" placeholder="请输入电话">
+												name="phone" value="${cvInfo.phone}" placeholder="请输入电话">
 										</div>
 										<div class="col-sm-1" style="display:none;"><i class="fa icon-exclamation-sign validate_name_phone"></i><label class="control-label">有重复号码</label></div>
 									</div>
@@ -92,11 +93,11 @@
 										<label class="col-sm-2 control-label">性别</label>
 										<div class="col-sm-8">
 											<div class="radio3 radio-check radio-success radio-inline">
-												<input type="radio" id="radio4" name="sex" value="男"
-													checked="checked"> <label for="radio4"> 男 </label>
+												<input type="radio" id="radio4" name="sex" value="男" <c:if test="${cvInfo.sex=='男'}">checked="checked"</c:if>>
+												<label for="radio4"> 男 </label>
 											</div>
 											<div class="radio3 radio-check radio-success radio-inline">
-												<input type="radio" id="radio5" name="sex" value="女">
+												<input type="radio" id="radio5" name="sex" value="女" <c:if test="${cvInfo.sex=='女'}">checked="checked"</c:if>>
 												<label for="radio5"> 女 </label>
 											</div>
 										</div>
@@ -106,7 +107,7 @@
 										<div class="col-sm-8">
 											<div class="row" style="padding-left: 15px">
 												<div class="col-sm-2">
-													<input type="text" class="form-control" id="school"
+													<input type="text" class="form-control" id="school" value="${cvInfo.school}"
 														name="school" placeholder="请输入毕业院校">
 												</div>
 												<div class="col-sm-8">
@@ -141,14 +142,14 @@
 									<div class="form-group">
 										<label for="major" class="col-sm-2 control-label">所读专业</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" id="major"
+											<input type="text" class="form-control" id="major" value="${cvInfo.major}"
 												name="major" placeholder="请输入">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="job" class="col-sm-2 control-label">应聘岗位</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" id="job" name="job"
+											<input type="text" class="form-control" id="job" name="job" value="${cvInfo.job}"
 												placeholder="请输入">
 										</div>
 									</div>
@@ -157,7 +158,7 @@
 										<div class="col-sm-8">
 											<div class="row" style="padding-left: 15px">
 												<div class="col-sm-2">
-													<input type="text" class="form-control" id="msgFrom" wisezone="notEmpty"
+													<input type="text" class="form-control" id="msgFrom" wisezone="notEmpty" value="${cvInfo.msgFrom}"
 														name="msgFrom" placeholder="请输入">
 												</div>
 												<div class="col-sm-8">
@@ -177,7 +178,7 @@
 										<div class="col-sm-8">
 											<div class="row" style="padding-left: 15px">
 												<div class="col-sm-2">
-													<input type="text" class="form-control" id="tdType" wisezone="notEmpty"
+													<input type="text" class="form-control" id="tdType" wisezone="notEmpty" value="${cvInfo.tdType}"
 														name="tdType" placeholder="请输入">
 												</div>
 												<div class="col-sm-8">
@@ -195,36 +196,26 @@
 									<div class="form-group">
 										<label for="createDate" class="col-sm-2 control-label">录入时间</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" style="width: 20%" wisezone="notEmpty"
+											<input type="text" class="form-control" style="width: 20%" wisezone="notEmpty" value="${cvInfo.createDate}"
 												id="createDate" name="createDate" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="intention" class="col-sm-2 control-label">意向度分析</label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" id="intention"
+											<input type="text" class="form-control" id="intention" value="${cvInfo.intention}"
 												name="intention" placeholder="请输入">
-										</div>
-									</div>
-									<div class="form-group" style="">
-										<label class="col-sm-2 control-label">姓名验证</label>
-										<div class="col-sm-8">
-											<div class="panel panel-default">
-												<div class="panel-body">
-													<div class="table-responsive">
-														<table class="table table-hover name_validate"></table>
-													</div>
-												</div>
-											</div>
 										</div>
 									</div>
 									<!-- 简历信息 -->
 									<div class="form-group">
 										<label class="col-sm-2 control-label">简历</label>
 										<div class="col-sm-8">
-											<textarea name="details" style="width:inherit; height: 400px; visibility: hidden; display: none;"></textarea>
+											<textarea name="details" style="width:inherit; height: 400px; visibility: hidden; display: none;">
+												${cvInfo.details}
+											</textarea>
 										</div>
-									</div><!-- end of 简历信息 -->
+									</div>
 									<div class="form-group">
 										<div class="col-sm-offset-2 col-sm-10">
 											<button type="submit" class="btn btn-success">提交</button>
@@ -261,8 +252,6 @@
 	</div>
 	<!-- /.modal -->
 	<%@include file="commonScripts.jsp"%>
-	<!-- <script
-	src="assets/bootstrap/js/bootstrap.min.js"></script> -->
 	<script type="text/javascript" src="assets/kindeditor/kindeditor-min.js"></script>
 	<script type="text/javascript" src="assets/kindeditor/lang/zh_CN.js"></script>
 	<script
@@ -278,33 +267,6 @@
 			editor = K.create('textarea[name="details"]', {
 				allowFileManager : true
 			});
-			/* K('input[name=getHtml]').click(function(e) {
-				alert(editor.html());
-			});
-			K('input[name=isEmpty]').click(function(e) {
-				alert(editor.isEmpty());
-			});
-			K('input[name=getText]').click(function(e) {
-				alert(editor.text());
-			});
-			K('input[name=selectedHtml]').click(function(e) {
-				alert(editor.selectedHtml());
-			});
-			K('input[name=setHtml]').click(function(e) {
-				editor.html('<h3>Hello KindEditor</h3>');
-			});
-			K('input[name=setText]').click(function(e) {
-				editor.text('<h3>Hello KindEditor</h3>');
-			});
-			K('input[name=insertHtml]').click(function(e) {
-				editor.insertHtml('<strong>插入HTML</strong>');
-			});
-			K('input[name=appendHtml]').click(function(e) {
-				editor.appendHtml('<strong>添加HTML</strong>');
-			});
-			K('input[name=clear]').click(function(e) {
-				editor.html('');
-			}); */
 		});
 	</script>
 	<script>
@@ -320,6 +282,6 @@
 	</script>
 	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/bootstrapValidator.js"></script>
 	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/bootstrapvalidator/customervalidater.js"></script>
-	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/hxzy/js/addCV.js"></script>
+	<script type="text/javascript" language="javascript" charset="utf-8" src="assets/hxzy/js/updateCV.js"></script>
 </body>
 </html>

@@ -24,7 +24,26 @@
 		)
 	</insert> 
 	
+	<update id="update" parameterType="com.wisezone.entity.CVInfo">
+		update cv_info 
+		<trim prefix="set" suffixOverrides=",">
+		  <if test="stuName!=null">stu_name = #{stuName,jdbcType=VARCHAR},</if>
+		  <if test="phone!=null">phone = #{phone,jdbcType=VARCHAR},</if>
+		  <if test="sex!=null">sex = #{sex,jdbcType=VARCHAR},</if>
+		  <if test="education!=0">education = #{education,jdbcType=INTEGER},</if>
+		  <if test="major!=null">major = #{major,jdbcType=VARCHAR},</if>
+		  <if test="job!=null">job = #{job,jdbcType=VARCHAR},</if>
+		  <if test="msgFrom!=null">msg_from = #{msgFrom,jdbcType=VARCHAR},</if>
+		  <if test="tdType!=null">td_type = #{tdType,jdbcType=VARCHAR},</if>
+		  <if test="intention!=null">intention = #{intention,jdbcType=VARCHAR},</if>
+		  <if test="createDate!=null">create_date = #{createDate,jdbcType=VARCHAR},</if>
+			cv_details = #{details,jdbcType=VARCHAR}
+		 </trim>
+	    where t_id = #{tId,jdbcType=INTEGER}
+	</update>
+	
 	<resultMap type="com.wisezone.entity.CVInfo" id="cvInfo">
+		<result column="t_id" jdbcType="INTEGER" property="tId"/>
 		<result column="stu_name" jdbcType="VARCHAR" property="stuName"/>
 		<result column="phone" jdbcType="VARCHAR" property="phone"/>
 		<result column="sex" jdbcType="VARCHAR" property="sex"/>
@@ -38,6 +57,10 @@
 		<result column="cv_details" jdbcType="VARCHAR" property="details"/>
 		<result column="create_date" jdbcType="DATE" property="createDate"/>
 	</resultMap>
+	
+	<select id="findById" parameterType="int" resultMap="cvInfo">
+		select * from cv_info where t_id = #{tId}
+	</select>
 	
 	<select id="queryNameAndPhone" parameterType="map" resultMap="cvInfo">
 			select stu_name, phone,school,major,msg_from,create_date from cv_info 
